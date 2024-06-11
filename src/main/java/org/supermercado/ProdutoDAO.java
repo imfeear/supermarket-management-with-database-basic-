@@ -1,17 +1,17 @@
 package org.supermercado;
 
-import org.supermercado.database.Connection;
+import org.supermercado.database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoDAO {
-    private java.sql.Connection connection;
+    private Connection connection;
 
     public ProdutoDAO() {
         try {
-            this.connection = Connection.getConnection();
+            this.connection = DatabaseConnection.getSupermercadoConnection();
         } catch (SQLException e) {
             System.err.println("Erro ao conectar ao banco de dados: " + e.getMessage());
             e.printStackTrace();

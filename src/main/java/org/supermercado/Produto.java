@@ -18,6 +18,7 @@ public class Produto {
         this.fornecedorId = fornecedorId;
     }
 
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -72,10 +73,5 @@ public class Produto {
 
     public void setFornecedorId(int fornecedorId) {
         this.fornecedorId = fornecedorId;
-    }
-
-    // Método para calcular o valor total com base no preço e na quantidade
-    public double calcularValorTotal(int quantidade) {
-        return this.preco * quantidade;
     }
 }

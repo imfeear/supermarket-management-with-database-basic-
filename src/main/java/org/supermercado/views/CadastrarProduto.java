@@ -44,35 +44,35 @@ public class CadastrarProduto extends JFrame {
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBackground(Color.decode("#2B2B2B"));
 
-        // Initialize the text fields
-        textFieldNome = new JTextField(20);
-        textFieldFornecedor = new JTextField(20);
-        textFieldCategoria = new JTextField(20);
-        textFieldDescricao = new JTextField(20);
-        textFieldPreco = new JTextField(10);
-        textFieldQuantidade = new JTextField(10);
+//        // Initialize the text fields
+//        textFieldNome = new JTextField(20);
+//        textFieldFornecedor = new JTextField(20);
+//        textFieldCategoria = new JTextField(20);
+//        textFieldDescricao = new JTextField(20);
+//        textFieldPreco = new JTextField(10);
+//        textFieldQuantidade = new JTextField(10);
 
         // Add labels and text fields to the form
         form.add(CustomComponents.create("Nome do Produto", true));
-        form.add(textFieldNome);
+//        form.add(textFieldNome);
         form.add(Box.createVerticalStrut(20));
         form.add(CustomComponents.create("Fornecedor", true));
-        form.add(textFieldFornecedor);
+//        form.add(textFieldFornecedor);
         form.add(Box.createVerticalStrut(20));
         form.add(CustomComponents.create("Categoria", true));
-        form.add(textFieldCategoria);
+//        form.add(textFieldCategoria);
         form.add(Box.createVerticalStrut(20));
         form.add(CustomComponents.create("Descrição", true));
-        form.add(textFieldDescricao);
+//        form.add(textFieldDescricao);
         form.add(Box.createVerticalStrut(20));
 
         JPanel smallContainersPanel = new JPanel();
         smallContainersPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 0));
         smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
         smallContainersPanel.add(SmallCustomComponents.create("Preço", true));
-        smallContainersPanel.add(textFieldPreco);
+//        smallContainersPanel.add(textFieldPreco);
         smallContainersPanel.add(SmallCustomComponents.create("Quantidade", true));
-        smallContainersPanel.add(textFieldQuantidade);
+//        smallContainersPanel.add(textFieldQuantidade);
         form.add(Box.createVerticalStrut(0));
         form.add(smallContainersPanel);
 

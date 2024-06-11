@@ -123,11 +123,11 @@ public class ComprarProduto extends JFrame {
                 return;
             }
 
-            // Criando uma instância de Produto com os valores inseridos
-            Produto produto = new Produto(nome, descricao, quantidade, preco, categoriaId, fornecedorId);
-            double valorTotal = produto.calcularValorTotal(quantidade);
-
-            valorTotalLabel.setText("Valor Total: R$ " + String.format("%.2f", valorTotal));
+//            // Criando uma instância de Produto com os valores inseridos
+//            Produto produto = new Produto(nome, descricao, quantidade, preco, categoriaId, fornecedorId);
+//            double valorTotal = produto.calcularValorTotal(quantidade);
+//
+//            valorTotalLabel.setText("Valor Total: R$ " + String.format("%.2f", valorTotal));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Por favor, insira valores válidos para preço, quantidade, categoria e fornecedor.");
         }
