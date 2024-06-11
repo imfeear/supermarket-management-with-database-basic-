@@ -1,4 +1,4 @@
-package org.supermercado.views;
+package teste;
 
 import javax.swing.*;
 import java.awt.*;
