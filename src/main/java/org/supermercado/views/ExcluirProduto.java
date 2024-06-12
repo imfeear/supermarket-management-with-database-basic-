@@ -14,6 +14,5 @@ public class ExcluirProduto extends JFrame {
     }
 
     private void initComponents() {
-        // Adicione os componentes necessários para a tela de exclusão aqui
     }
 }

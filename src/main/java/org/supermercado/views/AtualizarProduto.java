@@ -1,105 +1,95 @@
 package org.supermercado.views;
 
-import org.supermercado.components.CustomComponents;
-import org.supermercado.components.SmallCustomComponents;
-import org.supermercado.ProdutoDAO;
 import org.supermercado.Produto;
+import org.supermercado.ProdutoDAO;
+import org.supermercado.components.FormAtualizacao;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AtualizarProduto extends JFrame {
-    private JTextField idField;
-    private JTextField nomeField;
-    private JTextField descricaoField;
-    private JTextField quantidadeField;
-    private JTextField precoField;
-    private JTextField categoriaField;
-    private JTextField fornecedorField;
+
+    private JPanel mainPanel;
 
     public AtualizarProduto() {
-        super("Atualizar informações do produto");
+        super("Atualizar produto");
         initComponents();
     }
 
     private void initComponents() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 700);
+        setSize(500, 300); // Definir o tamanho inicial da janela
         setLocationRelativeTo(null);
         setResizable(false);
         getContentPane().setBackground(Color.decode("#2B2B2B"));
 
-        JPanel form = new JPanel();
-        form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
-        form.setBackground(Color.decode("#2B2B2B"));
-        form.add(CustomComponents.create("Nome do Produto", true));
-        form.add(Box.createVerticalStrut(20));
-        form.add(CustomComponents.create("Fornecedor", true));
-        form.add(Box.createVerticalStrut(20));
-        form.add(CustomComponents.create("Categoria", true));
-        form.add(Box.createVerticalStrut(20));
-        form.add(CustomComponents.create("Descrição", true));
-        form.add(Box.createVerticalStrut(20));
+        mainPanel = new JPanel(new CardLayout());
+        mainPanel.setBackground(Color.decode("#2B2B2B"));
 
-        JPanel smallContainersPanel = new JPanel();
-        smallContainersPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 0));
-        smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
-        smallContainersPanel.add(SmallCustomComponents.create("Preço", true));
-        smallContainersPanel.add(SmallCustomComponents.create("Quantidade", true));
-        form.add(Box.createVerticalStrut(0));
-        form.add(smallContainersPanel);
+        JPanel searchPanel = createSearchPanel();
+        mainPanel.add(searchPanel, "searchPanel");
 
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 60, 40));
-        buttonsPanel.setBackground(Color.decode("#2B2B2B"));
-
-        JButton cancelarButton = new JButton("Cancelar");
-        cancelarButton.setPreferredSize(new Dimension(200, 50));
-        cancelarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cancelarButton.setBackground(Color.RED);
-        cancelarButton.setForeground(Color.WHITE);
-        cancelarButton.setFont(new Font("Arial", Font.BOLD, 14));
-        cancelarButton.addActionListener(e -> dispose());
-
-        JButton atualizarButton = new JButton("Atualizar");
-        atualizarButton.setPreferredSize(new Dimension(200, 50));
-        atualizarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        atualizarButton.setBackground(Color.decode("#2E56BE"));
-        atualizarButton.setForeground(Color.WHITE);
-        atualizarButton.setFont(new Font("Arial", Font.BOLD, 14));
-        atualizarButton.addActionListener(e -> {
-            atualizarProduto();
-        });
-
-        buttonsPanel.add(cancelarButton);
-        buttonsPanel.add(atualizarButton);
-
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(form, BorderLayout.CENTER);
-        getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+        add(mainPanel);
     }
 
-    private void atualizarProduto() {
-        try {
-            int id = Integer.parseInt(idField.getText());
-            String nome = nomeField.getText();
-            String descricao = descricaoField.getText();
-            int quantidade = Integer.parseInt(quantidadeField.getText());
-            double preco = Double.parseDouble(precoField.getText());
-            int categoriaId = Integer.parseInt(categoriaField.getText());
-            int fornecedorId = Integer.parseInt(fornecedorField.getText());
+    private JPanel createSearchPanel() {
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.Y_AXIS));
+        searchPanel.setBackground(Color.decode("#2B2B2B"));
 
-            Produto produto = new Produto(nome, descricao, quantidade, preco, categoriaId, fornecedorId);
-            produto.setId(id);
+        JLabel label = new JLabel("Insira o ID do Produto:");
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.BOLD, 15));
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            ProdutoDAO produtoDAO = new ProdutoDAO();
-            produtoDAO.atualizarProduto(produto);
+        JTextField idField = new JTextField();
+        idField.setMaximumSize(new Dimension(200, 40));
+        idField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        idField.add(Box.createVerticalStrut(20));
 
-            JOptionPane.showMessageDialog(this, "Produto atualizado com sucesso!");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro nos dados inseridos. Verifique e tente novamente.");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar produto: " + e.getMessage());
-        }
+        JButton searchButton = new JButton("Buscar");
+        searchButton.setMaximumSize(new Dimension(200, 50));
+        searchButton.setBackground(Color.decode("#2E56BE"));
+        searchButton.setForeground(Color.WHITE);
+        searchButton.setFont(new Font("Arial", Font.BOLD, 14));
+        searchButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        searchButton.addActionListener(e -> {
+            String idText = idField.getText();
+            try {
+                int id = Integer.parseInt(idText);
+                ProdutoDAO produtoDAO = new ProdutoDAO();
+                Produto produto = produtoDAO.buscarProdutoPorId(id);
+                if (produto != null) {
+                    mostrarFormularioAtualizacao(produto);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Produto não encontrado.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "ID inválido. Por favor, insira um número inteiro.");
+            }
+        });
+
+        searchPanel.add(Box.createVerticalStrut(50));
+        searchPanel.add(label);
+        searchPanel.add(Box.createVerticalStrut(10));
+        searchPanel.add(idField);
+        searchPanel.add(Box.createVerticalStrut(40));
+        searchPanel.add(searchButton);
+
+        return searchPanel;
+    }
+
+    private void mostrarFormularioAtualizacao(Produto produto) {
+        FormAtualizacao formAtualizacao = new FormAtualizacao(produto);
+        JPanel formPanel = formAtualizacao.getFormPanel();
+        mainPanel.add(formPanel, "formPanel");
+
+        // Alterar o tamanho da janela para o formulário de atualização
+        setSize(600, 700);
+        setLocationRelativeTo(null);
+
+        CardLayout cl = (CardLayout) mainPanel.getLayout();
+        cl.show(mainPanel, "formPanel");
     }
 
     public static void main(String[] args) {

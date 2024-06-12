@@ -10,14 +10,12 @@ import java.awt.event.ActionListener;
 
 public class ComprarProduto extends JFrame {
 
-    // Declaração dos campos de texto como membros da classe
     private JTextField textFieldNome;
     private JTextField textFieldFornecedor;
     private JTextField textFieldCategoria;
     private JTextField textFieldDescricao;
     private JTextField textFieldPreco;
     private JTextField textFieldQuantidade;
-
     private JLabel valorTotalLabel;
 
     public ComprarProduto() {
@@ -98,7 +96,6 @@ public class ComprarProduto extends JFrame {
         getContentPane().add(form, BorderLayout.CENTER);
         getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
-        // Use GridBagLayout para centralizar verticalmente o formulário
         JPanel containerPanel = new JPanel(new GridBagLayout());
         containerPanel.setBackground(Color.decode("#2B2B2B"));
         GridBagConstraints gbc = new GridBagConstraints();

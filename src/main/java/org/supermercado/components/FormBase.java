@@ -3,9 +3,15 @@ package org.supermercado.components;
 import javax.swing.*;
 import java.awt.*;
 
-public class ContainerForm {
+public abstract class FormBase {
+    protected JTextField textFieldNome;
+    protected JTextField textFieldFornecedor;
+    protected JTextField textFieldCategoria;
+    protected JTextField textFieldDescricao;
+    protected JTextField textFieldPreco;
+    protected JTextField textFieldQuantidade;
 
-    public static JPanel createCustomContainer(String labelText, boolean isLargeField, JTextField textField) {
+    protected JPanel createCustomContainer(String labelText, boolean isLargeField) {
         JPanel container = new JPanel();
         container.setPreferredSize(new Dimension(500, 80));
         container.setMinimumSize(new Dimension(500, 80));
@@ -34,6 +40,7 @@ public class ContainerForm {
         label.setForeground(Color.WHITE);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
+        JTextField textField = new JTextField();
         textField.setBounds(0, 30, 400, 40);
         textField.setBackground(Color.WHITE);
 
@@ -43,10 +50,20 @@ public class ContainerForm {
         container.add(leftPanel);
         container.add(rightPanel);
 
+        if (labelText.equals("Nome do Produto")) {
+            textFieldNome = textField;
+        } else if (labelText.equals("Fornecedor")) {
+            textFieldFornecedor = textField;
+        } else if (labelText.equals("Categoria")) {
+            textFieldCategoria = textField;
+        } else if (labelText.equals("Descrição")) {
+            textFieldDescricao = textField;
+        }
+
         return container;
     }
 
-    public static JPanel createSmallContainer(String labelText, boolean isLargeField, JTextField textField) {
+    protected JPanel createSmallContainer(String labelText, boolean isLargeField) {
         JPanel container = new JPanel();
         container.setPreferredSize(new Dimension(220, 80));
         container.setMinimumSize(new Dimension(220, 80));
@@ -75,6 +92,7 @@ public class ContainerForm {
         label.setForeground(Color.WHITE);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
+        JTextField textField = new JTextField();
         textField.setBounds(0, 30, 120, 40);
         textField.setBackground(Color.WHITE);
 
@@ -84,6 +102,13 @@ public class ContainerForm {
         container.add(leftPanel);
         container.add(rightPanel);
 
+        if (labelText.equals("Preço")) {
+            textFieldPreco = textField;
+        } else if (labelText.equals("Quantidade")) {
+            textFieldQuantidade = textField;
+        }
+
         return container;
     }
 }
+

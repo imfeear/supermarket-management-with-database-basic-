@@ -12,17 +12,15 @@ public class Menu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Janela maximizada
 
-        // Painel principal com a imagem de fundo
         BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("src/main/resources/images/fundo.png").getImage());
         backgroundPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(120, 250, 120, 250); // Margens entre os botões (aumentadas)
+        gbc.insets = new Insets(120, 250, 120, 250);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
 
-        // Adicionando botões ao painel
         JButton button1 = createButton("Gestão de Estoque", "src/main/resources/images/gestao_estoque.png");
         JButton button2 = createButton("Gestão de Compras", "src/main/resources/images/gestao_compras.png");
         JButton button3 = createButton("Gestão de Vendas", "src/main/resources/images/gestao_vendas.png");
@@ -50,7 +48,7 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
 //                dispose(); // Fecha a tela de menu
                 TabelaProdutos tabelaProdutos = new TabelaProdutos();
-                tabelaProdutos.setVisible(true); // Abre a tela de cadastro de produto
+                tabelaProdutos.setVisible(true);
             }
         });
 
@@ -59,21 +57,19 @@ public class Menu extends JFrame {
 
     private JButton createButton(String text, String iconPath) {
         JButton button = new JButton(text, new ImageIcon(iconPath));
-        button.setPreferredSize(new Dimension(250, 100)); // Tamanho dos botões (aumentado)
+        button.setMaximumSize(new Dimension(250, 100));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
-        button.setBackground(new Color(46, 86, 190)); // Cor de fundo azul
-        button.setForeground(Color.WHITE); // Texto branco
-        button.setFont(new Font("Arial", Font.BOLD, 24)); // Fonte maior e em negrito
+        button.setBackground(new Color(46, 86, 190));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 24));
         button.setOpaque(true);
         button.setBorderPainted(false);
         return button;
     }
 
-    // Painel com a imagem de fundo
     class BackgroundPanel extends JPanel {
         private Image backgroundImage;
-
         public BackgroundPanel(Image backgroundImage) {
             this.backgroundImage = backgroundImage;
         }

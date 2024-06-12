@@ -24,8 +24,8 @@ public class Login extends JFrame {
         centralPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 0, 0, 0); // Sem espaçamento
-        gbc.anchor = GridBagConstraints.CENTER; // Alinhar à esquerda
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
@@ -34,7 +34,6 @@ public class Login extends JFrame {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.NONE;
 
-        // Título "Login"
         JLabel titleLabel = new JLabel("Login");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
         titleLabel.setForeground(Color.WHITE);
@@ -44,7 +43,6 @@ public class Login extends JFrame {
         gbc.insets = new Insets(20, 0, 20, 0);
         centralPanel.add(titleLabel, gbc);
 
-        // Campo de texto para usuário
         JPanel userPanel = CustomComponents.create("Usuário", true);
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -60,7 +58,6 @@ public class Login extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
         centralPanel.add(passwordPanel, gbc);
 
-        // Botão de login
         JButton loginButton = new JButton("Login");
         loginButton.setPreferredSize(new Dimension(400, 60));
         loginButton.setBackground(new Color(46, 86, 190));
@@ -72,26 +69,21 @@ public class Login extends JFrame {
         gbc.insets = new Insets(20, 0, 20, 0);
         centralPanel.add(loginButton, gbc);
 
-        // Adiciona ação ao botão de login
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Fecha a tela de login
                 Menu menu = new Menu();
-                menu.setVisible(true); // Abre a tela de menu
+                menu.setVisible(true);
             }
         });
 
-        // Adiciona o painel centralizado ao painel de fundo
         backgroundPanel.add(centralPanel, new GridBagConstraints());
-
         add(backgroundPanel);
     }
 
-    // Painel com a imagem de fundo
     class BackgroundPanel extends JPanel {
         private Image backgroundImage;
-
         public BackgroundPanel(Image backgroundImage) {
             this.backgroundImage = backgroundImage;
         }

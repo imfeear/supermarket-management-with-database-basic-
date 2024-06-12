@@ -1,4 +1,4 @@
-package org.supermercado.views;
+package teste;
 
 import org.supermercado.Produto;
 import org.supermercado.ProdutoDAO;
@@ -11,14 +11,12 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.util.List;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
-
-public class TabelaProdutos extends JFrame {
+public class TesteEstoque extends JFrame {
     private JTable table;
     private ProdutoDAO produtoDAO;
 
-    public TabelaProdutos() {
-        super("Produtos");
+    public TesteEstoque() {
+        super("Estoque");
         produtoDAO = new ProdutoDAO();
         initComponents();
         carregarProdutos();
@@ -33,54 +31,45 @@ public class TabelaProdutos extends JFrame {
         topPanel.setBackground(new Color(43, 43, 43)); // #2B2B2B
         topPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
-        JLabel titleLabel = new JLabel("Produtos");
+        JLabel titleLabel = new JLabel("Gerenciamento do Estoque");
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonPanel.setBackground(new Color(43, 43, 43)); // #2B2B2B
 
-        JButton cadastrarButton = new JButton("Cadastrar");
-        JButton comprarButton = new JButton("Comprar");
-        JButton atualizarButton = new JButton("Atualizar");
-        JButton excluirButton = new JButton("Excluir");
+        JButton controleButton = new JButton("Controle de Produtos");
+        JButton niveisEstoqueButton = new JButton("Níveis de Estoque");
+        JButton reposicaoButton = new JButton("Alerta de Reposição");
+        JButton movimentacaoButton = new JButton("Histórico de Movimentação");
 
-        customButton(cadastrarButton);
-        customButton(comprarButton);
-        customButton(atualizarButton);
-        customButton(excluirButton);
+        customButton(controleButton);
+        customButton(niveisEstoqueButton);
+        customButton(reposicaoButton);
+        customButton(movimentacaoButton);
 
-        cadastrarButton.addActionListener(e -> new CadastrarProduto().setVisible(true));
-        comprarButton.addActionListener(e -> new ComprarProduto().setVisible(true));
-        atualizarButton.addActionListener(e -> new AtualizarProduto().setVisible(true));
-//        excluirButton.addActionListener(e -> new deletarProduto());
-
-        buttonPanel.add(cadastrarButton);
-        buttonPanel.add(comprarButton);
-        buttonPanel.add(atualizarButton);
-        buttonPanel.add(excluirButton);
+        buttonPanel.add(controleButton);
+        buttonPanel.add(niveisEstoqueButton);
+        buttonPanel.add(reposicaoButton);
+        buttonPanel.add(movimentacaoButton);
 
         topPanel.add(titleLabel, BorderLayout.WEST);
         topPanel.add(buttonPanel, BorderLayout.EAST);
 
-        // Cria um modelo de tabela personalizado
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("ID");
-        model.addColumn("Nome");
-        model.addColumn("Descrição");
-        model.addColumn("Quantidade");
-        model.addColumn("Preço");
-        model.addColumn("Categoria ID");
-        model.addColumn("Fornecedor ID");
+        model.addColumn("Produto");
+        model.addColumn("Estoque inicial");
+        model.addColumn("Entrada");
+        model.addColumn("Saída");
+        model.addColumn("Estoque final");
 
         table = new JTable(model);
         table.setBackground(Color.WHITE);
         table.setForeground(Color.BLACK);
         table.setGridColor(Color.BLACK);
 
-        // Define a largura das colunas
         TableColumn column;
-        int[] columnWidths = {80, 300, 500, 150, 150, 150, 150};
+        int[] columnWidths = {300, 150, 150, 150, 150};
         for (int i = 0; i < columnWidths.length; i++) {
             column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(columnWidths[i]);
@@ -93,7 +82,6 @@ public class TabelaProdutos extends JFrame {
         JTableHeader header = table.getTableHeader();
         header.setPreferredSize(new Dimension(header.getWidth(), 50));
 
-        // Personaliza o cabeçalho da tabela
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -109,26 +97,31 @@ public class TabelaProdutos extends JFrame {
             table.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
         }
 
-        // Centralizar as células da tabela
         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
 
-        // Adiciona a tabela a um JScrollPane
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.getViewport().setBackground(new Color(43, 43, 43));
-        scrollPane.setBackground(new Color(43, 43, 43));
+        scrollPane.getViewport().setBackground(new Color(43, 43, 43)); // Cor de fundo do viewport
+        scrollPane.setBackground(new Color(43, 43, 43)); // Cor de fundo do scrollpane
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        scrollPane.setPreferredSize(new Dimension(1000, 500)); // Defina a largura preferida aqui
+
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBackground(new Color(43, 43, 43)); // Cor de fundo do painel intermediário
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
+        tablePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Espaçamento ao redor da tabela
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.weightx = 1.0; // Ajustar para preencher horizontalmente
-        gbc.weighty = 1.0; // Ajustar para preencher verticalmente
-        gbc.fill = GridBagConstraints.BOTH;
-        mainPanel.add(scrollPane, gbc);
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER; // Centraliza a tabela horizontalmente
+        mainPanel.add(tablePanel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -144,7 +137,6 @@ public class TabelaProdutos extends JFrame {
     private void carregarProdutos() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0); // Limpa os dados da tabela
-        // Obtém a lista de produtos do banco de dados e os adiciona à tabela
         List<Produto> produtos = produtoDAO.listarProdutos();
         for (Produto produto : produtos) {
             model.addRow(new Object[]{
@@ -160,7 +152,7 @@ public class TabelaProdutos extends JFrame {
     }
 
     private void customButton(JButton botao) {
-        botao.setPreferredSize(new Dimension(200, 40));
+        botao.setPreferredSize(new Dimension(300, 40));
         botao.setFont(new Font("Arial", Font.BOLD, 14));
         botao.setForeground(Color.WHITE);
         botao.setBackground(new Color(46, 86, 190)); // #2E56BE
@@ -169,8 +161,8 @@ public class TabelaProdutos extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            TabelaProdutos telaProdutos = new TabelaProdutos();
-            telaProdutos.setVisible(true);
+            TesteEstoque estoque = new TesteEstoque();
+            estoque.setVisible(true);
         });
     }
 }
