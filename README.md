@@ -4,7 +4,7 @@
 
 ## 📋 Introdução
 
-O projeto visa desenvolver um **Sistema de Gerenciamento de Supermercado** que ofereça uma solução abrangente para otimizar as operações diárias de um supermercado. O sistema será uma ferramenta centralizada para gerenciar eficientemente o estoque, as vendas, as compras e as finanças, além de melhorar a interação com os clientes.
+O projeto visa desenvolver um **Sistema de Gerenciamento de Supermercado** que ofereça uma solução abrangente para otimizar as operações diárias de um supermercado. O sistema será uma ferramenta centralizada para gerenciar eficientemente o estoque, as vendas, as compras e as finanças.
 
 ## 🌟 Funcionalidades
 
