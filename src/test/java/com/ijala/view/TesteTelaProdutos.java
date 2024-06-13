@@ -1,4 +1,4 @@
-package test.view;
+package com.ijala.view;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

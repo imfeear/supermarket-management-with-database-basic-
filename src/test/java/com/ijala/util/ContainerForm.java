@@ -1,4 +1,4 @@
-package test.util;
+package com.ijala.util;
 
 import javax.swing.*;
 import java.awt.*;
