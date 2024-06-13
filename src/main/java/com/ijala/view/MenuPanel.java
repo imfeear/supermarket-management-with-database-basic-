@@ -1,6 +1,8 @@
 package com.ijala.view;
 
+import com.ijala.view.estoque.Estoque;
 import com.ijala.view.produto.TabelaProdutos;
+import com.ijala.view.financeira.GestaoFinanceiraPanel;
 import com.ijala.util.BackgroundPanel;
 
 import javax.swing.*;
@@ -13,7 +15,7 @@ public class MenuPanel extends JFrame {
     public MenuPanel() {
         setTitle("Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Janela maximizada
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("src/main/resources/image/fundo.png").getImage());
         backgroundPanel.setLayout(new GridBagLayout());
@@ -24,34 +26,51 @@ public class MenuPanel extends JFrame {
         gbc.weightx = 0.5;
         gbc.weighty = 0.5;
 
-        JButton button1 = createButton("Gestão de Estoque", "src/main/resources/image/gestao_estoque.png");
-        JButton button2 = createButton("Gestão de Compras", "src/main/resources/image/gestao_compras.png");
-        JButton button3 = createButton("Gestão de Vendas", "src/main/resources/image/gestao_vendas.png");
-        JButton button4 = createButton("Gestão Financeira", "src/main/resources/image/gestao_financeira.png");
+        JButton GestaoEstoqueButton = createButton("Gestão de Estoque", "src/main/resources/image/gestao_estoque.png");
+        JButton GestaoCompraButton = createButton("Gestão de Compras", "src/main/resources/image/gestao_compras.png");
+        JButton GestaoVendaButton = createButton("Gestão de Vendas", "src/main/resources/image/gestao_vendas.png");
+        JButton GestaoFinanceiraButton = createButton("Gestão Financeira", "src/main/resources/image/gestao_financeira.png");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        backgroundPanel.add(button1, gbc);
+        backgroundPanel.add(GestaoEstoqueButton, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        backgroundPanel.add(button2, gbc);
+        backgroundPanel.add(GestaoCompraButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        backgroundPanel.add(button3, gbc);
+        backgroundPanel.add(GestaoVendaButton, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        backgroundPanel.add(button4, gbc);
+        backgroundPanel.add(GestaoFinanceiraButton, gbc);
 
-        // Adiciona ação ao botão de Gestão de Estoque
-        button1.addActionListener(new ActionListener() {
+        GestaoEstoqueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                dispose(); // Fecha a tela de menu
+                Estoque estoque = new Estoque();
+                estoque.setVisible(true);
+            }
+        });
+
+        GestaoCompraButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                dispose(); // Fecha a tela de menu
                 TabelaProdutos tabelaProdutos = new TabelaProdutos();
                 tabelaProdutos.setVisible(true);
+            }
+        });
+
+        GestaoFinanceiraButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                dispose(); // Fecha a tela de menu
+                GestaoFinanceiraPanel gestaoFinanceiraPanel = new GestaoFinanceiraPanel();
+                gestaoFinanceiraPanel.setVisible(true);
             }
         });
 
