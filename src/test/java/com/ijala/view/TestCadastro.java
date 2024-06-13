@@ -1,4 +1,4 @@
-package test.view;
+package com.ijala.view;
 
 import com.ijala.model.produto.Produto;
 import com.ijala.model.produto.ProdutoDAO;

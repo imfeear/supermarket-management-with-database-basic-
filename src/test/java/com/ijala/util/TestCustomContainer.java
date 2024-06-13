@@ -1,4 +1,4 @@
-package test.util;
+package com.ijala.util;
 
 import com.ijala.util.component.CustomComponents;
 import com.ijala.util.component.SmallCustomComponents;
