@@ -1,19 +1,19 @@
 package com.ijala.view;
 
 import com.ijala.util.BackgroundPanel;
-import com.ijala.util.component.CustomComponents;
+import com.ijala.util.component.FormCustomContent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginPanel extends JFrame {
+public class LoginFrame extends JFrame {
 
-    public LoginPanel() {
+    public LoginFrame() {
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Janela maximizada
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("src/main/resources/image/fundo.png").getImage());
         backgroundPanel.setLayout(new GridBagLayout());
@@ -43,7 +43,7 @@ public class LoginPanel extends JFrame {
         gbc.insets = new Insets(20, 0, 20, 0);
         centralPanel.add(titleLabel, gbc);
 
-        JPanel userPanel = CustomComponents.create("Usuário", true);
+        JPanel userPanel = FormCustomContent.create("Usuário", true);
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
@@ -51,7 +51,7 @@ public class LoginPanel extends JFrame {
         centralPanel.add(userPanel, gbc);
 
         // Campo de texto para senha
-        JPanel passwordPanel = CustomComponents.create("Senha", true);
+        JPanel passwordPanel = FormCustomContent.create("Senha", true);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 1;
@@ -73,7 +73,7 @@ public class LoginPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Fecha a tela de login
-                MenuPanel menu = new MenuPanel();
+                MenuFrame menu = new MenuFrame();
                 menu.setVisible(true);
             }
         });
@@ -84,8 +84,8 @@ public class LoginPanel extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            LoginPanel menu = new LoginPanel();
-            menu.setVisible(true);
+            LoginFrame login = new LoginFrame();
+            login.setVisible(true);
         });
     }
 }

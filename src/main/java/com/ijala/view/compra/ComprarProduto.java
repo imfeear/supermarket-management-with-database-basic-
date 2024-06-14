@@ -1,7 +1,7 @@
 package com.ijala.view.compra;
 
-import com.ijala.util.component.CustomComponents;
-import com.ijala.util.component.SmallCustomComponents;
+import com.ijala.util.component.FormCustomContent;
+import com.ijala.util.component.FormCustomSmallContent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,16 +29,16 @@ public class ComprarProduto extends JFrame {
         JPanel form = new JPanel();
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBackground(Color.decode("#2B2B2B"));
-        form.add(CustomComponents.create("Nome do Produto", true));
+        form.add(FormCustomContent.create("Nome do Produto", true));
         form.add(Box.createVerticalStrut(20));
-        form.add(CustomComponents.create("Fornecedor", true));
+        form.add(FormCustomContent.create("Fornecedor", true));
         form.add(Box.createVerticalStrut(20));
 
         JPanel smallContainersPanel = new JPanel();
         smallContainersPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 0));
         smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
-        smallContainersPanel.add(SmallCustomComponents.create("Preço", true));
-        smallContainersPanel.add(SmallCustomComponents.create("Quantidade", true));
+        smallContainersPanel.add(FormCustomSmallContent.create("Preço", true));
+        smallContainersPanel.add(FormCustomSmallContent.create("Quantidade", true));
         form.add(Box.createVerticalStrut(0));
         form.add(smallContainersPanel);
 

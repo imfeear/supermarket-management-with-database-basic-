@@ -2,7 +2,7 @@ package com.ijala.view.produto;
 
 import com.ijala.model.produto.Produto;
 import com.ijala.model.produto.ProdutoDAO;
-import com.ijala.util.component.FormAtualizacao;
+import com.ijala.util.component.FormUpdate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,7 +80,7 @@ public class AtualizarProduto extends JFrame {
     }
 
     private void mostrarFormularioAtualizacao(Produto produto) {
-        FormAtualizacao formAtualizacao = new FormAtualizacao(produto);
+        FormUpdate formAtualizacao = new FormUpdate(produto);
         JPanel formPanel = formAtualizacao.getFormPanel();
         mainPanel.add(formPanel, "formPanel");
 

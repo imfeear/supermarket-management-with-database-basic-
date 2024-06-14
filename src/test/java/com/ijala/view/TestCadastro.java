@@ -27,7 +27,7 @@ public class TestCadastro extends JFrame {
         UIManager.put("Label.font", labelFont);
 
         SideTitlePanel panelTitleConfig = new SideTitlePanel(screenSize);
-        JPanel panelTitle = panelTitleConfig.getPanelLeft();
+        JPanel panelTitle = panelTitleConfig.getSideTitlePanel();
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(Color.decode("#2B2B2B"));
