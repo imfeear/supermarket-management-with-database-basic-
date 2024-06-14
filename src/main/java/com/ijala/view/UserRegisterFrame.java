@@ -1,5 +1,7 @@
 package com.ijala.view;
 
+import com.ijala.model.user.UserDAO;
+import com.ijala.util.AddLabelAndField;
 import com.ijala.util.BackgroundPanel;
 import com.ijala.util.SideTitlePanel;
 
@@ -54,10 +56,13 @@ public class UserRegisterFrame extends JFrame {
         formGbc.insets = new Insets(0, 0, 20, 0);
         formContainer.add(labelLogo, formGbc);
         formGbc.gridy++;
+        AddLabelAndField.addLabelAndField("Nome:", textFieldNome = new JTextField(), formContainer, formGbc);
 
-        addLabelAndField("Nome:", textFieldNome = new JTextField());
-        addLabelAndField("Email:", textFieldEmail = new JTextField());
-        addLabelAndField("Senha:", passwordFieldSenha = new JPasswordField());
+        formGbc.gridy++;
+        AddLabelAndField.addLabelAndField("Email:", textFieldEmail = new JTextField(), formContainer, formGbc);
+
+        formGbc.gridy++;
+        AddLabelAndField.addLabelAndField("Senha:", passwordFieldSenha = new JPasswordField(), formContainer, formGbc);
 
         buttonRegister = new JButton("Cadastre-se");
         buttonRegister.setFont(new Font("Arial", Font.BOLD, 14));
@@ -67,9 +72,31 @@ public class UserRegisterFrame extends JFrame {
         buttonRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Fecha a tela de login
-                LoginFrame login = new LoginFrame();
-                login.setVisible(true);
+                try {
+                    String nome = textFieldNome.getText();
+                    String email = textFieldEmail.getText().trim();
+                    String senha = new String(passwordFieldSenha.getPassword());
+
+                    if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+                        throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
+                    }
+
+                    UserDAO userDAO = new UserDAO();
+                    boolean isRegistered = userDAO.userRegister(nome, email, senha);
+
+                    if (isRegistered) {
+                        JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
+                        dispose(); // Fecha a tela de cadastro
+                        LoginFrame login = new LoginFrame();
+                        login.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário!");
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário: " + ex.getMessage());
+                }
             }
         });
 
@@ -93,35 +120,6 @@ public class UserRegisterFrame extends JFrame {
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
         setVisible(true);
-    }
-
-    private void addLabelAndField(String labelText, JTextField textField) {
-        JPanel fieldPanel = new JPanel();
-        fieldPanel.setLayout(new BorderLayout());
-        fieldPanel.setBackground(new Color(43, 43, 43));
-
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        labelPanel.setBackground(new Color(43, 43, 43));
-
-        JLabel label = new JLabel(labelText);
-        label.setFont(new Font("Arial", Font.BOLD, 14));
-        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-        label.setForeground(Color.WHITE);
-        labelPanel.add(label);
-
-        fieldPanel.add(labelPanel, BorderLayout.NORTH);
-        textField.setPreferredSize(new Dimension(300, 40));
-        textField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.BLACK),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
-        fieldPanel.add(textField, BorderLayout.CENTER);
-
-        formGbc.gridwidth = 2;
-        formGbc.gridx = 0;
-        formGbc.gridy++;
-        formGbc.insets = new Insets(10, 0, 10, 0);
-        formContainer.add(fieldPanel, formGbc);
     }
 
     public static void main(String[] args) {

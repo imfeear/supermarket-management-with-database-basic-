@@ -1,6 +1,9 @@
 package com.ijala.view;
 
+import com.ijala.model.user.User;
+import com.ijala.model.user.UserDAO;
 import com.ijala.util.BackgroundPanel;
+import com.ijala.util.AddLabelAndField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,10 +63,10 @@ public class LoginFrame extends JFrame {
         formGbc.gridx = 0;
         formGbc.gridy++;
         formGbc.insets = new Insets(10, 0, 10, 0);
-        addLabelAndField("Email:", textFieldEmail = new JTextField());
+        AddLabelAndField.addLabelAndField("Email:", textFieldEmail = new JTextField(), formContainer, formGbc);
 
         formGbc.gridy++;
-        addLabelAndField("Senha:", passwordFieldSenha = new JPasswordField());
+        AddLabelAndField.addLabelAndField("Senha:", passwordFieldSenha = new JPasswordField(), formContainer, formGbc);
 
         buttonLogin = new JButton("Login");
         buttonLogin.setFont(new Font("Arial", Font.BOLD, 14));
@@ -73,9 +76,30 @@ public class LoginFrame extends JFrame {
         buttonLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Fecha a tela de login
-                MenuFrame menu = new MenuFrame();
-                menu.setVisible(true);
+                try {
+                    String email = textFieldEmail.getText().trim();
+                    String senha = new String(passwordFieldSenha.getPassword());
+
+                    if (email.isEmpty() || senha.isEmpty()) {
+                        throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
+                    }
+
+                    UserDAO userDAO = new UserDAO();
+                    User user = userDAO.userLogin(email, senha);
+
+                    if (user != null) {
+                        JOptionPane.showMessageDialog(null, "Login bem-sucedido. Bem-vindo(a) " + user.getNome() + "!");
+                        dispose(); // Fecha a tela de login
+                        MenuFrame menu = new MenuFrame();
+                        menu.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Email ou senha incorretos.");
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erro ao logar usuário: " + ex.getMessage());
+                }
             }
         });
         formGbc.gridwidth = 2;
@@ -97,6 +121,7 @@ public class LoginFrame extends JFrame {
                 userRegister.setVisible(true);
             }
         });
+
         formGbc.gridwidth = 2;
         formGbc.gridx = 0;
         formGbc.gridy++;
@@ -112,35 +137,6 @@ public class LoginFrame extends JFrame {
 
         add(backgroundPanel);
         setVisible(true);
-    }
-
-    private void addLabelAndField(String labelText, JTextField textField) {
-        JPanel fieldPanel = new JPanel();
-        fieldPanel.setLayout(new BorderLayout());
-        fieldPanel.setBackground(new Color(43, 43, 43));
-
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        labelPanel.setBackground(new Color(43, 43, 43));
-
-        JLabel label = new JLabel(labelText);
-        label.setFont(new Font("Arial", Font.BOLD, 14));
-        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-        label.setForeground(Color.WHITE);
-        labelPanel.add(label);
-
-        fieldPanel.add(labelPanel, BorderLayout.NORTH);
-        textField.setPreferredSize(new Dimension(300, 40));
-        textField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.BLACK),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
-        fieldPanel.add(textField, BorderLayout.CENTER);
-
-        formGbc.gridwidth = 2;
-        formGbc.gridx = 0;
-        formGbc.gridy++;
-        formGbc.insets = new Insets(10, 0, 10, 0);
-        formContainer.add(fieldPanel, formGbc);
     }
 
     public static void main(String[] args) {
