@@ -1,21 +1,17 @@
 package com.ijala.view.estoque;
 
-import com.ijala.model.produto.Produto;
-import com.ijala.model.produto.ProdutoDAO;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.util.List;
 
-public class Estoque extends JFrame {
+public class StockManageFrame extends JFrame {
     private JTable table;
 //    private ProdutoDAO produtoDAO;
 
-    public Estoque() {
+    public StockManageFrame() {
         super("Estoque");
 //        produtoDAO = new ProdutoDAO();
         initComponents();
@@ -166,7 +162,7 @@ public class Estoque extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Estoque telaProdutos = new Estoque();
+            StockManageFrame telaProdutos = new StockManageFrame();
             telaProdutos.setVisible(true);
         });
     }

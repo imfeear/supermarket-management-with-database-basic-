@@ -2,43 +2,43 @@ package com.ijala.util.component;
 
 import com.ijala.model.produto.Produto;
 import com.ijala.model.produto.ProdutoDAO;
-import com.ijala.util.FormBase;
+import com.ijala.util.FormBasePanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class FormAtualizacao extends FormBase {
+public class FormUpdate extends FormBasePanel {
     private Produto produto;
 
-    public FormAtualizacao(Produto produto) {
+    public FormUpdate(Produto produto) {
         this.produto = produto;
     }
 
     public JPanel getFormPanel() {
-        JPanel containerForm = new JPanel();
-        containerForm.setLayout(new BoxLayout(containerForm, BoxLayout.Y_AXIS));
-        containerForm.setBackground(Color.decode("#2B2B2B"));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.decode("#2B2B2B"));
 
-        JPanel form = new JPanel();
-        form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
-        form.setBackground(Color.decode("#2B2B2B"));
-        form.add(Box.createVerticalStrut(30));
-        form.add(createCustomContainer("Nome do Produto", true));
-        form.add(Box.createVerticalStrut(20));
-        form.add(createCustomContainer("Fornecedor", true));
-        form.add(Box.createVerticalStrut(20));
-        form.add(createCustomContainer("Categoria", true));
-        form.add(Box.createVerticalStrut(20));
-        form.add(createCustomContainer("Descrição", true));
-        form.add(Box.createVerticalStrut(20));
+        JPanel formContent = new JPanel();
+        formContent.setLayout(new BoxLayout(formContent, BoxLayout.Y_AXIS));
+        formContent.setBackground(Color.decode("#2B2B2B"));
+        formContent.add(Box.createVerticalStrut(30));
+        formContent.add(createCustomContainer("Nome do Produto", true));
+        formContent.add(Box.createVerticalStrut(20));
+        formContent.add(createCustomContainer("Fornecedor", true));
+        formContent.add(Box.createVerticalStrut(20));
+        formContent.add(createCustomContainer("Categoria", true));
+        formContent.add(Box.createVerticalStrut(20));
+        formContent.add(createCustomContainer("Descrição", true));
+        formContent.add(Box.createVerticalStrut(20));
 
-        JPanel smallContainersPanel = new JPanel();
-        smallContainersPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 0));
-        smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
-        smallContainersPanel.add(createSmallContainer("Preço", true));
-        smallContainersPanel.add(createSmallContainer("Quantidade", true));
-        form.add(Box.createVerticalStrut(0));
-        form.add(smallContainersPanel);
+        JPanel formSmallContent = new JPanel();
+        formSmallContent.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 0));
+        formSmallContent.setBackground(Color.decode("#2B2B2B"));
+        formSmallContent.add(createSmallContainer("Preço", true));
+        formSmallContent.add(createSmallContainer("Quantidade", true));
+        formContent.add(Box.createVerticalStrut(0));
+        formContent.add(formSmallContent);
 
         textFieldNome.setText(produto.getNome());
         textFieldFornecedor.setText(String.valueOf(produto.getFornecedorId()));
@@ -91,11 +91,11 @@ public class FormAtualizacao extends FormBase {
         buttonPanel.add(Box.createHorizontalStrut(60));
         buttonPanel.add(updateButton);
 
-        form.add(Box.createVerticalStrut(10));
-        form.add(buttonPanel);
-        form.add(Box.createVerticalStrut(40));
-        containerForm.add(form);
+        formContent.add(Box.createVerticalStrut(10));
+        formContent.add(buttonPanel);
+        formContent.add(Box.createVerticalStrut(40));
+        panel.add(formContent);
 
-        return containerForm;
+        return panel;
     }
 }

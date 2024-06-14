@@ -1,8 +1,8 @@
 package com.ijala.view;
 
-import com.ijala.view.estoque.Estoque;
+import com.ijala.view.estoque.StockManageFrame;
 import com.ijala.view.produto.TabelaProdutos;
-import com.ijala.view.financeira.GestaoFinanceiraPanel;
+import com.ijala.view.financeira.FinanceManageFrame;
 import com.ijala.util.BackgroundPanel;
 
 import javax.swing.*;
@@ -10,9 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuPanel extends JFrame {
+public class MenuFrame extends JFrame {
 
-    public MenuPanel() {
+    public MenuFrame() {
         setTitle("Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -51,7 +51,7 @@ public class MenuPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                dispose(); // Fecha a tela de menu
-                Estoque estoque = new Estoque();
+                StockManageFrame estoque = new StockManageFrame();
                 estoque.setVisible(true);
             }
         });
@@ -69,7 +69,7 @@ public class MenuPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                dispose(); // Fecha a tela de menu
-                GestaoFinanceiraPanel gestaoFinanceiraPanel = new GestaoFinanceiraPanel();
+                FinanceManageFrame gestaoFinanceiraPanel = new FinanceManageFrame();
                 gestaoFinanceiraPanel.setVisible(true);
             }
         });
@@ -92,7 +92,7 @@ public class MenuPanel extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            MenuPanel menu = new MenuPanel();
+            MenuFrame menu = new MenuFrame();
             menu.setVisible(true);
         });
     }

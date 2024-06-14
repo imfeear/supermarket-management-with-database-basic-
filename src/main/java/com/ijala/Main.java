@@ -1,10 +1,9 @@
 package com.ijala;
 
-import com.ijala.view.LoginPanel;
+import com.ijala.view.InitialFrame;
 
 public class Main {
     public static void main(String[] args) {
-        LoginPanel login = new LoginPanel();
-        login.setVisible(true);
+        InitialFrame.main(args);
     }
 }

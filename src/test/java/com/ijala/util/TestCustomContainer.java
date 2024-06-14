@@ -1,7 +1,7 @@
 package com.ijala.util;
 
-import com.ijala.util.component.CustomComponents;
-import com.ijala.util.component.SmallCustomComponents;
+import com.ijala.util.component.FormCustomContent;
+import com.ijala.util.component.FormCustomSmallContent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,7 @@ public class TestCustomContainer {
             mainPanel.setBackground(Color.decode("#2B2B2B"));
 
             // Test creating large container
-            JPanel largeContainer = CustomComponents.create("Large Container", true);
+            JPanel largeContainer = FormCustomContent.create("Large Container", true);
             mainPanel.add(largeContainer);
 
             // Usando um JPanel com FlowLayout para os smallContainers permitindo dois componentes por linha
@@ -25,10 +25,10 @@ public class TestCustomContainer {
             smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
 
             // Test creating small container
-            JPanel smallContainer1 = SmallCustomComponents.create("Small Container 1", false);
+            JPanel smallContainer1 = FormCustomSmallContent.create("Small Container 1", false);
             smallContainersPanel.add(smallContainer1);
 
-            JPanel smallContainer2 = SmallCustomComponents.create("Small Container 2", false);
+            JPanel smallContainer2 = FormCustomSmallContent.create("Small Container 2", false);
             smallContainersPanel.add(smallContainer2);
 
             mainPanel.add(smallContainersPanel); // Adicionando o painel de contêineres pequenos ao painel principal
