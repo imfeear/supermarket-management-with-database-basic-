@@ -1,4 +1,4 @@
-package com.ijala.model.financeira;
+package com.ijala.model.finance;
 
 import com.ijala.database.DatabaseConnection;
 
@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GestaoFinanceiraDAO {
+public class FinanceManageDAO {
     private Connection connection;
 
-    public GestaoFinanceiraDAO() {
+    public FinanceManageDAO() {
         try {
             this.connection = DatabaseConnection.getSupermercadoConnection();
         } catch (SQLException e) {
@@ -21,12 +21,11 @@ public class GestaoFinanceiraDAO {
         }
     }
 
-    public void inserirReceita(GestaoFinanceira finance) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO Receitas (data, quantidade) VALUES (?, ?)");
+    public void addRecipe(FinanceManage finance) {
+        String sql = "INSERT INTO receitas (data, valor) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setDate(1, java.sql.Date.valueOf(finance.getData()));
-            statement.setDouble(2, finance.getQuantidade());
+            statement.setDouble(2, finance.getValor());
             statement.executeUpdate();
             System.out.println("Receita inserida com sucesso");
         } catch (SQLException e) {
@@ -35,12 +34,11 @@ public class GestaoFinanceiraDAO {
         }
     }
 
-    public void inserirDespesa(GestaoFinanceira finance) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO Despesas (categoria, quantidade) VALUES (?, ?)");
+    public void addExpense(FinanceManage finance) {
+        String sql = "INSERT INTO despesas (categoria, valor) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, finance.getCategoria());
-            statement.setDouble(2, finance.getQuantidade());
+            statement.setDouble(2, finance.getValor());
             statement.executeUpdate();
             System.out.println("Despesa inserida com sucesso");
         } catch (SQLException e) {
@@ -49,18 +47,16 @@ public class GestaoFinanceiraDAO {
         }
     }
 
-    public List<GestaoFinanceira> buscarEntradas() {
-        List<GestaoFinanceira> finances = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT 'Receita' as tipo, '' as categoria, data, quantidade FROM Receitas UNION ALL SELECT 'Despesa', categoria, NULL as data, quantidade FROM Despesas");
-            ResultSet resultSet = statement.executeQuery();
+    public List<FinanceManage> searchForEntries() {
+        List<FinanceManage> finances = new ArrayList<>();
+        String sql = "SELECT 'Receita' as tipo, '' as categoria, data, valor FROM Receitas UNION ALL SELECT 'Despesa', categoria, NULL as data, valor FROM Despesas";
+        try (PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                GestaoFinanceira finance = new GestaoFinanceira();
+                FinanceManage finance = new FinanceManage();
                 finance.setTipo(resultSet.getString("tipo"));
                 finance.setCategoria(resultSet.getString("categoria"));
-                finance.setData(resultSet.getString("data") != null ? resultSet.getString("data") : "");
-                finance.setQuantidade(resultSet.getDouble("quantidade"));
+                finance.setData(resultSet.getString("data") != null ? resultSet.getString("data") : "-");
+                finance.setValor(resultSet.getDouble("valor"));
                 finances.add(finance);
             }
         } catch (SQLException e) {
@@ -70,33 +66,30 @@ public class GestaoFinanceiraDAO {
         return finances;
     }
 
-    public void excluirEntrada(GestaoFinanceira finance) {
+    public int deleteEntries(FinanceManage finance) {
         try {
             String sql;
             PreparedStatement statement;
             if ("Receita".equals(finance.getTipo())) {
-                sql = "DELETE FROM Receitas WHERE data = ? AND quantidade = ?";
+                sql = "DELETE FROM receitas WHERE data = ? AND valor = ?";
                 statement = connection.prepareStatement(sql);
                 statement.setDate(1, java.sql.Date.valueOf(finance.getData()));
-                statement.setDouble(2, finance.getQuantidade());
+                statement.setDouble(2, finance.getValor());
             } else {
-                sql = "DELETE FROM Despesas WHERE categoria = ? AND quantidade = ?";
+                sql = "DELETE FROM despesas WHERE categoria = ? AND valor = ?";
                 statement = connection.prepareStatement(sql);
                 statement.setString(1, finance.getCategoria());
-                statement.setDouble(2, finance.getQuantidade());
+                statement.setDouble(2, finance.getValor());
             }
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0)
-                System.out.println(finance.getTipo() + " excluída com sucesso");
-            else
-                System.out.println("Nenhuma entrada foi encontrada com os dados informados");
+            return statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Erro ao excluir entrada");
             e.printStackTrace();
+            return 0;
         }
     }
 
-    public void fecharConexao() {
+    public void closeConnection() {
         try {
             if (connection != null && !connection.isClosed())
                 connection.close();

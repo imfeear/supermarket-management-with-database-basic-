@@ -1,19 +1,22 @@
-package com.ijala.view.financeira;
+package com.ijala.view;
 
 import com.ijala.model.finance.FinanceManageDAO;
+import com.ijala.view.financeira.FinanceTablePanel;
+import com.ijala.view.financeira.HeaderPanel;
+import com.ijala.view.financeira.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class FinanceManageFrame extends JFrame {
+public class FinanceTestFrame extends JFrame {
 
     private HeaderPanel headerPanel;
     private MainPanel mainPanel;
-    private FinanceTablePanel tabelaPanel;
+    private FinanceTableTest tabelaPanel;
 
     private FinanceManageDAO financeManageDAO;
 
-    public FinanceManageFrame() {
+    public FinanceTestFrame() {
         setTitle("Gestão Financeira");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,7 +25,7 @@ public class FinanceManageFrame extends JFrame {
 
         headerPanel = new HeaderPanel();
         mainPanel = new MainPanel(financeManageDAO);
-        tabelaPanel = new FinanceTablePanel(financeManageDAO);
+        tabelaPanel = new FinanceTableTest(financeManageDAO);
 
         setLayout(new BorderLayout());
         add(headerPanel, BorderLayout.NORTH);
@@ -34,7 +37,7 @@ public class FinanceManageFrame extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new FinanceManageFrame().setVisible(true);
+            new FinanceTestFrame().setVisible(true);
         });
     }
 }

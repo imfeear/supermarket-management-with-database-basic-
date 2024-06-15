@@ -51,8 +51,8 @@ public class MenuFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                dispose(); // Fecha a tela de menu
-                StockManageFrame estoque = new StockManageFrame();
-                estoque.setVisible(true);
+                StockManageFrame stock = new StockManageFrame();
+                stock.setVisible(true);
             }
         });
 
@@ -69,8 +69,8 @@ public class MenuFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                dispose(); // Fecha a tela de menu
-                FinanceManageFrame gestaoFinanceiraPanel = new FinanceManageFrame();
-                gestaoFinanceiraPanel.setVisible(true);
+                FinanceManageFrame financeManage = new FinanceManageFrame();
+                financeManage.setVisible(true);
             }
         });
 

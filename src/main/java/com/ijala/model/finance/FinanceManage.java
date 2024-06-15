@@ -1,10 +1,10 @@
-package com.ijala.model.financeira;
+package com.ijala.model.finance;
 
-public class GestaoFinanceira {
+public class FinanceManage {
     private String tipo;
     private String categoria;
     private String data;
-    private double quantidade;
+    private Double valor;
 
     public String getTipo() {
         return tipo;
@@ -30,11 +30,16 @@ public class GestaoFinanceira {
         this.data = data;
     }
 
-    public double getQuantidade() {
-        return quantidade;
+    public Double getValor() {
+        return valor;
     }
 
-    public void setQuantidade(double quantidade) {
-        this.quantidade = quantidade;
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    // Método isReceita para verificar se é uma receita
+    public boolean isReceita() {
+        return "Receita".equalsIgnoreCase(tipo);
     }
 }

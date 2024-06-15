@@ -15,8 +15,8 @@ public class HeaderPanel extends JPanel {
         initComponents();
 
         setBackground(Color.decode("#2B2B2B"));
-        setBorder(BorderFactory.createEmptyBorder(20, 10, 0, 10));
-        setLayout(new FlowLayout(FlowLayout.CENTER, 80, 20));
+        setBorder(BorderFactory.createEmptyBorder(40, 10, 5, 10));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 80, 0));
     }
 
     private void initComponents() {
@@ -45,11 +45,11 @@ public class HeaderPanel extends JPanel {
 
     private JPanel createLabeledPanel(String labelText, JLabel valueLabel) {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setPreferredSize(new Dimension(300, 100));
+        panel.setPreferredSize(new Dimension(350, 90));
         panel.setBackground(Color.decode("#2B2B2B"));
         panel.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.WHITE, 1),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                BorderFactory.createEmptyBorder(20, 5, 10, 5)
         ));
 
         JLabel label = new JLabel(labelText, JLabel.CENTER);
