@@ -35,7 +35,7 @@ public class ProdutoDAO {
     }
 
     public List<Produto> listarProdutos() {
-        String sql = "SELECT * FROM produtos";
+        String sql = "SELECT * FROM produtos ORDER BY id ASC";
         List<Produto> produtos = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -82,10 +82,34 @@ public class ProdutoDAO {
         }
         return null;
     }
+    public Produto buscarProdutoPorNome(String nome) {
+        String sql = "SELECT * FROM produtos WHERE nome = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, nome);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Produto produto = new Produto(
+                            rs.getString("nome"),
+                            rs.getString("descricao"),
+                            rs.getInt("quantidade"),
+                            rs.getDouble("preco"),
+                            rs.getInt("categoria_id"),
+                            rs.getInt("fornecedor_id")
+                    );
+                    produto.setId(rs.getInt("id"));
+                    return produto;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar produto: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     public void atualizarProduto(Produto produto) {
-        String sql = "UPDATE produtos SET nome = ?, descricao = ?, quantidade = ?, preco = ?, categoria_id = ?, fornecedor_id = ? WHERE id = ?";
+        String sql = "UPDATE produtos SET nome = ?, descricao = ?, quantidade = ?, preco = ?, categoria_id = ?, fornecedor_id = ? WHERE id = ? ";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, produto.getNome());
             stmt.setString(2, produto.getDescricao());
@@ -100,6 +124,20 @@ public class ProdutoDAO {
             e.printStackTrace();
         }
     }
+
+    public void atualizarQuantidade(Produto produto) {
+        String sql = "UPDATE produtos SET quantidade = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, produto.getQuantidade());
+            stmt.setInt(2, produto.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar coluna: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void deletarProduto(int id) {
         String sql = "DELETE FROM produtos WHERE id = ?";

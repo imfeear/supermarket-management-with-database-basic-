@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FormCustomSmallContent {
-    public static JPanel create(String labelText, boolean isLargeField) {
+    public static JPanel create(String labelText, JTextField textField,boolean isLargeField) {
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(220, 80));
         panel.setMaximumSize(new Dimension(220, 80));
@@ -32,7 +32,6 @@ public class FormCustomSmallContent {
         label.setForeground(Color.WHITE);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        JTextField textField = new JTextField();
         textField.setBounds(0, 30, 120, 40); // Largura ajustada para 120
         textField.setBackground(Color.WHITE);
 
