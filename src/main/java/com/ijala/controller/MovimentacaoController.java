@@ -19,7 +19,7 @@ public class MovimentacaoController {
                 throw new Exception("Quantidade indisponível");
             }
 
-            produto.setQuantidade(produto.getQuantidade() - quantidade);
+            produto.setQuantidade(produto.getQuantidade() + quantidade);
             produtoDAO.atualizarQuantidade(produto);
 
             var movimentacao = new Movimentacao();
