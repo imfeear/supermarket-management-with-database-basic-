@@ -1,20 +1,22 @@
 package com.ijala.model.movimentacao;
 
 import com.ijala.model.produto.Produto;
-import java.util.Date;
+
+import java.sql.Date;
+
 
 public class Movimentacao {
 
     private int id;
     private Produto produto;
-    private String qualidade;
+    private int quantidade;
     private Date data;
     private String tipo;
 
-    public Movimentacao(int id, Produto produto, String qualidade, Date data, String tipo) {
+    public Movimentacao(int id, Produto produto, int quantidade, Date data, String tipo) {
         this.id = id;
         this.produto = produto;
-        this.qualidade = qualidade;
+        this.quantidade = quantidade;
         this.data = data;
         this.tipo = tipo;
     }
@@ -38,12 +40,12 @@ public class Movimentacao {
         this.produto = produto;
     }
 
-    public String getQualidade() {
-        return qualidade;
+    public int getQuantidade() {
+        return quantidade;
     }
 
-    public void setQualidade(String qualidade) {
-        this.qualidade = qualidade;
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 
     public Date getData() {

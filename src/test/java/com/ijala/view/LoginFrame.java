@@ -43,7 +43,7 @@ public class LoginFrame extends JFrame {
         gbc.insets = new Insets(20, 0, 20, 0);
         centralPanel.add(titleLabel, gbc);
 
-        JPanel userPanel = FormCustomContent.create("Usuário", true);
+        JPanel userPanel = FormCustomContent.create("Usuário",new JTextField(),true);
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
@@ -51,7 +51,7 @@ public class LoginFrame extends JFrame {
         centralPanel.add(userPanel, gbc);
 
         // Campo de texto para senha
-        JPanel passwordPanel = FormCustomContent.create("Senha", true);
+        JPanel passwordPanel = FormCustomContent.create("Senha",new JTextField(), true);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 1;

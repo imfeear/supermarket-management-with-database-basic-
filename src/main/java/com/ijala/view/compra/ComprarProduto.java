@@ -1,7 +1,9 @@
 package com.ijala.view.compra;
 
+import com.ijala.controller.MovimentacaoController;
 import com.ijala.util.component.FormCustomContent;
 import com.ijala.util.component.FormCustomSmallContent;
+import com.ijala.view.produto.TabelaProdutos;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ComprarProduto extends JFrame {
-
+    private int idProduto;
     private JTextField textFieldNome;
     private JTextField textFieldFornecedor;
     private JTextField textFieldCategoria;
@@ -17,28 +19,48 @@ public class ComprarProduto extends JFrame {
     private JTextField textFieldPreco;
     private JTextField textFieldQuantidade;
     private JLabel valorTotalLabel;
+    private MovimentacaoController movimentacaoController = new MovimentacaoController();
 
     public ComprarProduto() {
         setTitle("Comprar Produto");
+    }
+    public ComprarProduto(int idProduto, String valorNome, String valorFornecedor, String valorCategoria, String valorDescricao, String valorPreco, String valorQuantidade) {
+        setTitle("Comprar Produto");
         setSize(650, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
         getContentPane().setBackground(Color.decode("#2B2B2B"));
-
+        movimentacaoController = new MovimentacaoController();
+        this.idProduto = idProduto;
+        textFieldNome = new JTextField(20);
+        textFieldNome.setText(valorNome);
+        textFieldNome.setEditable(false);
+        textFieldFornecedor = new JTextField(20);
+        textFieldFornecedor.setText(valorFornecedor);
+        textFieldFornecedor.setEditable(false);
+        textFieldCategoria = new JTextField(20);
+        textFieldCategoria.setText(valorCategoria);
+        textFieldCategoria.setEditable(false);
+        textFieldDescricao = new JTextField(20);
+        textFieldDescricao.setText(valorDescricao);
+        textFieldDescricao.setEditable(false);
+        textFieldPreco = new JTextField(20);
+        textFieldPreco.setText(valorPreco);
+        textFieldQuantidade = new JTextField(20);
         JPanel form = new JPanel();
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBackground(Color.decode("#2B2B2B"));
-        form.add(FormCustomContent.create("Nome do Produto", true));
+        form.add(FormCustomContent.create("Nome do Produto", textFieldNome, true));
         form.add(Box.createVerticalStrut(20));
-        form.add(FormCustomContent.create("Fornecedor", true));
+        form.add(FormCustomContent.create("Fornecedor", textFieldFornecedor, true));
         form.add(Box.createVerticalStrut(20));
 
         JPanel smallContainersPanel = new JPanel();
         smallContainersPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 0));
         smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
-        smallContainersPanel.add(FormCustomSmallContent.create("Preço", true));
-        smallContainersPanel.add(FormCustomSmallContent.create("Quantidade", true));
+        smallContainersPanel.add(FormCustomSmallContent.create("Preço",textFieldPreco, true));
+        smallContainersPanel.add(FormCustomSmallContent.create("Quantidade" ,textFieldQuantidade, true));
         form.add(Box.createVerticalStrut(0));
         form.add(smallContainersPanel);
 
@@ -48,7 +70,6 @@ public class ComprarProduto extends JFrame {
         valorTotalLabel.setForeground(Color.WHITE);
         form.add(Box.createVerticalStrut(20));
         form.add(valorTotalLabel);
-
         JButton calcularButton = new JButton("Valor Total");
         calcularButton.setPreferredSize(new Dimension(500, 50));
         calcularButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -95,7 +116,7 @@ public class ComprarProduto extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(form, BorderLayout.CENTER);
         getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
-
+        System.out.println(textFieldNome.getText());
         JPanel containerPanel = new JPanel(new GridBagLayout());
         containerPanel.setBackground(Color.decode("#2B2B2B"));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -108,23 +129,16 @@ public class ComprarProduto extends JFrame {
     // Método para calcular o valor total
     private void calcularValorTotal() {
         try {
-            String nome = textFieldNome.getText();
-            String descricao = textFieldDescricao.getText();
-            int quantidade = Integer.parseInt(textFieldQuantidade.getText());
-            double preco = Double.parseDouble(textFieldPreco.getText());
-            int categoriaId = Integer.parseInt(textFieldCategoria.getText());
-            int fornecedorId = Integer.parseInt(textFieldFornecedor.getText());
 
-            if (nome.isEmpty() || descricao.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
+            if ( textFieldPreco.getText().isEmpty() || textFieldQuantidade.getText().isEmpty() ) {
+                JOptionPane.showMessageDialog(null, "Por favor, preencha os campos. Preco e quantidade");
                 return;
             }
 
-//            // Criando uma instância de Produto com os valores inseridos
-//            Produto produto = new Produto(nome, descricao, quantidade, preco, categoriaId, fornecedorId);
-//            double valorTotal = produto.calcularValorTotal(quantidade);
-//
-//            valorTotalLabel.setText("Valor Total: R$ " + String.format("%.2f", valorTotal));
+            int quantidade = Integer.parseInt(textFieldQuantidade.getText());
+            double preco = Double.parseDouble(textFieldPreco.getText());
+            var valorTotal = quantidade * preco;
+            valorTotalLabel.setText("Valor Total: R$ " + String.format("%.2f", valorTotal));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Por favor, insira valores válidos para preço, quantidade, categoria e fornecedor.");
         }
@@ -133,13 +147,28 @@ public class ComprarProduto extends JFrame {
     // Método para comprar o produto
     private void comprarProduto() {
         // Código para comprar o produto
-        JOptionPane.showMessageDialog(null, "Compra realizada com sucesso!");
+        try{
+            if (this.textFieldNome.getText().isEmpty() || this.textFieldQuantidade.getText().isEmpty() ) {
+                JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.");
+                return;
+            }
+            movimentacaoController.Comprar(this.idProduto, Integer.parseInt(this.textFieldQuantidade.getText()));
+
+            JOptionPane.showMessageDialog(null, "Compra realizada com sucesso!");
+        }catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Digite um numero valido");
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ComprarProduto telaCompra = new ComprarProduto();
-            telaCompra.setVisible(true);
+            ComprarProduto telaProdutos = new ComprarProduto();
+            telaProdutos.setVisible(true);
         });
     }
+
 }
