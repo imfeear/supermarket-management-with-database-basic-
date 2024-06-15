@@ -17,7 +17,7 @@ public class TestCustomContainer {
             mainPanel.setBackground(Color.decode("#2B2B2B"));
 
             // Test creating large container
-            JPanel largeContainer = FormCustomContent.create("Large Container", true);
+            JPanel largeContainer = FormCustomContent.create("Large Container", new JTextField(),true);
             mainPanel.add(largeContainer);
 
             // Usando um JPanel com FlowLayout para os smallContainers permitindo dois componentes por linha
@@ -25,10 +25,10 @@ public class TestCustomContainer {
             smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
 
             // Test creating small container
-            JPanel smallContainer1 = FormCustomSmallContent.create("Small Container 1", false);
+            JPanel smallContainer1 = FormCustomSmallContent.create("Small Container 1",new JTextField(), false);
             smallContainersPanel.add(smallContainer1);
 
-            JPanel smallContainer2 = FormCustomSmallContent.create("Small Container 2", false);
+            JPanel smallContainer2 = FormCustomSmallContent.create("Small Container 2",new JTextField(), false);
             smallContainersPanel.add(smallContainer2);
 
             mainPanel.add(smallContainersPanel); // Adicionando o painel de contêineres pequenos ao painel principal

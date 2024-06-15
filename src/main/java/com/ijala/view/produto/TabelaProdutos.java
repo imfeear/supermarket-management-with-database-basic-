@@ -4,6 +4,7 @@ import com.ijala.model.produto.Produto;
 import com.ijala.model.produto.ProdutoDAO;
 import com.ijala.util.TablePanel;
 import com.ijala.view.compra.ComprarProduto;
+import com.ijala.view.compra.SearchId;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -48,7 +49,7 @@ public class TabelaProdutos extends JFrame {
         customButton(excluirButton);
 
         cadastrarButton.addActionListener(e -> new CadastrarProduto().setVisible(true));
-        comprarButton.addActionListener(e -> new ComprarProduto().setVisible(true));
+        comprarButton.addActionListener(e -> new SearchId().setVisible(true));
         atualizarButton.addActionListener(e -> new AtualizarProduto().setVisible(true));
 //        excluirButton.addActionListener(e -> new deletarProduto());
 

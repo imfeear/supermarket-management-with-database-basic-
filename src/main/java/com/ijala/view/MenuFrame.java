@@ -3,6 +3,7 @@ package com.ijala.view;
 import com.ijala.view.estoque.StockManageFrame;
 import com.ijala.view.produto.TabelaProdutos;
 import com.ijala.view.financeira.FinanceManageFrame;
+import com.ijala.view.venda.VenderProduto;
 import com.ijala.util.BackgroundPanel;
 
 import javax.swing.*;
@@ -59,9 +60,16 @@ public class MenuFrame extends JFrame {
         GestaoCompraButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                dispose(); // Fecha a tela de menu
                 TabelaProdutos tabelaProdutos = new TabelaProdutos();
                 tabelaProdutos.setVisible(true);
+            }
+        });
+
+        GestaoVendaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VenderProduto venderProduto = new VenderProduto();
+                venderProduto.setVisible(true);
             }
         });
 
