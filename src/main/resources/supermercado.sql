@@ -24,6 +24,16 @@ CREATE TABLE IF NOT EXISTS produtos (
     fornecedor_id INT REFERENCES fornecedores(id) ON DELETE SET NULL
 );
 
+-- Criação da tabela de Estoque
+CREATE TABLE IF NOT EXISTS estoque (
+    id SERIAL PRIMARY KEY,
+    produto_id INT REFERENCES produtos(id) ON DELETE CASCADE,
+    estoque_inicial INT NOT NULL,
+    entrada TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    saida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estoque_final INT NOT NULL
+);
+
 -- Criação da tabela de Movimentações de Estoque
 CREATE TABLE IF NOT EXISTS movimentacoes_estoque (
     id SERIAL PRIMARY KEY,
@@ -33,6 +43,21 @@ CREATE TABLE IF NOT EXISTS movimentacoes_estoque (
     tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('entrada', 'saida'))
 );
 
+-- Criação da tabela de Receitas
+CREATE TABLE IF NOT EXISTS receitas (
+    id SERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL
+);
+
+-- Criação da tabela de Despesas
+CREATE TABLE IF NOT EXISTS despesas (
+    id SERIAL PRIMARY KEY,
+    categoria TEXT NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL
+);
+
+-- Criação da tabela de Usuário
 CREATE TABLE IF NOT EXISTS usuarios (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -62,10 +87,34 @@ INSERT INTO produtos (nome, descricao, quantidade, preco, categoria_id, forneced
     ('Detergente', 'Detergente para louça', 180, 1.50, 4, 2)
 ON CONFLICT DO NOTHING;
 
+-- Inserindo dados de exemplo no estoque
+INSERT INTO estoque (produto_id, estoque_inicial, entrada, saida, estoque_final) VALUES
+    (1, 100, '2024-04-04 10:00:00', '2024-05-10 17:00:00', 80),
+    (2, 200, '2024-04-10 10:00:00', '2024-05-20 17:00:00', 50),
+    (3, 50, '2024-05-04 10:00:00', '2024-06-05 16:00:00', 20),
+    (2, 50, '2024-05-20 10:00:00', '2024-06-15 16:00:00', 30)
+ON CONFLICT DO NOTHING;
+
 -- Inserindo dados de exemplo nas movimentações de estoque
 INSERT INTO movimentacoes_estoque (produto_id, quantidade, tipo) VALUES
     (1, 50, 'entrada'),
     (2, 100, 'entrada'),
     (3, 30, 'saida'),
     (4, 20, 'saida')
+ON CONFLICT DO NOTHING;
+
+-- Inserindo dados de exemplo nas receitas
+INSERT INTO receitas (data, valor) VALUES
+    ('2023-01-15', 1200.00),
+    ('2023-02-20', 2300.75),
+    ('2023-03-05', 1800.50),
+    ('2023-04-10', 2500.30)
+ON CONFLICT DO NOTHING;
+
+-- Inserindo dados de exemplo nas despesas
+INSERT INTO despesas (categoria, valor) VALUES
+    ('Compra de Estoque', 900.00),
+    ('Pagamento de Funcionários', 2200.00),
+    ('Manutenção de Equipamentos', 350.45),
+    ('Contas de Utilidades', 450.75)
 ON CONFLICT DO NOTHING;

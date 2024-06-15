@@ -18,13 +18,27 @@ public class DatabaseSetup {
             connection = DatabaseConnection.getSupermercadoConnection();
             connection.setAutoCommit(false);  // Inicia a transação
             statement = connection.createStatement();
-            String sql = readFile("src/main/resources/supermercado.sql");
-            statement.executeUpdate(sql);
+            String[] sqlStatements = readFile("src/main/resources/supermercado.sql").split(";");
+
+            // Executar cada instrução SQL separadamente
+            for (String sql : sqlStatements) {
+                if (!sql.trim().isEmpty()) {
+                    statement.executeUpdate(sql.trim());
+                }
+            }
+
             connection.commit();  // Confirma a transação
             System.out.println("Banco de dados configurado com sucesso.");
         } catch (SQLException | IOException e) {
             System.err.println("Erro ao configurar o banco de dados: " + e.getMessage());
             e.printStackTrace();
+            try {
+                if (connection != null) {
+                    connection.rollback();  // Reverte a transação em caso de erro
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
         } finally {
             try {
                 if (statement != null) statement.close();

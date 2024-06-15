@@ -51,8 +51,9 @@ public class MenuFrame extends JFrame {
         GestaoEstoqueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StockManageFrame estoque = new StockManageFrame();
-                estoque.setVisible(true);
+//                dispose(); // Fecha a tela de menu
+                StockManageFrame stock = new StockManageFrame();
+                stock.setVisible(true);
             }
         });
 
@@ -75,8 +76,9 @@ public class MenuFrame extends JFrame {
         GestaoFinanceiraButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FinanceManageFrame gestaoFinanceiraPanel = new FinanceManageFrame();
-                gestaoFinanceiraPanel.setVisible(true);
+//                dispose(); // Fecha a tela de menu
+                FinanceManageFrame financeManage = new FinanceManageFrame();
+                financeManage.setVisible(true);
             }
         });
 
