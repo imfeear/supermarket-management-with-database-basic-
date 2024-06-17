@@ -1,7 +1,7 @@
 package com.ijala.view;
 
-import com.ijala.model.produto.Produto;
-import com.ijala.model.produto.ProdutoDAO;
+import com.ijala.model.product.Product;
+import com.ijala.model.product.ProductDAO;
 import com.ijala.util.SideTitlePanel;
 
 import javax.swing.*;
@@ -80,9 +80,9 @@ public class TestCadastro extends JFrame {
                         throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
                     }
 
-                    Produto produto = new Produto(nome, descricao, quantidade, preco, Integer.parseInt(categoria), Integer.parseInt(fornecedor));
-                    ProdutoDAO produtoDAO = new ProdutoDAO();
-                    produtoDAO.adicionarProduto(produto);
+                    Product produto = new Product(nome, descricao, quantidade, preco, Integer.parseInt(categoria), Integer.parseInt(fornecedor));
+                    ProductDAO produtoDAO = new ProductDAO();
+                    produtoDAO.addProduct(produto);
                     JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
 
                 } catch (NumberFormatException ex) {

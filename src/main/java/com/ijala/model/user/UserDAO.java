@@ -39,7 +39,7 @@ public class UserDAO {
         }
     }
 
-    public User userLogin(String email, String senha) {
+    public User userLogin(String email, String password) {
         String sql = "SELECT * FROM usuarios WHERE email = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -49,7 +49,7 @@ public class UserDAO {
             if (rs.next()) {
                 String storedHash = rs.getString("senha");
 
-                if (BCrypt.checkpw(senha, storedHash)) {
+                if (BCrypt.checkpw(password, storedHash)) {
                     User user = new User(
                             rs.getInt("id"),
                             rs.getString("nome"),

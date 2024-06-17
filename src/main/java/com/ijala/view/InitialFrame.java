@@ -20,7 +20,6 @@ public class InitialFrame extends JFrame {
         JLabel company = new JLabel("Copyrigth © 2024 - IJALA", SwingConstants.CENTER);
         company.setFont(new Font("Arial", Font.BOLD, 15));
         company.setForeground(Color.BLACK);
-//        company.setForeground(Color.decode("#1B60C9"));
         company.setBorder(new EmptyBorder(0, 0, 20, 0));
 
         ImageIcon logo = new ImageIcon("src/main/resources/image/logoIjala.jpeg");

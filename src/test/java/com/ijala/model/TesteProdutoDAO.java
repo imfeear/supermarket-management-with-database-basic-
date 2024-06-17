@@ -1,36 +1,36 @@
 package com.ijala.model;
 
-import com.ijala.model.produto.Produto;
-import com.ijala.model.produto.ProdutoDAO;
+import com.ijala.model.product.Product;
+import com.ijala.model.product.ProductDAO;
 
 import java.util.List;
 
 public class TesteProdutoDAO {
     public static void main(String[] args) {
-        ProdutoDAO produtoDAO = new ProdutoDAO();
+        ProductDAO produtoDAO = new ProductDAO();
 
         try {
             // Adicionar produto
-            Produto novoProduto = new Produto("Produto Teste", "Descrição Teste", 10, 99.99, 1, 1);
-            produtoDAO.adicionarProduto(novoProduto);
+            Product novoProduto = new Product("Produto Teste", "Descrição Teste", 10, 99.99, 1, 1);
+            produtoDAO.addProduct(novoProduto);
             System.out.println("Produto adicionado com sucesso!");
 
             // Listar produtos
-            List<Produto> produtos = produtoDAO.listarProdutos();
-            produtos.forEach(produto -> System.out.println(produto.getNome()));
+            List<Product> produtos = produtoDAO.listProducts();
+            produtos.forEach(produto -> System.out.println(produto.getName()));
 
             // Atualizar produto
             if (!produtos.isEmpty()) {
-                Produto produtoParaAtualizar = produtos.get(0);
-                produtoParaAtualizar.setNome("Produto Atualizado");
-                produtoDAO.atualizarProduto(produtoParaAtualizar);
+                Product produtoParaAtualizar = produtos.get(0);
+                produtoParaAtualizar.setName("Produto Atualizado");
+                produtoDAO.updateProduct(produtoParaAtualizar);
                 System.out.println("Produto atualizado com sucesso!");
             }
 
             // Deletar produto
             if (!produtos.isEmpty()) {
-                Produto produtoParaDeletar = produtos.get(0);
-                produtoDAO.deletarProduto(produtoParaDeletar.getId());
+                Product produtoParaDeletar = produtos.get(0);
+                produtoDAO.deleteProduct(produtoParaDeletar.getId());
                 System.out.println("Produto deletado com sucesso!");
             }
         } catch (Exception e) {

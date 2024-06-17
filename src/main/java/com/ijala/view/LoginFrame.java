@@ -4,11 +4,11 @@ import com.ijala.model.user.User;
 import com.ijala.model.user.UserDAO;
 import com.ijala.util.BackgroundPanel;
 import com.ijala.util.AddLabelAndField;
+import com.ijala.util.ButtonUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginFrame extends JFrame {
 
@@ -16,8 +16,6 @@ public class LoginFrame extends JFrame {
     private GridBagConstraints formGbc;
     private JTextField textFieldEmail;
     private JPasswordField passwordFieldSenha;
-    private JButton buttonLogin;
-    private JButton buttonRegister;
 
     public LoginFrame() {
         setTitle("Login");
@@ -59,21 +57,15 @@ public class LoginFrame extends JFrame {
         formContainer.add(titlePanel, formGbc);
         formGbc.gridy++;
 
-        formGbc.gridwidth = 2;
-        formGbc.gridx = 0;
-        formGbc.gridy++;
-        formGbc.insets = new Insets(10, 0, 10, 0);
-        AddLabelAndField.addLabelAndField("Email:", textFieldEmail = new JTextField(), formContainer, formGbc);
+        // Adicionando label e campo de texto para o Email com imagem
+        ImageIcon emailIcon = new ImageIcon("src/main/resources/icon/envelope-regular-24.png");
+        AddLabelAndField.addLabelAndField("Email:", emailIcon, textFieldEmail = new JTextField(), formContainer, formGbc);
 
-        formGbc.gridy++;
-        AddLabelAndField.addLabelAndField("Senha:", passwordFieldSenha = new JPasswordField(), formContainer, formGbc);
+        // Adicionando label e campo de texto para a Senha com imagem
+        ImageIcon senhaIcon = new ImageIcon("src/main/resources/icon/lock-open-regular-24.png");
+        AddLabelAndField.addLabelAndField("Senha:", senhaIcon, passwordFieldSenha = new JPasswordField(), formContainer, formGbc);
 
-        buttonLogin = new JButton("Login");
-        buttonLogin.setFont(new Font("Arial", Font.BOLD, 14));
-        buttonLogin.setPreferredSize(new Dimension(300, 50));
-        buttonLogin.setForeground(Color.WHITE);
-        buttonLogin.setBackground(new Color(46, 86, 190));
-        buttonLogin.addActionListener(new ActionListener() {
+        ButtonUtil buttonUserLogin = new ButtonUtil("Login", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -88,45 +80,41 @@ public class LoginFrame extends JFrame {
                     User user = userDAO.userLogin(email, senha);
 
                     if (user != null) {
-                        JOptionPane.showMessageDialog(null, "Login bem-sucedido. Bem-vindo(a) " + user.getNome() + "!");
+                        JOptionPane.showMessageDialog(null, "Login bem-sucedido. Bem-vindo(a) " + user.getNome() + "!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                         dispose(); // Fecha a tela de login
                         MenuFrame menu = new MenuFrame();
                         menu.setVisible(true);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Email ou senha incorretos.");
+                        JOptionPane.showMessageDialog(null, "Email ou senha incorretos.", "Aviso", JOptionPane.WARNING_MESSAGE);
                     }
-
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Erro ao logar usuário: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Erro ao logar usuário: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
         formGbc.gridwidth = 2;
         formGbc.gridx = 0;
         formGbc.gridy++;
         formGbc.insets = new Insets(40, 0, 10, 0);
-        formContainer.add(buttonLogin, formGbc);
+        formContainer.add(buttonUserLogin, formGbc);
 
-        buttonRegister = new JButton("Cadastre-se");
-        buttonRegister.setFont(new Font("Arial", Font.BOLD, 14));
-        buttonRegister.setPreferredSize(new Dimension(300, 50));
-        buttonRegister.setForeground(Color.WHITE);
-        buttonRegister.setBackground(Color.decode("#0A1AAD"));
-        buttonRegister.addActionListener(new ActionListener() {
+        ButtonUtil buttonUserRegister = new ButtonUtil("Cadastre-se", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Fecha a tela de login
+                dispose();
                 UserRegisterFrame userRegister = new UserRegisterFrame();
                 userRegister.setVisible(true);
             }
         });
+        buttonUserRegister.setBackground(Color.decode("#0A1AAD"));
 
         formGbc.gridwidth = 2;
         formGbc.gridx = 0;
         formGbc.gridy++;
         formGbc.insets = new Insets(20, 0, 0, 0);
-        formContainer.add(buttonRegister, formGbc);
+        formContainer.add(buttonUserRegister, formGbc);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -141,8 +129,8 @@ public class LoginFrame extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            LoginFrame login = new LoginFrame();
-            login.setVisible(true);
+            LoginFrame loginFrame = new LoginFrame();
+            loginFrame.setVisible(true);
         });
     }
 }

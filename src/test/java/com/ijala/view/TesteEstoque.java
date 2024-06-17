@@ -80,11 +80,11 @@ public class TesteEstoque extends JFrame {
         botao.setFocusPainted(false);
     }
 
-//
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            com.ijala.view.StockManageFrame telaProdutos = new com.ijala.view.StockManageFrame();
-//            telaProdutos.setVisible(true);
-//        });
-//    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            TesteEstoque telaProdutos = new TesteEstoque();
+            telaProdutos.setVisible(true);
+        });
+    }
 }

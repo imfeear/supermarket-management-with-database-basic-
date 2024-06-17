@@ -1,7 +1,7 @@
 package com.ijala.util;
 
-import com.ijala.util.component.FormCustomContent;
-import com.ijala.util.component.FormCustomSmallContent;
+import com.ijala.util.form.FormCustomContent;
+import com.ijala.util.form.FormCustomSmallContent;
 
 import javax.swing.*;
 import java.awt.*;

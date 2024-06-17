@@ -1,23 +1,23 @@
 package com.ijala.model.stock;
 
-import com.ijala.model.produto.Produto;
+import com.ijala.model.product.Product;
 
 import java.util.Date;
 
 public class Stock {
     private int id;
-    private Produto produto;
-    private int estoque_inicial;
-    private Date entrada;
-    private Date saida;
-    private int estoque_final;
+    private Product product;
+    private int initialStock;
+    private Date entry;
+    private Date exit;
+    private int finalStock;
 
-    public Stock(Produto produto, int estoque_inicial, Date entrada, Date saida, int estoque_final) {
-        this.produto = produto;
-        this.estoque_inicial = estoque_inicial;
-        this.entrada = entrada;
-        this.saida = saida;
-        this.estoque_final = estoque_final;
+    public Stock(Product product, int initialStock, Date entry, Date exit, int finalStock) {
+        this.product = product;
+        this.initialStock = initialStock;
+        this.entry = entry;
+        this.exit = exit;
+        this.finalStock = finalStock;
     }
 
     public int getId() {
@@ -28,43 +28,43 @@ public class Stock {
         this.id = id;
     }
 
-    public Produto getProduto() {
-        return produto;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public int getEstoque_inicial() {
-        return estoque_inicial;
+    public int getInitialStock() {
+        return initialStock;
     }
 
-    public void setEstoque_inicial(int estoque_inicial) {
-        this.estoque_inicial = estoque_inicial;
+    public void setInitialStock(int initialStock) {
+        this.initialStock = initialStock;
     }
 
-    public Date getEntrada() {
-        return entrada;
+    public Date getEntry() {
+        return entry;
     }
 
-    public void setEntrada(Date entrada) {
-        this.entrada = entrada;
+    public void setEntry(Date entry) {
+        this.entry = entry;
     }
 
-    public Date getSaida() {
-        return saida;
+    public Date getExit() {
+        return exit;
     }
 
-    public void setSaida(Date saida) {
-        this.saida = saida;
+    public void setExit(Date exit) {
+        this.exit = exit;
     }
 
-    public int getEstoque_final() {
-        return estoque_final;
+    public int getFinalStock() {
+        return finalStock;
     }
 
-    public void setEstoque_final(int estoque_final) {
-        this.estoque_final = estoque_final;
+    public void setFinalStock(int finalStock) {
+        this.finalStock = finalStock;
     }
 }
