@@ -29,20 +29,20 @@ public class FormRegisterProduct extends FormBasePanel {
         JPanel formContent = new JPanel();
         formContent.setLayout(new BoxLayout(formContent, BoxLayout.Y_AXIS));
         formContent.setBackground(Color.decode("#2B2B2B"));
-        formContent.add(createCustomContainer("Nome do Produto", true));
+        formContent.add(createCustomContainer("Nome do Produto", true, "/icon/product.png"));
         formContent.add(Box.createVerticalStrut(20));
-        formContent.add(createCustomContainer("Fornecedor", true));
+        formContent.add(createCustomContainer("ID Fornecedor", true, "/icon/supplier.png"));
         formContent.add(Box.createVerticalStrut(20));
-        formContent.add(createCustomContainer("Categoria", true));
+        formContent.add(createCustomContainer("ID Categoria", true, "/icon/category.png"));
         formContent.add(Box.createVerticalStrut(20));
-        formContent.add(createCustomContainer("Descrição", true));
+        formContent.add(createCustomContainer("Descrição", true, "/icon/description.png"));
         formContent.add(Box.createVerticalStrut(20));
 
         JPanel formSmallContent = new JPanel();
-        formSmallContent.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 0));
+        formSmallContent.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 0));
         formSmallContent.setBackground(Color.decode("#2B2B2B"));
-        formSmallContent.add(createSmallContainer("Preço", true));
-        formSmallContent.add(createSmallContainer("Quantidade", true));
+        formSmallContent.add(createSmallContainer("Preço", true, "/icon/price.png"));
+        formSmallContent.add(createSmallContainer("Quantidade", true, "/icon/quantity.png"));
         formContent.add(formSmallContent);
 
         ButtonUtil button = new ButtonUtil("Cadastrar", e -> register());

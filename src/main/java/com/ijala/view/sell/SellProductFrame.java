@@ -58,15 +58,15 @@ public class SellProductFrame extends JFrame {
         formPanel.setBackground(Color.decode("#2B2B2B"));
         formPanel.add(Box.createVerticalStrut(40));
 
-        formPanel.add(FormCustomContent.create("ID do Produto", productIdField, true));
+        formPanel.add(FormCustomContent.create("ID do Produto", productIdField, true, "/icon/key.png"));
         formPanel.add(Box.createVerticalStrut(20));
-        formPanel.add(FormCustomContent.create("Nome do Produto", textFieldName, true));
+        formPanel.add(FormCustomContent.create("Nome do Produto", textFieldName, true, "/icon/product.png"));
 
         JPanel smallContainersPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 60, 0));
         smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
-        smallContainersPanel.add(FormCustomSmallContent.create("Preço", textFieldPrice, true));
+        smallContainersPanel.add(FormCustomSmallContent.create("Preço", textFieldPrice, true, "/icon/price.png"));
         formPanel.add(Box.createVerticalStrut(20));
-        smallContainersPanel.add(FormCustomSmallContent.create("Quantidade", textFieldQuantity, true));
+        smallContainersPanel.add(FormCustomSmallContent.create("Quantidade", textFieldQuantity, true, "/icon/quantity.png"));
         formPanel.add(smallContainersPanel);
 
         JPanel buttonPanelContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));

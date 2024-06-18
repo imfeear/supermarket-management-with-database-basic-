@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class MenuFrame extends JFrame {
 
@@ -28,18 +29,18 @@ public class MenuFrame extends JFrame {
             }
         });
 
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("src/main/resources/image/fundo.png").getImage());
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(MenuFrame.class.getResource("/image/background.png")).getImage());
         GridBagLayout layout = new GridBagLayout();
         backgroundPanel.setLayout(layout);
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.insets = new Insets(50, 50, 50, 50); // Espaçamento em todos os lados
+        constraints.insets = new Insets(50, 50, 50, 50);
 
-        JButton stockManageButton = createButton("Gestão de Estoque", "src/main/resources/image/gestao_estoque.png");
-        JButton tableProductsButton = createButton("Produtos Cadastrados", "src/main/resources/image/gestao_compras.png");
-        JButton financeManageButton = createButton("Gestão Financeira", "src/main/resources/image/gestao_financeira.png");
+        JButton stockManageButton = createButton("Gestão de Estoque", "/image/stock-manage.png");
+        JButton tableProductsButton = createButton("Produtos Cadastrados", "/image/registered-products.png");
+        JButton financeManageButton = createButton("Gestão Financeira", "/image/finance-manage.png");
 
         backgroundPanel.add(stockManageButton, constraints);
         constraints.gridx = 1;
@@ -77,11 +78,17 @@ public class MenuFrame extends JFrame {
     private JButton createButton(String text, String iconPath) {
         JButton button = new JButton();
 
-        ImageIcon icon = new ImageIcon(iconPath);
-        Image scaledImage = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-        button.setIcon(new ImageIcon(scaledImage));
+        // Construa o ImageIcon usando a URL do recurso
+        URL iconUrl = MenuFrame.class.getResource(iconPath);
+        if (iconUrl != null) {
+            ImageIcon icon = new ImageIcon(iconUrl);
+            Image scaledImage = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            button.setIcon(new ImageIcon(scaledImage));
+        } else {
+            System.err.println("Icon not found: " + iconPath);
+        }
 
-        button.setText("<html><div style='text-align: center;'>" + text + "<br>&nbsp;</div></html>");
+        button.setText("<html><div style='text-align: center;'><br>" + text + "<br>&nbsp;</div></html>");
 
         button.setPreferredSize(new Dimension(450, 350));
         button.setMinimumSize(new Dimension(450, 350));

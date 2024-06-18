@@ -65,7 +65,6 @@ public class UpdateProductFrame extends JFrame {
         JPanel formPanel = formUpdate.getFormPanel();
 
         // Remover o painel de busca antes de adicionar o formulário de atualização
-        mainPanel.remove(0);
         mainPanel.add(formPanel, "formPanel");
 
         setSize(600, 700);

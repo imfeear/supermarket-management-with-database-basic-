@@ -43,19 +43,21 @@ public class TablePanel {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                label.setBackground(new Color(46, 86, 190)); // #2E56BE
+                label.setBackground(new Color(46, 86, 190));
                 label.setForeground(Color.WHITE);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setFont(new Font("Arial", Font.BOLD, 16));
                 return label;
             }
         };
+
         for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
         }
 
         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
         for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }

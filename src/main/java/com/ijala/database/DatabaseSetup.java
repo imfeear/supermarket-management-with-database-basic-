@@ -1,63 +1,82 @@
 package com.ijala.database;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DatabaseSetup {
 
     public static void main(String[] args) {
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
 
         try {
-            // Conectar ao banco de dados supermercado
             connection = DatabaseConnection.getSupermercadoConnection();
-            connection.setAutoCommit(false);  // Inicia a transação
-            statement = connection.createStatement();
-            String[] sqlStatements = readFile("src/main/resources/supermercado.sql").split(";");
+            connection.setAutoCommit(false);
 
-            // Executar cada instrução SQL separadamente
+            // Carregar o arquivo SQL usando getResourceAsStream
+            InputStream inputStream = DatabaseSetup.class.getClassLoader().getResourceAsStream("supermercado.sql");
+
+            if (inputStream == null) {
+                throw new IllegalArgumentException("Arquivo não encontrado: supermercado.sql");
+            }
+
+            // Ler o arquivo linha por linha
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            StringBuilder sqlBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Remover BOM, se presente
+                if (sqlBuilder.length() == 0 && line.length() > 0 && line.charAt(0) == '\uFEFF') {
+                    line = line.substring(1); // Remove o BOM
+                }
+
+                // Ignorar comentários SQL e linhas vazias
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("--")) {
+                    continue;
+                }
+
+                sqlBuilder.append(line).append("\n");
+            }
+
+            // Separar instruções SQL por ';'
+            String[] sqlStatements = sqlBuilder.toString().split(";");
+
+            // Executar cada instrução SQL
             for (String sql : sqlStatements) {
                 if (!sql.trim().isEmpty()) {
-                    statement.executeUpdate(sql.trim());
+                    preparedStatement = connection.prepareStatement(sql.trim());
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
                 }
             }
 
-            connection.commit();  // Confirma a transação
+            connection.commit();
             System.out.println("Banco de dados configurado com sucesso.");
+
         } catch (SQLException | IOException e) {
             System.err.println("Erro ao configurar o banco de dados: " + e.getMessage());
             e.printStackTrace();
             try {
                 if (connection != null) {
-                    connection.rollback();  // Reverte a transação em caso de erro
+                    connection.rollback();
                 }
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
             }
         } finally {
             try {
-                if (statement != null) statement.close();
+                if (preparedStatement != null) preparedStatement.close();
                 if (connection != null) connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    private static String readFile(String fileName) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line);
-            sb.append("\n");
-        }
-        br.close();
-        return sb.toString();
     }
 }

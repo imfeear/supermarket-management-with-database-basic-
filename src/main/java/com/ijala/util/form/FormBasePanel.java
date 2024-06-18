@@ -1,7 +1,10 @@
 package com.ijala.util.form;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public abstract class FormBasePanel {
     protected JTextField textFieldName;
@@ -11,36 +14,28 @@ public abstract class FormBasePanel {
     protected JTextField textFieldPrice;
     protected JTextField textFieldQuantity;
 
-    protected JPanel createCustomContainer(String labelText, boolean isLargeField) {
+    protected JPanel createCustomContainer(String labelText, boolean isLargeField, String imagePath) {
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(500, 80));
         panel.setMaximumSize(new Dimension(500, 80));
         panel.setLayout(null);
         panel.setBackground(Color.decode("#2B2B2B"));
 
-        JPanel iconPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon icon = new ImageIcon("src/main/resources/image/icone-teste.png");
-                g.drawImage(icon.getImage(), (getWidth() - 40) / 2, (getHeight() - 40) / 2, 40, 40, null);
-            }
-        };
+        JPanel iconPanel = createIconPanel(imagePath);
         iconPanel.setBounds(0, 0, 80, 80);
-        iconPanel.setBackground(Color.decode("#2B2B2B"));
 
         JPanel formContent = new JPanel();
         formContent.setLayout(null);
-        formContent.setBounds(80, 0, 420, 80);
+        formContent.setBounds(80, 0, isLargeField ? 420 : 140, 80);
         formContent.setBackground(Color.decode("#2B2B2B"));
 
         JLabel label = new JLabel(labelText);
-        label.setBounds(0, 0, 400, 40);
+        label.setBounds(0, 0, isLargeField ? 400 : 120, 40);
         label.setForeground(Color.WHITE);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JTextField textField = new JTextField();
-        textField.setBounds(0, 30, 400, 40);
+        textField.setBounds(0, 30, isLargeField ? 400 : 120, 40);
         textField.setBackground(Color.WHITE);
 
         formContent.add(label);
@@ -49,35 +44,19 @@ public abstract class FormBasePanel {
         panel.add(iconPanel);
         panel.add(formContent);
 
-        if (labelText.equals("Nome do Produto")) {
-            textFieldName = textField;
-        } else if (labelText.equals("Fornecedor")) {
-            textFieldSupplier = textField;
-        } else if (labelText.equals("Categoria")) {
-            textFieldCategory = textField;
-        } else if (labelText.equals("Descrição")) {
-            textFieldDescription = textField;
-        }
+        assignTextField(textField, labelText);
 
         return panel;
     }
 
-    protected JPanel createSmallContainer(String labelText, boolean isLargeField) {
+    protected JPanel createSmallContainer(String labelText, boolean isLargeField, String imagePath) {
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(220, 80));
         panel.setLayout(null);
         panel.setBackground(Color.decode("#2B2B2B"));
 
-        JPanel iconPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon icon = new ImageIcon("src/main/resources/image/icone-teste.png");
-                g.drawImage(icon.getImage(), (getWidth() - 40) / 2, (getHeight() - 40) / 2, 40, 40, null);
-            }
-        };
+        JPanel iconPanel = createIconPanel(imagePath);
         iconPanel.setBounds(0, 0, 80, 80);
-        iconPanel.setBackground(Color.decode("#2B2B2B"));
 
         JPanel formContent = new JPanel();
         formContent.setLayout(null);
@@ -99,13 +78,36 @@ public abstract class FormBasePanel {
         panel.add(iconPanel);
         panel.add(formContent);
 
-        if (labelText.equals("Preço")) {
-            textFieldPrice = textField;
-        } else if (labelText.equals("Quantidade")) {
-            textFieldQuantity = textField;
-        }
+        assignTextField(textField, labelText);
 
         return panel;
     }
-}
 
+    private JPanel createIconPanel(String imagePath) {
+        JPanel iconPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    BufferedImage image = ImageIO.read(getClass().getResource(imagePath));
+                    g.drawImage(image, (getWidth() - 40) / 2, (getHeight() - 40) / 2, 40, 40, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        iconPanel.setBackground(Color.decode("#2B2B2B"));
+        return iconPanel;
+    }
+
+    private void assignTextField(JTextField textField, String labelText) {
+        switch (labelText) {
+            case "Nome do Produto" -> textFieldName = textField;
+            case "ID Fornecedor" -> textFieldSupplier = textField;
+            case "ID Categoria" -> textFieldCategory = textField;
+            case "Descrição" -> textFieldDescription = textField;
+            case "Preço" -> textFieldPrice = textField;
+            case "Quantidade" -> textFieldQuantity = textField;
+        }
+    }
+}

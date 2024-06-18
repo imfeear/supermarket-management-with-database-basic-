@@ -22,7 +22,7 @@ public class LoginFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("src/main/resources/image/fundo.png").getImage());
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(LoginFrame.class.getResource("/image/background.png")).getImage());
         backgroundPanel.setLayout(new GridBagLayout());
 
         formContainer = new JPanel();
@@ -42,7 +42,7 @@ public class LoginFrame extends JFrame {
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         titlePanel.setBackground(new Color(43, 43, 43));
 
-        ImageIcon logo = new ImageIcon("src/main/resources/icon/log-in-regular-72.png");
+        ImageIcon logo = new ImageIcon(LoginFrame.class.getResource("/icon/log-in.png"));
         JLabel labelLogo = new JLabel(logo);
         titlePanel.add(labelLogo);
 
@@ -58,11 +58,11 @@ public class LoginFrame extends JFrame {
         formGbc.gridy++;
 
         // Adicionando label e campo de texto para o Email com imagem
-        ImageIcon emailIcon = new ImageIcon("src/main/resources/icon/envelope-regular-24.png");
+        ImageIcon emailIcon = new ImageIcon(LoginFrame.class.getResource("/icon/email.png"));
         AddLabelAndField.addLabelAndField("Email:", emailIcon, textFieldEmail = new JTextField(), formContainer, formGbc);
 
         // Adicionando label e campo de texto para a Senha com imagem
-        ImageIcon senhaIcon = new ImageIcon("src/main/resources/icon/lock-open-regular-24.png");
+        ImageIcon senhaIcon = new ImageIcon(LoginFrame.class.getResource("/icon/password.png"));
         AddLabelAndField.addLabelAndField("Senha:", senhaIcon, passwordFieldSenha = new JPasswordField(), formContainer, formGbc);
 
         ButtonUtil buttonUserLogin = new ButtonUtil("Login", new AbstractAction() {

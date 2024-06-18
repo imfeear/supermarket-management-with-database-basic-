@@ -1,6 +1,5 @@
 package com.ijala.view.product;
 
-import com.ijala.controller.MovementController;
 import com.ijala.model.product.Product;
 import com.ijala.model.product.ProductDAO;
 import com.ijala.service.ProductService;
@@ -8,7 +7,6 @@ import com.ijala.util.ButtonUtil;
 import com.ijala.util.TablePanel;
 import com.ijala.view.buy.SearchIdForBuy;
 import com.ijala.view.sell.SearchIdForSell;
-import com.ijala.view.sell.SellProductFrame;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -43,13 +41,8 @@ public class TableProductsFrame extends JFrame {
         buttonPanel.setBackground(new Color(43, 43, 43));
 
         ButtonUtil buyButton = new ButtonUtil("Comprar", e -> new SearchIdForBuy().setVisible(true));
-        ButtonUtil sellButton = new ButtonUtil("Vender", e -> {
-            new SearchIdForSell(new ProductService()).setVisible(true);
-        });
-        ButtonUtil registerButton = new ButtonUtil("Cadastrar", e -> {
-            new RegisterProductFrame().setVisible(true);
-            this.dispose();
-        });
+        ButtonUtil sellButton = new ButtonUtil("Vender", e -> new SearchIdForSell(new ProductService()).setVisible(true));
+        ButtonUtil registerButton = new ButtonUtil("Cadastrar", e -> new RegisterProductFrame().setVisible(true));
         ButtonUtil updateButton = new ButtonUtil("Atualizar", e -> new UpdateProductFrame().setVisible(true));
         ButtonUtil deleteButton = new ButtonUtil("Excluir", e -> new DeleteProductFrame().setVisible(true));
         deleteButton.setBackground(Color.RED);

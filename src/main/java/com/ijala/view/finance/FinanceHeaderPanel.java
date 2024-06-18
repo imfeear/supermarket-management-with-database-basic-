@@ -26,9 +26,9 @@ public class FinanceHeaderPanel extends JPanel {
         double totalExpensesMonthly = 3000 + (totalMonthlyIncome - 3000) * rand.nextDouble();
         double balanceTotalCaixa = Math.max(totalMonthlyIncome - totalExpensesMonthly, 0); // Garante que balanceTotalCaixa não seja negativo
 
-        ImageIcon incomeIcon = new ImageIcon("src/main/resources/icon/money-regular-24.png");
-        ImageIcon expensesIcon = new ImageIcon("src/main/resources/icon/money-regular-24.png");
-        ImageIcon balanceIcon = new ImageIcon("src/main/resources/icon/money-regular-24.png");
+        ImageIcon incomeIcon = new ImageIcon(FinanceHeaderPanel.class.getResource("/icon/money.png"));
+        ImageIcon expensesIcon = new ImageIcon(FinanceHeaderPanel.class.getResource("/icon/money.png"));
+        ImageIcon balanceIcon = new ImageIcon(FinanceHeaderPanel.class.getResource("/icon/money.png"));
 
         totalMonthlyIncomeLabel = new JLabel(String.format("R$ %.2f", totalMonthlyIncome));
         totalExpensesMonthlyLabel = new JLabel(String.format("R$ %.2f", totalExpensesMonthly));

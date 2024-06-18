@@ -2,7 +2,9 @@ package com.ijala.view.product;
 
 import com.ijala.util.BackgroundPanel;
 import com.ijala.util.SideTitlePanel;
+//import com.ijala.util.form.FormRegisterCategory;
 import com.ijala.util.form.FormRegisterProduct;
+//import com.ijala.util.form.FormRegisterSupplier;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +20,33 @@ public class RegisterProductFrame extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize);
 
+        // Configura o SideTitlePanel
         SideTitlePanel sideTitlePanel = new SideTitlePanel(screenSize);
         sideTitlePanel.setTitulo("Cadastro de\nProduto");
+//
+//        // Configura o painel de botões
+//        JPanel buttonPanel = new JPanel();
+//        buttonPanel.setLayout(new GridLayout(2, 1, 10, 10)); // Define 2 linhas e 1 coluna com um gap de 10 pixels
+//
+//        JButton registerSupplierButton = new JButton("Cadastrar Fornecedor");
+//        registerSupplierButton.addActionListener(e -> openRegisterSupplierForm());
+//        buttonPanel.add(registerSupplierButton);
+//
+//        JButton registerCategoryButton = new JButton("Cadastrar Categoria");
+//        registerCategoryButton.addActionListener(e -> openRegisterCategoryForm());
+//        buttonPanel.add(registerCategoryButton);
 
-        ImageIcon imageBackground = new ImageIcon(RegisterProductFrame.class.getResource("/image/image.png"));
+//        // Adiciona o painel de botões ao sideTitlePanel
+//        sideTitlePanel.getSideTitlePanel().setLayout(new GridBagLayout());
+//        GridBagConstraints buttonPanelGbc = new GridBagConstraints();
+//        buttonPanelGbc.gridx = 0;
+//        buttonPanelGbc.gridy = 1; // Posiciona abaixo do título
+//        buttonPanelGbc.insets = new Insets(20, 0, 0, 0); // Adiciona algum espaço acima dos botões
+//        buttonPanelGbc.anchor = GridBagConstraints.NORTH;
+//        sideTitlePanel.getSideTitlePanel().add(buttonPanel, buttonPanelGbc);
+
+        // Configura o painel de fundo
+        ImageIcon imageBackground = new ImageIcon(RegisterProductFrame.class.getResource("/image/background.png"));
         BackgroundPanel backgroundPanel = new BackgroundPanel(imageBackground.getImage());
         backgroundPanel.setLayout(new GridBagLayout());
         backgroundPanel.setPreferredSize(new Dimension(screenSize.width * 2 / 3, screenSize.height));
@@ -38,7 +63,6 @@ public class RegisterProductFrame extends JFrame {
         formContainerGbc.gridx = 0;
         formContainerGbc.gridy = 0;
         formContainerGbc.anchor = GridBagConstraints.CENTER;
-        formContainerGbc.insets = new Insets(10, 10, 10, 10);
 
         FormRegisterProduct formCadastroProduto = new FormRegisterProduct(this);
         JPanel formPanel = formCadastroProduto.getFormPanel();
@@ -55,9 +79,18 @@ public class RegisterProductFrame extends JFrame {
         splitPane.setDividerSize(0);
         splitPane.setResizeWeight(0.3);
         getContentPane().add(splitPane, BorderLayout.CENTER);
-
         setVisible(true);
     }
+
+//    private void openRegisterSupplierForm() {
+//        FormRegisterSupplier registerSupplierForm = new FormRegisterSupplier();
+//        registerSupplierForm.setVisible(true);
+//    }
+//
+//    private void openRegisterCategoryForm() {
+//        FormRegisterCategory registerCategoryForm = new FormRegisterCategory();
+//        registerCategoryForm.setVisible(true);
+//    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

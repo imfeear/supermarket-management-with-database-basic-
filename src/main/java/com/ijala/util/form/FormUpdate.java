@@ -11,13 +11,31 @@ public class FormUpdate extends FormBasePanel {
     private Product produto;
     private Window parentWindow; // Adicionamos um campo para armazenar a janela pai
 
+    private JTextField textFieldName;
+    private JTextField textFieldSupplier;
+    private JTextField textFieldCategory;
+    private JTextField textFieldDescription;
+    private JTextField textFieldPrice;
+    private JTextField textFieldQuantity;
+
     public FormUpdate(Product produto, Window parentWindow) {
         this.produto = produto;
         this.parentWindow = parentWindow;
+        initializeTextFields();
     }
 
     public FormUpdate(Product produto) {
         this.produto = produto;
+        initializeTextFields();
+    }
+
+    private void initializeTextFields() {
+        textFieldName = new JTextField();
+        textFieldSupplier = new JTextField();
+        textFieldCategory = new JTextField();
+        textFieldDescription = new JTextField();
+        textFieldPrice = new JTextField();
+        textFieldQuantity = new JTextField();
     }
 
     public JPanel getFormPanel() {
@@ -28,22 +46,21 @@ public class FormUpdate extends FormBasePanel {
         JPanel formContent = new JPanel();
         formContent.setLayout(new BoxLayout(formContent, BoxLayout.Y_AXIS));
         formContent.setBackground(Color.decode("#2B2B2B"));
-        formContent.add(Box.createVerticalStrut(30));
-        formContent.add(createCustomContainer("Nome do Produto", true));
         formContent.add(Box.createVerticalStrut(20));
-        formContent.add(createCustomContainer("Fornecedor", true));
+        formContent.add(createCustomContainer("Nome do Produto", true, "/icon/product.png"));
         formContent.add(Box.createVerticalStrut(20));
-        formContent.add(createCustomContainer("Categoria", true));
+        formContent.add(createCustomContainer("Fornecedor", true, "/icon/supplier.png"));
         formContent.add(Box.createVerticalStrut(20));
-        formContent.add(createCustomContainer("Descrição", true));
+        formContent.add(createCustomContainer("Categoria", true, "/icon/category.png"));
+        formContent.add(Box.createVerticalStrut(20));
+        formContent.add(createCustomContainer("Descrição", true, "/icon/description.png"));
         formContent.add(Box.createVerticalStrut(20));
 
         JPanel formSmallContent = new JPanel();
         formSmallContent.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 0));
         formSmallContent.setBackground(Color.decode("#2B2B2B"));
-        formSmallContent.add(createSmallContainer("Preço", true));
-        formSmallContent.add(createSmallContainer("Quantidade", true));
-        formContent.add(Box.createVerticalStrut(0));
+        formSmallContent.add(createSmallContainer("Preço", true, "/icon/price.png"));
+        formSmallContent.add(createSmallContainer("Quantidade", true, "/icon/quantity.png"));
         formContent.add(formSmallContent);
 
         textFieldName.setText(produto.getName());
@@ -74,10 +91,8 @@ public class FormUpdate extends FormBasePanel {
             ProductDAO produtoDAO = new ProductDAO();
             produtoDAO.updateProduct(produto);
 
-            // Exibir mensagem de sucesso
             JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
-            // Fechar a janela após a atualização bem-sucedida
             parentWindow.dispose();
 
         } catch (NumberFormatException ex) {

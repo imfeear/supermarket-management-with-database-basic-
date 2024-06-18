@@ -22,7 +22,7 @@ public class InitialFrame extends JFrame {
         company.setForeground(Color.BLACK);
         company.setBorder(new EmptyBorder(0, 0, 20, 0));
 
-        ImageIcon logo = new ImageIcon("src/main/resources/image/logoIjala.jpeg");
+        ImageIcon logo = new ImageIcon(InitialFrame.class.getResource("/image/logo-ijala.jpeg"));
         JLabel logoLabel = new JLabel(logo, SwingConstants.CENTER);
         logoLabel.setBorder(new EmptyBorder(20, 0, 20, 0));
 

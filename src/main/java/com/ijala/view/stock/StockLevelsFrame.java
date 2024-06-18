@@ -1,12 +1,9 @@
 package com.ijala.view.stock;
 
-import com.ijala.controller.MovementController;
 import com.ijala.model.level.LevelStock;
 import com.ijala.model.level.LevelStockDAO;
 import com.ijala.util.ButtonUtil;
 import com.ijala.util.TablePanel;
-import com.ijala.view.buy.SearchIdForBuy;
-import com.ijala.view.sell.SellProductFrame;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -122,18 +119,10 @@ public class StockLevelsFrame extends JFrame {
             setForeground(Color.BLACK);
 
             switch (classification) {
-                case "C":
-                    setBackground(Color.decode("#EC6767"));
-                    break;
-                case "B":
-                    setBackground(Color.decode("#67C5EC"));
-                    break;
-                case "A":
-                    setBackground(Color.decode("#46EC69"));
-                    break;
-                default:
-                    setBackground(table.getBackground());
-                    break;
+                case "C" -> setBackground(Color.decode("#EC6767"));
+                case "B" -> setBackground(Color.decode("#67C5EC"));
+                case "A" -> setBackground(Color.decode("#46EC69"));
+                default -> setBackground(table.getBackground());
             }
             return this;
         }

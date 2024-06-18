@@ -27,7 +27,7 @@ public class UserRegisterFrame extends JFrame {
         SideTitlePanel sideTitlePanel = new SideTitlePanel(screenSize);
         sideTitlePanel.setTitulo("Cadastro de\nUsuário");
 
-        ImageIcon imageBackground = new ImageIcon("src/main/resources/image/fundo.png");
+        ImageIcon imageBackground = new ImageIcon(UserRegisterFrame.class.getResource("/image/background.png"));
         BackgroundPanel backgroundPanel = new BackgroundPanel(imageBackground.getImage());
         backgroundPanel.setLayout(new GridBagLayout());
         backgroundPanel.setPreferredSize(new Dimension(screenSize.width * 2 / 3, screenSize.height));
@@ -46,21 +46,22 @@ public class UserRegisterFrame extends JFrame {
         formGbc.gridx = 0;
         formGbc.gridy = 0;
 
-        ImageIcon logo = new ImageIcon("src/main/resources/icon/user-rectangle-solid-108.png");
+        ImageIcon logo = new ImageIcon(UserRegisterFrame.class.getResource("/icon/user-register.png"));
         JLabel labelLogo = new JLabel(logo);
         labelLogo.setHorizontalAlignment(SwingConstants.CENTER);
         formGbc.gridwidth = 2;
         formGbc.gridx = 0;
         formGbc.insets = new Insets(0, 0, 20, 0);
         formContainer.add(labelLogo, formGbc);
+
         formGbc.gridy++;
-        ImageIcon userIcon = new ImageIcon("src/main/resources/icon/user-regular-24.png");
+        ImageIcon userIcon = new ImageIcon(UserRegisterFrame.class.getResource("/icon/user.png"));
         AddLabelAndField.addLabelAndField("Nome:", userIcon, textFieldNome = new JTextField(), formContainer, formGbc);
         formGbc.gridy++;
-        ImageIcon emailIcon = new ImageIcon("src/main/resources/icon/envelope-regular-24.png");
+        ImageIcon emailIcon = new ImageIcon(UserRegisterFrame.class.getResource("/icon/email.png"));
         AddLabelAndField.addLabelAndField("Email:", emailIcon, textFieldEmail = new JTextField(), formContainer, formGbc);
         formGbc.gridy++;
-        ImageIcon passIcon = new ImageIcon("src/main/resources/icon/lock-open-regular-24.png");
+        ImageIcon passIcon = new ImageIcon(UserRegisterFrame.class.getResource("/icon/password.png"));
         AddLabelAndField.addLabelAndField("Senha:", passIcon, passwordFieldSenha = new JPasswordField(), formContainer, formGbc);
 
         ButtonUtil buttonRegister = new ButtonUtil("Cadastre-se", e -> register());
@@ -72,12 +73,7 @@ public class UserRegisterFrame extends JFrame {
         formGbc.insets = new Insets(40, 0, 0, 0);
         formContainer.add(buttonRegister, formGbc);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(10, 10, 10, 10);
-        backgroundPanel.add(formContainer, gbc);
+        backgroundPanel.add(formContainer);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sideTitlePanel.getSideTitlePanel(), backgroundPanel);
         splitPane.setDividerLocation(screenSize.width / 3);
@@ -103,7 +99,7 @@ public class UserRegisterFrame extends JFrame {
 
             if (isRegistered) {
                 JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                dispose(); // Fecha a tela de cadastro
+                dispose();
                 LoginFrame login = new LoginFrame();
                 login.setVisible(true);
             } else {

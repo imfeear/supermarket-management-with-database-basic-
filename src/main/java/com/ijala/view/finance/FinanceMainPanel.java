@@ -28,8 +28,8 @@ public class FinanceMainPanel extends JPanel {
         setBackground(Color.decode("#2B2B2B"));
         setLayout(new BorderLayout());
 
-        ImageIcon expenseIcon = new ImageIcon("src/main/resources/icon/receipt-solid-72.png");
-        ImageIcon recipeIcon = new ImageIcon("src/main/resources/icon/receipt-solid-72.png");
+        ImageIcon expenseIcon = new ImageIcon(FinanceMainPanel.class.getResource("/icon/receipt.png"));
+        ImageIcon recipeIcon = new ImageIcon(FinanceMainPanel.class.getResource("/icon/receipt.png"));
 
         JPanel mainPanel = new JPanel(new GridLayout(1, 3, 125, 0));
         mainPanel.setPreferredSize(new Dimension(400, 400));
