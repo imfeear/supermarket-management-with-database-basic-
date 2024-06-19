@@ -2,7 +2,7 @@ package com.ijala.view.finance;
 
 import com.ijala.model.finance.Finance;
 import com.ijala.model.finance.FinanceDAO;
-import com.ijala.util.TablePanel;
+import com.ijala.util.panel.TablePanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

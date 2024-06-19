@@ -1,13 +1,14 @@
 package com.ijala.view;
 
-import com.ijala.model.user.UserDAO;
+import com.ijala.controller.UserController;
 import com.ijala.util.AddLabelAndField;
-import com.ijala.util.BackgroundPanel;
+import com.ijala.util.panel.BackgroundPanel;
 import com.ijala.util.ButtonUtil;
-import com.ijala.util.SideTitlePanel;
+import com.ijala.util.panel.SideTitlePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class UserRegisterFrame extends JFrame {
 
@@ -16,6 +17,7 @@ public class UserRegisterFrame extends JFrame {
     private JTextField textFieldNome;
     private JTextField textFieldEmail;
     private JPasswordField passwordFieldSenha;
+    private UserController userController;
 
     public UserRegisterFrame() {
         setTitle("Cadastre-se");
@@ -64,7 +66,12 @@ public class UserRegisterFrame extends JFrame {
         ImageIcon passIcon = new ImageIcon(UserRegisterFrame.class.getResource("/icon/password.png"));
         AddLabelAndField.addLabelAndField("Senha:", passIcon, passwordFieldSenha = new JPasswordField(), formContainer, formGbc);
 
-        ButtonUtil buttonRegister = new ButtonUtil("Cadastre-se", e -> register());
+        ButtonUtil buttonRegister = new ButtonUtil("Cadastre-se", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                register();
+            }
+        });
         buttonRegister.setPreferredSize(new Dimension(300, 50));
 
         formGbc.gridwidth = 2;
@@ -82,9 +89,12 @@ public class UserRegisterFrame extends JFrame {
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
         setVisible(true);
+
+        // Inicialização do UserController
+        userController = new UserController();
     }
 
-    private void register(){
+    private void register() {
         try {
             String name = textFieldNome.getText();
             String email = textFieldEmail.getText().trim();
@@ -94,8 +104,7 @@ public class UserRegisterFrame extends JFrame {
                 throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
             }
 
-            UserDAO userDAO = new UserDAO();
-            boolean isRegistered = userDAO.userRegister(name, email, password);
+            boolean isRegistered = userController.registerUser(name, email, password);
 
             if (isRegistered) {
                 JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -112,6 +121,12 @@ public class UserRegisterFrame extends JFrame {
         }
     }
 
+    /**
+     * Método principal para iniciar a aplicação.
+     * Cria uma instância da UserRegisterFrame (tela de cadastro de usuário) e a exibe.
+     *
+     * @param args Argumentos da linha de comando (não utilizados neste contexto).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(UserRegisterFrame::new);
     }

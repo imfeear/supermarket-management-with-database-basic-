@@ -2,17 +2,14 @@ package com.ijala.view.sell;
 
 import com.ijala.controller.MovementController;
 import com.ijala.model.product.Product;
-import com.ijala.model.product.ProductDAO;
-import com.ijala.model.sell.SellProduct;
-import com.ijala.model.sell.SellProductDAO;
-import com.ijala.util.ButtonPanel;
-import com.ijala.util.form.FormCustomContent;
-import com.ijala.util.form.FormCustomSmallContent;
+import com.ijala.service.ProductService;
+import com.ijala.util.form.FormContent;
+import com.ijala.util.form.FormSmallContent;
+import com.ijala.util.panel.ButtonPanel;
 import com.ijala.view.stock.StockManageFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Timestamp;
 
 public class SellProductFrame extends JFrame {
     private JTextField textFieldName;
@@ -58,15 +55,15 @@ public class SellProductFrame extends JFrame {
         formPanel.setBackground(Color.decode("#2B2B2B"));
         formPanel.add(Box.createVerticalStrut(40));
 
-        formPanel.add(FormCustomContent.create("ID do Produto", productIdField, true, "/icon/key.png"));
+        formPanel.add(FormContent.create("ID do Produto", productIdField, true, "/icon/key.png"));
         formPanel.add(Box.createVerticalStrut(20));
-        formPanel.add(FormCustomContent.create("Nome do Produto", textFieldName, true, "/icon/product.png"));
+        formPanel.add(FormContent.create("Nome do Produto", textFieldName, true, "/icon/product.png"));
 
         JPanel smallContainersPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 60, 0));
         smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
-        smallContainersPanel.add(FormCustomSmallContent.create("Preço", textFieldPrice, true, "/icon/price.png"));
+        smallContainersPanel.add(FormSmallContent.create("Preço", textFieldPrice, true, "/icon/price.png"));
         formPanel.add(Box.createVerticalStrut(20));
-        smallContainersPanel.add(FormCustomSmallContent.create("Quantidade", textFieldQuantity, true, "/icon/quantity.png"));
+        smallContainersPanel.add(FormSmallContent.create("Quantidade", textFieldQuantity, true, "/icon/quantity.png"));
         formPanel.add(smallContainersPanel);
 
         JPanel buttonPanelContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -102,16 +99,21 @@ public class SellProductFrame extends JFrame {
                 return;
             }
 
-            SellProduct sellProduct = new SellProduct(product, quantity, new Timestamp(System.currentTimeMillis()));
-            new SellProductDAO().makeSale(sellProduct);
+            movementController.sell(product.getId(), quantity);
 
-            product.setQuantity(product.getQuantity() - quantity);
-            new ProductDAO().updateQuantity(product);
             JOptionPane.showMessageDialog(null, "Venda realizada com sucesso!\nValor Total: R$ " + String.format("%.2f", totalPrice), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
             this.dispose();
-            StockManageFrame stockManageFrame = new StockManageFrame();
-            stockManageFrame.setVisible(true);
+
+            // Atualiza o StockManageFrame para refletir a nova quantidade no estoque
+            for (Window window : Window.getWindows()) {
+                if (window instanceof StockManageFrame) {
+                    StockManageFrame stockManageFrame = (StockManageFrame) window;
+                    stockManageFrame.loadStock(); // Atualiza os dados do estoque
+                    stockManageFrame.setVisible(true); // Torna o StockManageFrame visível
+                    break;
+                }
+            }
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Digite números válidos para quantidade e preço.", "Aviso", JOptionPane.WARNING_MESSAGE);

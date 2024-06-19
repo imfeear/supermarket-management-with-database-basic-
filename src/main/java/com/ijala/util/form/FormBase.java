@@ -1,12 +1,9 @@
 package com.ijala.util.form;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-public abstract class FormBasePanel {
+public abstract class FormBase {
     protected JTextField textFieldName;
     protected JTextField textFieldSupplier;
     protected JTextField textFieldCategory;
@@ -89,9 +86,9 @@ public abstract class FormBasePanel {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    BufferedImage image = ImageIO.read(getClass().getResource(imagePath));
-                    g.drawImage(image, (getWidth() - 40) / 2, (getHeight() - 40) / 2, 40, 40, null);
-                } catch (IOException e) {
+                    Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource(imagePath));
+                    g.drawImage(image, (getWidth() - 40) / 2, (getHeight() - 40) / 2, 40, 40, this);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

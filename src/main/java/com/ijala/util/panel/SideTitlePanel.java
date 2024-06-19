@@ -1,4 +1,4 @@
-package com.ijala.util;
+package com.ijala.util.panel;
 
 import java.awt.*;
 import javax.swing.*;

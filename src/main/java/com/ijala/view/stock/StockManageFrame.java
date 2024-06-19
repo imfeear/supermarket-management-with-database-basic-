@@ -2,11 +2,12 @@ package com.ijala.view.stock;
 
 import com.ijala.controller.MovementController;
 import com.ijala.model.movement.MovementDAO;
+import com.ijala.model.product.Product;
 import com.ijala.model.product.ProductDAO;
 import com.ijala.model.stock.Stock;
 import com.ijala.model.stock.StockDAO;
 import com.ijala.util.ButtonUtil;
-import com.ijala.util.TablePanel;
+import com.ijala.util.panel.TablePanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,13 +20,15 @@ public class StockManageFrame extends JFrame {
     private TablePanel tablePanel;
     private StockDAO stockDAO;
     private MovementDAO movementDAO;
+    private JTable table;
+    private DefaultTableModel tableModel;
+    private ProductDAO productDAO;
 
     public StockManageFrame() {
         super("Estoque");
-        this.movementController = new MovementController();
-        ProductDAO productDAO = new ProductDAO(); // Crie uma instância de ProductDAO
-        stockDAO = new StockDAO();
-        movementDAO = new MovementDAO(productDAO); // Passe productDAO como argumento para MovementDAO
+        this.productDAO = new ProductDAO(); // Pass this instance to ProductDAO
+        this.stockDAO = new StockDAO(productDAO); // Pass productDAO to StockDAO
+        this.movementDAO = new MovementDAO(productDAO);
         initComponents();
         loadStock();
     }
@@ -90,22 +93,35 @@ public class StockManageFrame extends JFrame {
         getContentPane().add(mainPanel, BorderLayout.CENTER);
     }
 
-    private void loadStock() {
+    public void addProductToTable(Product product) {
+        DefaultTableModel model = tablePanel.getModel();
+        model.addRow(new Object[]{
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getQuantity(),
+                product.getPrice(),
+                product.getCategoryId(),
+                product.getSupplierId()
+        });
+    }
+
+    public void loadStock() {
         DefaultTableModel model = tablePanel.getModel();
         model.setRowCount(0);
         List<Stock> stocks = stockDAO.listProductInStock();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         for (Stock stock : stocks) {
-            String entradaFormatada = dateFormat.format(stock.getEntry());
-            String saidaFormatada = stock.getExit() != null ? dateFormat.format(stock.getExit()) : "Sem saída";
+            String entryFormated = stock.getEntry() != null ? dateFormat.format(stock.getEntry()) : "Sem entrada";
+            String exitFormated = stock.getExit() != null ? dateFormat.format(stock.getExit()) : "Sem saída";
             model.addRow(new Object[]{
-                    stock.getId(),
-                    stock.getProduct().getId(),
-                    stock.getProduct().getName(),
-                    stock.getInitialStock(),
-                    entradaFormatada,
-                    saidaFormatada,
-                    stock.getFinalStock()
+                    stock.getId(), // ID do estoque
+                    stock.getProduct().getId(), // ID do produto
+                    stock.getProduct().getName(), // Nome do produto
+                    stock.getInitialStock(), // Estoque inicial
+                    entryFormated, // Data de entrada formatada
+                    exitFormated, // Data de saída formatada
+                    stock.getFinalStock() // Estoque final
             });
         }
     }
@@ -116,8 +132,8 @@ public class StockManageFrame extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            StockManageFrame stockManage = new StockManageFrame();
-            stockManage.setVisible(true);
+            StockManageFrame stockManageFrame = new StockManageFrame();
+            stockManageFrame.setVisible(true);
         });
     }
 }

@@ -1,10 +1,12 @@
 package com.ijala.view.product;
 
-import com.ijala.util.BackgroundPanel;
-import com.ijala.util.SideTitlePanel;
-//import com.ijala.util.form.FormRegisterCategory;
+import com.ijala.service.ProductService;
+import com.ijala.util.*;
 import com.ijala.util.form.FormRegisterProduct;
-//import com.ijala.util.form.FormRegisterSupplier;
+import com.ijala.util.panel.BackgroundPanel;
+import com.ijala.util.panel.CategoryTablePanel;
+import com.ijala.util.panel.SideTitlePanel;
+import com.ijala.util.panel.SupplierTablePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +14,7 @@ import java.awt.*;
 public class RegisterProductFrame extends JFrame {
 
     private JPanel formContainer;
+    private ProductService productService;
 
     public RegisterProductFrame() {
         setTitle("Cadastro de Produto");
@@ -23,27 +26,29 @@ public class RegisterProductFrame extends JFrame {
         // Configura o SideTitlePanel
         SideTitlePanel sideTitlePanel = new SideTitlePanel(screenSize);
         sideTitlePanel.setTitulo("Cadastro de\nProduto");
-//
-//        // Configura o painel de botões
-//        JPanel buttonPanel = new JPanel();
-//        buttonPanel.setLayout(new GridLayout(2, 1, 10, 10)); // Define 2 linhas e 1 coluna com um gap de 10 pixels
-//
-//        JButton registerSupplierButton = new JButton("Cadastrar Fornecedor");
-//        registerSupplierButton.addActionListener(e -> openRegisterSupplierForm());
-//        buttonPanel.add(registerSupplierButton);
-//
-//        JButton registerCategoryButton = new JButton("Cadastrar Categoria");
-//        registerCategoryButton.addActionListener(e -> openRegisterCategoryForm());
-//        buttonPanel.add(registerCategoryButton);
 
-//        // Adiciona o painel de botões ao sideTitlePanel
-//        sideTitlePanel.getSideTitlePanel().setLayout(new GridBagLayout());
-//        GridBagConstraints buttonPanelGbc = new GridBagConstraints();
-//        buttonPanelGbc.gridx = 0;
-//        buttonPanelGbc.gridy = 1; // Posiciona abaixo do título
-//        buttonPanelGbc.insets = new Insets(20, 0, 0, 0); // Adiciona algum espaço acima dos botões
-//        buttonPanelGbc.anchor = GridBagConstraints.NORTH;
-//        sideTitlePanel.getSideTitlePanel().add(buttonPanel, buttonPanelGbc);
+        // Configura o painel de botões
+        JPanel consultPanel = new JPanel();
+        consultPanel.setBackground(new Color(46, 86, 190));
+        consultPanel.setLayout(new GridLayout(2, 1, 10, 20));
+
+        ButtonUtil registerSupplierButton = new ButtonUtil("Consultar Fornecedores", e -> openSupplierTable());
+        consultPanel.add(registerSupplierButton);
+
+        ButtonUtil registerCategoryButton = new ButtonUtil("Consultar Categorias", e -> openCategoryTable());
+        consultPanel.add(registerCategoryButton);
+
+        customButton(registerCategoryButton);
+        customButton(registerSupplierButton);
+
+        // Adiciona o painel de botões ao sideTitlePanel
+        sideTitlePanel.getSideTitlePanel().setLayout(new GridBagLayout());
+        GridBagConstraints buttonPanelGbc = new GridBagConstraints();
+        buttonPanelGbc.gridx = 0;
+        buttonPanelGbc.gridy = 1;
+        buttonPanelGbc.insets = new Insets(80, 0, 0, 0);
+        buttonPanelGbc.anchor = GridBagConstraints.NORTH;
+        sideTitlePanel.getSideTitlePanel().add(consultPanel, buttonPanelGbc);
 
         // Configura o painel de fundo
         ImageIcon imageBackground = new ImageIcon(RegisterProductFrame.class.getResource("/image/background.png"));
@@ -64,7 +69,7 @@ public class RegisterProductFrame extends JFrame {
         formContainerGbc.gridy = 0;
         formContainerGbc.anchor = GridBagConstraints.CENTER;
 
-        FormRegisterProduct formCadastroProduto = new FormRegisterProduct(this);
+        FormRegisterProduct formCadastroProduto = new FormRegisterProduct(this, productService);
         JPanel formPanel = formCadastroProduto.getFormPanel();
         formContainer.add(formPanel, formContainerGbc);
 
@@ -82,15 +87,30 @@ public class RegisterProductFrame extends JFrame {
         setVisible(true);
     }
 
-//    private void openRegisterSupplierForm() {
-//        FormRegisterSupplier registerSupplierForm = new FormRegisterSupplier();
-//        registerSupplierForm.setVisible(true);
-//    }
-//
-//    private void openRegisterCategoryForm() {
-//        FormRegisterCategory registerCategoryForm = new FormRegisterCategory();
-//        registerCategoryForm.setVisible(true);
-//    }
+    private void customButton(ButtonUtil button) {
+        button.setBackground(Color.decode("#2B2B2B"));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setPreferredSize(new Dimension(350,80));
+    }
+
+    private void openSupplierTable() {
+        JFrame supplierFrame = new JFrame("Tabela de Fornecedores");
+        SupplierTablePanel supplierTablePanel = new SupplierTablePanel();
+        supplierFrame.add(supplierTablePanel);
+        supplierFrame.setSize(800, 600);
+        supplierFrame.setLocationRelativeTo(null);
+        supplierFrame.setVisible(true);
+    }
+
+    private void openCategoryTable() {
+        JFrame categoryFrame = new JFrame("Tabela de Categorias");
+        CategoryTablePanel categoryTablePanel = new CategoryTablePanel();
+        categoryFrame.add(categoryTablePanel);
+        categoryFrame.setSize(800, 600);
+        categoryFrame.setLocationRelativeTo(null);
+        categoryFrame.setVisible(true);
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

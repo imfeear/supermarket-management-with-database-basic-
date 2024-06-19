@@ -9,9 +9,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe responsável pelas operações de acesso ao banco de dados para transações financeiras.
+ */
 public class FinanceDAO {
     private Connection connection;
 
+    /**
+     * Construtor que inicializa a conexão com o banco de dados.
+     */
     public FinanceDAO() {
         try {
             this.connection = DatabaseConnection.getSupermercadoConnection();
@@ -21,6 +27,11 @@ public class FinanceDAO {
         }
     }
 
+    /**
+     * Adiciona uma receita ao banco de dados.
+     *
+     * @param finance Objeto Finance contendo os dados da receita.
+     */
     public void addRecipe(Finance finance) {
         String sql = "INSERT INTO receitas (data, valor) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -34,6 +45,11 @@ public class FinanceDAO {
         }
     }
 
+    /**
+     * Adiciona uma despesa ao banco de dados.
+     *
+     * @param finance Objeto Finance contendo os dados da despesa.
+     */
     public void addExpense(Finance finance) {
         String sql = "INSERT INTO despesas (categoria, valor) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -47,6 +63,11 @@ public class FinanceDAO {
         }
     }
 
+    /**
+     * Busca todas as receitas e despesas no banco de dados.
+     *
+     * @return Lista de objetos Finance contendo as receitas e despesas.
+     */
     public List<Finance> searchForEntries() {
         List<Finance> finances = new ArrayList<>();
         String sql = "SELECT 'Receita' as tipo, '' as categoria, data, valor FROM Receitas UNION ALL SELECT 'Despesa', categoria, NULL as data, valor FROM Despesas";
@@ -66,6 +87,12 @@ public class FinanceDAO {
         return finances;
     }
 
+    /**
+     * Exclui uma receita ou despesa do banco de dados.
+     *
+     * @param finance Objeto Finance contendo os dados da transação a ser excluída.
+     * @return Número de linhas afetadas pela exclusão.
+     */
     public int deleteEntries(Finance finance) {
         try {
             String sql;
@@ -86,15 +113,6 @@ public class FinanceDAO {
             System.out.println("Erro ao excluir entrada");
             e.printStackTrace();
             return 0;
-        }
-    }
-
-    public void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed())
-                connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

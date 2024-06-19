@@ -1,6 +1,7 @@
 package com.ijala.model.product;
 
 import com.ijala.database.DatabaseConnection;
+import com.ijala.model.stock.StockDAO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,19 +19,33 @@ public class ProductDAO {
         }
     }
 
-    public void addProduct(Product product) {
+    public void insertProduct(Product product) throws SQLException {
         String sql = "INSERT INTO produtos (nome, descricao, quantidade, preco, categoria_id, fornecedor_id) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, product.getName());
             stmt.setString(2, product.getDescription());
             stmt.setInt(3, product.getQuantity());
             stmt.setDouble(4, product.getPrice());
             stmt.setInt(5, product.getCategoryId());
             stmt.setInt(6, product.getSupplierId());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Erro ao adicionar produto: " + e.getMessage());
-            e.printStackTrace();
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("A inserção do produto falhou, nenhum registro foi alterado.");
+            }
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int productId = generatedKeys.getInt(1);
+                    product.setId(productId);
+
+                    // Inicializa o estoque com a quantidade do produto cadastrada
+                    StockDAO stockDAO = new StockDAO(new ProductDAO());
+                    stockDAO.initializeStock(productId, product.getQuantity());
+                } else {
+                    throw new SQLException("Falha ao obter o ID gerado do produto.");
+                }
+            }
         }
     }
 

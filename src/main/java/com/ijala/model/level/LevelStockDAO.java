@@ -6,9 +6,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe de acesso a dados (DAO) para a entidade LevelStock.
+ */
 public class LevelStockDAO {
     private Connection connection;
 
+    /**
+     * Construtor para inicializar a conexão com o banco de dados.
+     */
     public LevelStockDAO() {
         try {
             this.connection = DatabaseConnection.getSupermercadoConnection();
@@ -18,6 +24,11 @@ public class LevelStockDAO {
         }
     }
 
+    /**
+     * Recupera uma lista de LevelStock do banco de dados.
+     *
+     * @return Uma lista de objetos LevelStock.
+     */
     public List<LevelStock> getLevelStocks() {
         List<LevelStock> levelStocks = new ArrayList<>();
         String sql = "SELECT p.id AS product_id, p.nome AS product_name, e.entrada AS entry_date, e.saida AS exit_date, e.estoque_final AS quantity, p.preco AS unit_price " +
@@ -51,5 +62,24 @@ public class LevelStockDAO {
             e.printStackTrace();
         }
         return levelStocks;
+    }
+
+    /**
+     * Atualiza o nível de estoque de um produto.
+     *
+     * @param productId      ID do produto.
+     * @param quantityChange Mudança na quantidade do produto.
+     */
+    public void updateStockLevel(int productId, int quantityChange) {
+        String sql = "UPDATE estoque SET quantidade = quantidade + ? WHERE produto_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, quantityChange);
+            stmt.setInt(2, productId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar nível de estoque: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

@@ -1,9 +1,9 @@
 package com.ijala.view;
 
+import com.ijala.controller.UserController;
 import com.ijala.model.user.User;
-import com.ijala.model.user.UserDAO;
-import com.ijala.util.BackgroundPanel;
 import com.ijala.util.AddLabelAndField;
+import com.ijala.util.panel.BackgroundPanel;
 import com.ijala.util.ButtonUtil;
 
 import javax.swing.*;
@@ -12,10 +12,9 @@ import java.awt.event.ActionEvent;
 
 public class LoginFrame extends JFrame {
 
-    private JPanel formContainer;
-    private GridBagConstraints formGbc;
     private JTextField textFieldEmail;
     private JPasswordField passwordFieldSenha;
+    private UserController userController;
 
     public LoginFrame() {
         setTitle("Login");
@@ -25,7 +24,7 @@ public class LoginFrame extends JFrame {
         BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(LoginFrame.class.getResource("/image/background.png")).getImage());
         backgroundPanel.setLayout(new GridBagLayout());
 
-        formContainer = new JPanel();
+        JPanel formContainer = new JPanel();
         formContainer.setBackground(new Color(43, 43, 43));
         formContainer.setPreferredSize(new Dimension(500, 600));
         formContainer.setLayout(new GridBagLayout());
@@ -33,7 +32,8 @@ public class LoginFrame extends JFrame {
                 BorderFactory.createLineBorder(Color.WHITE),
                 BorderFactory.createEmptyBorder(20, 10, 20, 10)
         ));
-        formGbc = new GridBagConstraints();
+
+        GridBagConstraints formGbc = new GridBagConstraints();
         formGbc.insets = new Insets(5, 5, 5, 5);
         formGbc.fill = GridBagConstraints.HORIZONTAL;
         formGbc.gridx = 0;
@@ -68,29 +68,7 @@ public class LoginFrame extends JFrame {
         ButtonUtil buttonUserLogin = new ButtonUtil("Login", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    String email = textFieldEmail.getText().trim();
-                    String senha = new String(passwordFieldSenha.getPassword());
-
-                    if (email.isEmpty() || senha.isEmpty()) {
-                        throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
-                    }
-
-                    UserDAO userDAO = new UserDAO();
-                    User user = userDAO.userLogin(email, senha);
-
-                    if (user != null) {
-                        JOptionPane.showMessageDialog(null, "Login bem-sucedido. Bem-vindo(a) " + user.getNome() + "!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                        dispose(); // Fecha a tela de login
-                        MenuFrame menu = new MenuFrame();
-                        menu.setVisible(true);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Email ou senha incorretos.", "Aviso", JOptionPane.WARNING_MESSAGE);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Erro ao logar usuário: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-                }
+                loginUser();
             }
         });
 
@@ -125,8 +103,42 @@ public class LoginFrame extends JFrame {
 
         add(backgroundPanel);
         setVisible(true);
+
+        // Inicialização do UserController
+        userController = new UserController();
     }
 
+    private void loginUser() {
+        try {
+            String email = textFieldEmail.getText().trim();
+            String senha = new String(passwordFieldSenha.getPassword());
+
+            if (email.isEmpty() || senha.isEmpty()) {
+                throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
+            }
+
+            User user = userController.loginUser(email, senha);
+
+            if (user != null) {
+                JOptionPane.showMessageDialog(null, "Login bem-sucedido. Bem-vindo(a) " + user.getNome() + "!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                dispose(); // Fecha a tela de login
+                MenuFrame menu = new MenuFrame();
+                menu.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Email ou senha incorretos.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao logar usuário: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Método principal para iniciar a aplicação.
+     * Cria uma instância da LoginFrame (tela de login) e a exibe.
+     *
+     * @param args Argumentos da linha de comando (não utilizados neste contexto).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame();

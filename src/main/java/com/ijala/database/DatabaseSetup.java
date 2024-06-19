@@ -9,8 +9,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Classe responsável por configurar o banco de dados do supermercado utilizando um arquivo SQL.
+ * A classe lê o arquivo SQL, executa as instruções contidas nele e realiza o commit das alterações.
+ */
 public class DatabaseSetup {
 
+    /**
+     * Método principal para configurar o banco de dados do supermercado.
+     * Carrega um arquivo SQL, executa suas instruções e realiza o commit das alterações no banco de dados.
+     *
+     * @param args Argumentos da linha de comando (não utilizados neste contexto).
+     */
     public static void main(String[] args) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

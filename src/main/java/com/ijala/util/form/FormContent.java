@@ -6,12 +6,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class FormCustomSmallContent {
+public class FormContent {
 
     public static JPanel create(String labelText, JTextField textField, boolean isLargeField, String imagePath) {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(220, 80));
-        panel.setMaximumSize(new Dimension(220, 80));
+        panel.setPreferredSize(new Dimension(500, 80));
+        panel.setMaximumSize(new Dimension(500, 80));
         panel.setLayout(null);
         panel.setBackground(Color.decode("#2B2B2B"));
 
@@ -21,15 +21,15 @@ public class FormCustomSmallContent {
 
         JPanel formContent = new JPanel();
         formContent.setLayout(null);
-        formContent.setBounds(80, 0, 140, 80);
+        formContent.setBounds(80, 0, isLargeField ? 420 : 140, 80);
         formContent.setBackground(Color.decode("#2B2B2B"));
 
         JLabel label = new JLabel(labelText);
-        label.setBounds(0, 0, 120, 40);
+        label.setBounds(0, 0, isLargeField ? 400 : 120, 40);
         label.setForeground(Color.WHITE);
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        textField.setBounds(0, 30, 120, 40);
+        textField.setBounds(0, 30, isLargeField ? 400 : 120, 40);
         textField.setBackground(Color.WHITE);
 
         formContent.add(label);

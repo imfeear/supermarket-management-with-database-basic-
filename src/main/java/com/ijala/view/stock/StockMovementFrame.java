@@ -1,15 +1,11 @@
 package com.ijala.view.stock;
 
-import com.ijala.controller.MovementController;
 import com.ijala.model.movement.Movement;
 import com.ijala.model.movement.MovementDAO;
 import com.ijala.model.product.Product;
 import com.ijala.model.product.ProductDAO;
 import com.ijala.util.ButtonUtil;
-import com.ijala.util.TablePanel;
-import com.ijala.view.MenuFrame;
-import com.ijala.view.buy.SearchIdForBuy;
-import com.ijala.view.sell.SellProductFrame;
+import com.ijala.util.panel.TablePanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -96,11 +92,12 @@ public class StockMovementFrame extends JFrame {
         List<Movement> movements = movementDAO.getAllMovements();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for (Movement movement : movements) {
+            String dateFormated = dateFormat.format(movement.getDate());
             Object[] row = new Object[4];
             row[0] = movement.getProduct().getName();
             row[1] = movement.getType();
             try {
-                row[2] = dateFormat.format(movement.getDate().getTime());
+                row[2] = dateFormated;
             } catch (NullPointerException e) {
                 row[2] = null;
             }

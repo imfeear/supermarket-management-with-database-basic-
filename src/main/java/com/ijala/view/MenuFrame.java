@@ -3,7 +3,7 @@ package com.ijala.view;
 import com.ijala.view.stock.StockManageFrame;
 import com.ijala.view.product.TableProductsFrame;
 import com.ijala.view.finance.FinanceManageFrame;
-import com.ijala.util.BackgroundPanel;
+import com.ijala.util.panel.BackgroundPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +11,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
+/**
+ * Classe que representa o menu principal do sistema de gerenciamento de supermercado.
+ * Permite acesso às funcionalidades principais do sistema, como gestão de estoque,
+ * listagem de produtos cadastrados e gestão financeira.
+ */
 public class MenuFrame extends JFrame {
 
+    /**
+     * Construtor da classe MenuFrame que configura e exibe o menu principal do sistema.
+     * Este menu oferece botões para acessar as funcionalidades de gestão de estoque,
+     * listagem de produtos cadastrados e gestão financeira.
+     */
     public MenuFrame() {
         setTitle("Menu");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -75,6 +85,14 @@ public class MenuFrame extends JFrame {
         add(backgroundPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Método privado para criar um JButton personalizado com ícone e texto.
+     * Utiliza um ícone especificado por um caminho e um texto para exibir no botão.
+     *
+     * @param text     Texto a ser exibido no botão.
+     * @param iconPath Caminho para o ícone a ser exibido no botão.
+     * @return JButton configurado com o ícone e texto especificados.
+     */
     private JButton createButton(String text, String iconPath) {
         JButton button = new JButton();
 
@@ -104,6 +122,12 @@ public class MenuFrame extends JFrame {
         return button;
     }
 
+    /**
+     * Método principal para iniciar a aplicação.
+     * Cria uma instância da MenuFrame (menu principal) e a exibe.
+     *
+     * @param args Argumentos da linha de comando (não utilizados neste contexto).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             MenuFrame menuFrame = new MenuFrame();

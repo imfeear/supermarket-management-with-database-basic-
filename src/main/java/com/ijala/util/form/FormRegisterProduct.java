@@ -2,19 +2,20 @@ package com.ijala.util.form;
 
 import com.ijala.model.product.Product;
 import com.ijala.model.product.ProductDAO;
+import com.ijala.service.ProductService;
 import com.ijala.util.ButtonUtil;
 import com.ijala.view.product.TableProductsFrame;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class FormRegisterProduct extends FormBasePanel {
-
+public class FormRegisterProduct extends FormBase {
     private JFrame mainFrame;
+    private ProductService productService;
 
-    // Construtor para receber o JFrame
-    public FormRegisterProduct(JFrame frame) {
+    public FormRegisterProduct(JFrame frame, ProductService productService) {
         this.mainFrame = frame;
+        this.productService = productService;
     }
 
     public JPanel getFormPanel() {
@@ -72,10 +73,11 @@ public class FormRegisterProduct extends FormBasePanel {
             Product product = new Product(name, description, quantity, price, Integer.parseInt(category), Integer.parseInt(supplier));
 
             ProductDAO productDAO = new ProductDAO();
-            productDAO.addProduct(product);
+            productDAO.insertProduct(product);
+//            productService.addStock(product);
+
             JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
-            // Troca de tela
             mainFrame.dispose();
             TableProductsFrame tableProductsFrame = new TableProductsFrame();
             tableProductsFrame.setVisible(true);

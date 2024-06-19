@@ -2,18 +2,15 @@ package com.ijala.view.buy;
 
 import com.ijala.controller.MovementController;
 import com.ijala.model.product.Product;
-import com.ijala.model.product.ProductDAO;
-import com.ijala.model.stock.Stock;
-import com.ijala.model.stock.StockDAO;
-import com.ijala.util.ButtonPanel;
-import com.ijala.util.form.FormCustomContent;
-import com.ijala.util.form.FormCustomSmallContent;
+import com.ijala.service.ProductService;
+import com.ijala.util.form.FormContent;
+import com.ijala.util.form.FormSmallContent;
+import com.ijala.util.panel.ButtonPanel;
 import com.ijala.util.ButtonUtil;
 import com.ijala.view.stock.StockManageFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Timestamp;
 
 public class BuyProductFrame extends JFrame {
     private JTextField textFieldName;
@@ -22,10 +19,13 @@ public class BuyProductFrame extends JFrame {
     private JTextField textFieldQuantity;
     private JLabel totalValueLabel;
     private int productId;
-    private MovementController movementController = new MovementController();
+    private ProductService productService;
+    private MovementController movementController;
 
     public BuyProductFrame() {
         initializeUI();
+        productService = new ProductService();
+        movementController = new MovementController();
     }
 
     private void initializeUI() {
@@ -56,14 +56,14 @@ public class BuyProductFrame extends JFrame {
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBackground(Color.decode("#2B2B2B"));
         formPanel.add(Box.createVerticalStrut(40));
-        formPanel.add(FormCustomContent.create("Nome do Produto", textFieldName, true,"/icon/product.png"));
+        formPanel.add(FormContent.create("Nome do Produto", textFieldName, true, "/icon/product.png"));
         formPanel.add(Box.createVerticalStrut(20));
-        formPanel.add(FormCustomContent.create("ID Fornecedor", textFieldSupplier, true,"/icon/supplier.png"));
+        formPanel.add(FormContent.create("ID Fornecedor", textFieldSupplier, true, "/icon/supplier.png"));
 
         JPanel smallContainersPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 60, 0));
         smallContainersPanel.setBackground(Color.decode("#2B2B2B"));
-        smallContainersPanel.add(FormCustomSmallContent.create("Preço", textFieldPrice, true,"/icon/price.png"));
-        smallContainersPanel.add(FormCustomSmallContent.create("Quantidade", textFieldQuantity, true,"/icon/quantity.png"));
+        smallContainersPanel.add(FormSmallContent.create("Preço", textFieldPrice, true, "/icon/price.png"));
+        smallContainersPanel.add(FormSmallContent.create("Quantidade", textFieldQuantity, true, "/icon/quantity.png"));
         formPanel.add(Box.createVerticalStrut(20));
         formPanel.add(smallContainersPanel);
 
@@ -72,9 +72,9 @@ public class BuyProductFrame extends JFrame {
         totalValueLabel.setFont(new Font("Arial", Font.BOLD, 18));
         totalValueLabel.setForeground(Color.WHITE);
 
-        ButtonUtil calcularButton = new ButtonUtil("Valor Total", e -> calcularValorTotal());
-        calcularButton.setBackground(Color.BLACK);
-        formPanel.add(calcularButton);
+        ButtonUtil calculateButton = new ButtonUtil("Valor Total", e -> calculateTotalValue());
+        calculateButton.setBackground(Color.BLACK);
+        formPanel.add(calculateButton);
         formPanel.add(Box.createVerticalStrut(10));
         formPanel.add(totalValueLabel);
         formPanel.add(Box.createVerticalStrut(20));
@@ -90,16 +90,16 @@ public class BuyProductFrame extends JFrame {
         return formPanel;
     }
 
-    private void calcularValorTotal() {
+    private void calculateTotalValue() {
         try {
             if (textFieldPrice.getText().isEmpty() || textFieldQuantity.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Por favor, preencha os campos. Preço e quantidade.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            double preco = Double.parseDouble(textFieldPrice.getText());
-            int quantidade = Integer.parseInt(textFieldQuantity.getText());
-            double valorTotal = quantidade * preco;
-            totalValueLabel.setText("Valor Total: R$ " + String.format("%.2f", valorTotal));
+            double price = Double.parseDouble(textFieldPrice.getText());
+            int quantity = Integer.parseInt(textFieldQuantity.getText());
+            double totalValue = quantity * price;
+            totalValueLabel.setText("Valor Total: R$ " + String.format("%.2f", totalValue));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Por favor, insira valores válidos para preço e quantidade.", "Aviso", JOptionPane.ERROR_MESSAGE);
         }
@@ -115,11 +115,8 @@ public class BuyProductFrame extends JFrame {
             int quantidade = Integer.parseInt(textFieldQuantity.getText());
             movementController.buy(productId, quantidade);
 
-            Product product = new ProductDAO().searchProductById(productId);
+            Product product = productService.searchProductById(productId);
             if (product != null) {
-                Stock stock = new Stock(product, quantidade, new Timestamp(System.currentTimeMillis()), null, quantidade);
-                new StockDAO().addInStock(stock);
-
                 JOptionPane.showMessageDialog(null, "Compra realizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 // Troca de Tela
                 this.dispose();
@@ -129,9 +126,9 @@ public class BuyProductFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, "Produto não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Digite um número válido para quantidade.","Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Digite um número válido para quantidade.", "Aviso", JOptionPane.WARNING_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao realizar compra: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 

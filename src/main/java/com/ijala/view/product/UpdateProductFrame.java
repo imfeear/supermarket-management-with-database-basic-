@@ -1,98 +1,59 @@
 package com.ijala.view.product;
 
-import com.ijala.model.product.ProductDAO;
-import com.ijala.util.ButtonUtil;
-import com.ijala.util.form.FormUpdate;
+import com.ijala.controller.ProductController;
 import com.ijala.model.product.Product;
+import com.ijala.service.ProductService;
+import com.ijala.util.form.FormUpdate;
+import com.ijala.util.SearchIdBase;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class UpdateProductFrame extends JFrame {
-    private JTextField idField;
+public class UpdateProductFrame extends SearchIdBase {
     private JPanel mainPanel;
+    private ProductController productController;
 
-    public UpdateProductFrame() {
-        super("Atualizar produto");
+    public UpdateProductFrame(ProductService productService) {
+        super("Atualizar produto", productService);
+        this.productController = new ProductController(productService);
         initComponents();
     }
 
-    private void initComponents() {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(500, 300); // Definir o tamanho inicial da janela
-        setLocationRelativeTo(null);
-        setResizable(false);
-        getContentPane().setBackground(Color.decode("#2B2B2B"));
-
+    @Override
+    public void initComponents() {
+        super.initComponents();
         mainPanel = new JPanel(new CardLayout());
         mainPanel.setBackground(Color.decode("#2B2B2B"));
-
-        JPanel searchPanel = createSearchPanel();
-        mainPanel.add(searchPanel, "searchPanel");
-
+        mainPanel.add(createSearchPanel(), "searchPanel");
         add(mainPanel);
     }
 
-    private JPanel createSearchPanel() {
-        JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.Y_AXIS));
-        searchPanel.setBackground(Color.decode("#2B2B2B"));
-
-        JLabel label = new JLabel("Insira o ID do Produto:");
-        label.setForeground(Color.WHITE);
-        label.setFont(new Font("Arial", Font.BOLD, 15));
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        idField = new JTextField();
-        idField.setMaximumSize(new Dimension(200, 40));
-        idField.setAlignmentX(Component.CENTER_ALIGNMENT);
-        idField.add(Box.createVerticalStrut(20));
-
-        ButtonUtil searchButton = new ButtonUtil("Buscar", e -> update());
-
-        searchPanel.add(Box.createVerticalStrut(50));
-        searchPanel.add(label);
-        searchPanel.add(Box.createVerticalStrut(10));
-        searchPanel.add(idField);
-        searchPanel.add(Box.createVerticalStrut(40));
-        searchPanel.add(searchButton);
-
-        return searchPanel;
+    @Override
+    protected void handleProductFound(Product product) {
+        SwingUtilities.invokeLater(() -> {
+            showFormUpdate(product);
+        });
     }
 
-    private void showFormUpdate(Product produto) {
-        FormUpdate formUpdate = new FormUpdate(produto, this);
+    private void showFormUpdate(Product product) {
+        FormUpdate formUpdate = new FormUpdate(product, productController, this);
         JPanel formPanel = formUpdate.getFormPanel();
 
-        // Remover o painel de busca antes de adicionar o formulário de atualização
-        mainPanel.add(formPanel, "formPanel");
-
+        // Ajustar o tamanho da janela para o formulário de atualização (600x700)
         setSize(600, 700);
         setLocationRelativeTo(null);
 
+        // Adicionar o formulário ao painel principal
+        mainPanel.add(formPanel, "formPanel");
+        // Atualizar o layout para mostrar o formulário de atualização
         CardLayout layout = (CardLayout) mainPanel.getLayout();
         layout.show(mainPanel, "formPanel");
     }
 
-    private void update(){
-        String idText = idField.getText();
-        try {
-            int id = Integer.parseInt(idText);
-            ProductDAO productDAO = new ProductDAO();
-            Product product = productDAO.searchProductById(id);
-            if (product != null) {
-                showFormUpdate(product);
-            } else {
-                JOptionPane.showMessageDialog(this, "Produto não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "ID inválido. Por favor, insira um número inteiro.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     public static void main(String[] args) {
+        ProductService productService = new ProductService(); // ou qualquer outra forma de obter o ProductService
         SwingUtilities.invokeLater(() -> {
-            UpdateProductFrame updateProductFrame = new UpdateProductFrame();
+            UpdateProductFrame updateProductFrame = new UpdateProductFrame(productService);
             updateProductFrame.setVisible(true);
         });
     }

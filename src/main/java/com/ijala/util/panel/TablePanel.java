@@ -1,4 +1,4 @@
-package com.ijala.util;
+package com.ijala.util.panel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -81,5 +81,14 @@ public class TablePanel {
 
     public DefaultTableModel getModel() {
         return model;
+    }
+
+    public void removeSelectedRow() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            model.removeRow(selectedRow);
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma linha para remover.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

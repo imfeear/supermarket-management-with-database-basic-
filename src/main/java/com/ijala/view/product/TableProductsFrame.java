@@ -1,10 +1,10 @@
 package com.ijala.view.product;
 
+import com.ijala.controller.ProductController;
 import com.ijala.model.product.Product;
-import com.ijala.model.product.ProductDAO;
 import com.ijala.service.ProductService;
 import com.ijala.util.ButtonUtil;
-import com.ijala.util.TablePanel;
+import com.ijala.util.panel.TablePanel;
 import com.ijala.view.buy.SearchIdForBuy;
 import com.ijala.view.sell.SearchIdForSell;
 
@@ -15,13 +15,20 @@ import java.util.List;
 
 public class TableProductsFrame extends JFrame {
     private TablePanel tablePanel;
-    private ProductDAO productDAO;
+    private ProductController productController;
+    private ProductService productService;
 
     public TableProductsFrame() {
         super("Produtos");
-        productDAO = new ProductDAO();
+        productService = new ProductService(); // Instancia ProductService
+        productController = new ProductController(productService); // Passa ProductService para ProductController
         initComponents();
         loadProducts();
+    }
+
+    // Método para retornar o ProductService
+    public ProductService getService() {
+        return productService;
     }
 
     private void initComponents() {
@@ -29,6 +36,7 @@ public class TableProductsFrame extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
+
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(new Color(43, 43, 43));
         topPanel.setBorder(BorderFactory.createEmptyBorder(50, 60, 50, 40));
@@ -40,10 +48,13 @@ public class TableProductsFrame extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 0));
         buttonPanel.setBackground(new Color(43, 43, 43));
 
-        ButtonUtil buyButton = new ButtonUtil("Comprar", e -> new SearchIdForBuy().setVisible(true));
+        ButtonUtil buyButton = new ButtonUtil("Comprar", e -> new SearchIdForBuy(new ProductService()).setVisible(true));
         ButtonUtil sellButton = new ButtonUtil("Vender", e -> new SearchIdForSell(new ProductService()).setVisible(true));
         ButtonUtil registerButton = new ButtonUtil("Cadastrar", e -> new RegisterProductFrame().setVisible(true));
-        ButtonUtil updateButton = new ButtonUtil("Atualizar", e -> new UpdateProductFrame().setVisible(true));
+        ButtonUtil updateButton = new ButtonUtil("Atualizar", e -> {
+            ProductService productService = getService();
+            new UpdateProductFrame(productService).setVisible(true);
+        });
         ButtonUtil deleteButton = new ButtonUtil("Excluir", e -> new DeleteProductFrame().setVisible(true));
         deleteButton.setBackground(Color.RED);
 
@@ -84,7 +95,7 @@ public class TableProductsFrame extends JFrame {
     private void loadProducts() {
         DefaultTableModel model = tablePanel.getModel();
         model.setRowCount(0); // Limpa os dados da tabela
-        List<Product> products = productDAO.listProducts();
+        List<Product> products = productController.listProducts();
         for (Product product : products) {
             model.addRow(new Object[]{
                     product.getId(),

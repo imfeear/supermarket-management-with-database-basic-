@@ -1,48 +1,62 @@
 package com.ijala.controller;
 
 import com.ijala.model.product.Product;
-import com.ijala.model.product.ProductDAO;
+import com.ijala.service.ProductService;
 
+import java.sql.Date;
 import java.util.List;
 
 public class ProductController {
-    private ProductDAO productDAO;
+    private ProductService productService;
 
-    public ProductController() {
-        this.productDAO = new ProductDAO();
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
-    public void addProduct(Product product) {
+    public void addStock(Product product, int quantity, Date timestamp) {
         try {
-            productDAO.addProduct(product);
+            productService.addStock(product, quantity, timestamp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Aqui você pode tratar o erro ou lançar uma exceção adequada
+        }
+    }
+
+//    public void addProduct(Product product) {
+//        try {
+//            productService.addProduct(product);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public List<Product> listProducts() {
+        return productService.listProducts();
+    }
+
+    public void updateProduct(Product product) {
+        try {
+            productService.updateProduct(product);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public List<Product> listProducts() {
-        return productDAO.listProducts();
+    public void sellStock(int productId, int quantity) throws Exception {
+        productService.sellStock(productId, quantity);
     }
 
-    public Product searchProductById(int id) {
-        return productDAO.searchProductById(id);
-    }
-
-    public Product searchProductByName(String name) {
-        return productDAO.searchProductByName(name);
-    }
-
-    public void updateProduct(Product product) {
-        try {
-            productDAO.updateProduct(product);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void updateQuantity(Product product) throws Exception {
+        if (product != null) {
+            productService.updateQuantity(product);
+        } else {
+            throw new Exception("Product cannot be null.");
         }
     }
 
     public void deleteProduct(int id) {
         try {
-            productDAO.deleteProduct(id);
+            productService.deleteProduct(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

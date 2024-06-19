@@ -4,7 +4,16 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+/**
+ * Classe que representa a tela inicial (splash screen) do sistema de gerenciamento de supermercado.
+ * Esta tela é exibida por um curto período antes de redirecionar para a tela de login.
+ */
 public class InitialFrame extends JFrame {
+
+    /**
+     * Construtor da classe InitialFrame que configura e exibe a tela inicial do sistema.
+     * Esta tela contém o nome do sistema, logotipo da empresa e informações de direitos autorais.
+     */
     public InitialFrame() {
         setSize(1000, 800);
         setLocationRelativeTo(null);
@@ -34,6 +43,13 @@ public class InitialFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Método principal para iniciar a aplicação.
+     * Cria uma instância da InitialFrame (tela inicial), exibe uma splash screen por 10 segundos
+     * e depois abre a tela de login.
+     *
+     * @param args Argumentos da linha de comando (não utilizados neste contexto).
+     */
     public static void main(String[] args) {
         // Cria a Splash Screen
         InitialFrame initialPanel = new InitialFrame();
@@ -49,6 +65,7 @@ public class InitialFrame extends JFrame {
         initialPanel.setVisible(false);
         initialPanel.dispose();
 
+        // Abre a tela de login
         LoginFrame login = new LoginFrame();
         login.setVisible(true);
     }
