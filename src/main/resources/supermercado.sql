@@ -17,12 +17,13 @@ CREATE TABLE IF NOT EXISTS fornecedores (
 CREATE TABLE IF NOT EXISTS produtos (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    descricao TEXT,
+    descricao VARCHAR(500),
     quantidade INT NOT NULL,
     preco DECIMAL(10, 2) NOT NULL,
     categoria_id INT REFERENCES categorias(id) ON DELETE SET NULL,
     fornecedor_id INT REFERENCES fornecedores(id) ON DELETE SET NULL
 );
+
 
 -- Criação da tabela de Estoque
 CREATE TABLE IF NOT EXISTS estoque (
@@ -41,6 +42,15 @@ CREATE TABLE IF NOT EXISTS movimentacoes_estoque (
     quantidade INT NOT NULL,
     data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('entrada', 'saida'))
+);
+
+-- Criação da tabela de Nível de Estoque
+CREATE TABLE IF NOT EXISTS niveis_estoque (
+    id SERIAL PRIMARY KEY,
+    produto_id INT REFERENCES produtos(id) ON DELETE CASCADE,
+    tempo_estoque BIGINT NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    classificacao CHAR(1) NOT NULL CHECK (classificacao IN ('A', 'B', 'C', 'D'))
 );
 
 -- Criação da tabela de Receitas
@@ -89,32 +99,32 @@ ON CONFLICT DO NOTHING;
 
 -- Inserindo dados de exemplo no estoque
 INSERT INTO estoque (produto_id, estoque_inicial, entrada, saida, estoque_final) VALUES
-    (1, 100, '2024-04-04 10:00:00', '2024-05-10 17:00:00', 80),
-    (2, 200, '2024-04-10 10:00:00', '2024-05-20 17:00:00', 50),
-    (3, 50, '2024-05-04 10:00:00', '2024-06-05 16:00:00', 20),
-    (2, 50, '2024-05-20 10:00:00', '2024-06-15 16:00:00', 30)
+    (1, 100, '2024-04-04 10:21:21', '2024-05-10 17:21:21', 80),
+    (2, 50, '2024-05-20 10:55:55', '2024-06-15 16:55:55', 30)
 ON CONFLICT DO NOTHING;
 
 -- Inserindo dados de exemplo nas movimentações de estoque
 INSERT INTO movimentacoes_estoque (produto_id, quantidade, tipo) VALUES
     (1, 50, 'entrada'),
-    (2, 100, 'entrada'),
-    (3, 30, 'saida'),
     (4, 20, 'saida')
+ON CONFLICT DO NOTHING;
+
+-- Inserindo dados de exemplo nos níveis de estoque
+INSERT INTO niveis_estoque (produto_id, tempo_estoque, total_price, classificacao) VALUES
+    (1, 30, 350.00, 'A'),
+    (2, 45, 1000.00, 'B'),
+    (3, 60, 412.50, 'C'),
+    (4, 90, 270.00, 'D')
 ON CONFLICT DO NOTHING;
 
 -- Inserindo dados de exemplo nas receitas
 INSERT INTO receitas (data, valor) VALUES
     ('2023-01-15', 1200.00),
-    ('2023-02-20', 2300.75),
-    ('2023-03-05', 1800.50),
     ('2023-04-10', 2500.30)
 ON CONFLICT DO NOTHING;
 
 -- Inserindo dados de exemplo nas despesas
 INSERT INTO despesas (categoria, valor) VALUES
-    ('Compra de Estoque', 900.00),
     ('Pagamento de Funcionários', 2200.00),
-    ('Manutenção de Equipamentos', 350.45),
     ('Contas de Utilidades', 450.75)
 ON CONFLICT DO NOTHING;

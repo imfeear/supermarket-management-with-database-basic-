@@ -8,9 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Data Access Object (DAO) para manipulação de usuários no banco de dados.
+ */
 public class UserDAO {
     private Connection connection;
 
+    /**
+     * Construtor padrão que inicializa a conexão com o banco de dados.
+     */
     public UserDAO() {
         try {
             this.connection = DatabaseConnection.getSupermercadoConnection();
@@ -20,6 +26,14 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Registra um novo usuário no banco de dados.
+     *
+     * @param nome   Nome do usuário.
+     * @param email  E-mail do usuário.
+     * @param senha  Senha do usuário (será hashada antes de ser armazenada).
+     * @return true se o usuário foi registrado com sucesso, false caso contrário.
+     */
     public boolean userRegister(String nome, String email, String senha) {
         String sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
 
@@ -39,7 +53,14 @@ public class UserDAO {
         }
     }
 
-    public User userLogin(String email, String senha) {
+    /**
+     * Realiza o login de um usuário com base no e-mail e senha fornecidos.
+     *
+     * @param email     E-mail do usuário para login.
+     * @param password  Senha não criptografada para verificação.
+     * @return Um objeto User se o login for bem-sucedido, null se não encontrar o usuário ou senha incorreta.
+     */
+    public User userLogin(String email, String password) {
         String sql = "SELECT * FROM usuarios WHERE email = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -49,7 +70,7 @@ public class UserDAO {
             if (rs.next()) {
                 String storedHash = rs.getString("senha");
 
-                if (BCrypt.checkpw(senha, storedHash)) {
+                if (BCrypt.checkpw(password, storedHash)) {
                     User user = new User(
                             rs.getInt("id"),
                             rs.getString("nome"),
@@ -60,7 +81,6 @@ public class UserDAO {
                 }
             }
             return null;
-
         } catch (SQLException e) {
             System.err.println("Erro ao realizar login: " + e.getMessage());
             e.printStackTrace();

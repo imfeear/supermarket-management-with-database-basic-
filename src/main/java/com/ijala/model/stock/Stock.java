@@ -1,70 +1,142 @@
 package com.ijala.model.stock;
 
-import com.ijala.model.produto.Produto;
+import com.ijala.model.product.Product;
 
 import java.util.Date;
 
+/**
+ * Classe Stock para representar o estoque de um produto.
+ */
 public class Stock {
     private int id;
-    private Produto produto;
-    private int estoque_inicial;
-    private Date entrada;
-    private Date saida;
-    private int estoque_final;
+    private Product product;
+    private int initialStock;
+    private Date entry;
+    private Date exit;
+    private int finalStock;
 
-    public Stock(Produto produto, int estoque_inicial, Date entrada, Date saida, int estoque_final) {
-        this.produto = produto;
-        this.estoque_inicial = estoque_inicial;
-        this.entrada = entrada;
-        this.saida = saida;
-        this.estoque_final = estoque_final;
+    /**
+     * Construtor para inicializar o estoque de um produto.
+     *
+     * @param product       O produto associado ao estoque.
+     * @param initialStock  A quantidade inicial de estoque.
+     * @param entry         A data de entrada do estoque.
+     * @param exit          A data de saída do estoque.
+     * @param finalStock    A quantidade final de estoque.
+     */
+    public Stock(Product product, int initialStock, Date entry, Date exit, int finalStock) {
+        this.product = product;
+        this.initialStock = initialStock;
+        this.entry = entry;
+        this.exit = exit;
+        this.finalStock = finalStock;
     }
 
+    /**
+     * Obtém o ID do estoque.
+     *
+     * @return O ID do estoque.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Define o ID do estoque.
+     *
+     * @param id O ID do estoque.
+     */
     public void setId(int id) {
         this.id = id;
     }
 
-    public Produto getProduto() {
-        return produto;
+    /**
+     * Obtém o produto associado ao estoque.
+     *
+     * @return O produto associado ao estoque.
+     */
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    /**
+     * Define o produto associado ao estoque.
+     *
+     * @param product O produto a ser associado ao estoque.
+     */
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public int getEstoque_inicial() {
-        return estoque_inicial;
+    /**
+     * Obtém a quantidade inicial de estoque.
+     *
+     * @return A quantidade inicial de estoque.
+     */
+    public int getInitialStock() {
+        return initialStock;
     }
 
-    public void setEstoque_inicial(int estoque_inicial) {
-        this.estoque_inicial = estoque_inicial;
+    /**
+     * Define a quantidade inicial de estoque.
+     *
+     * @param initialStock A quantidade inicial de estoque.
+     */
+    public void setInitialStock(int initialStock) {
+        this.initialStock = initialStock;
     }
 
-    public Date getEntrada() {
-        return entrada;
+    /**
+     * Obtém a data de entrada do estoque.
+     *
+     * @return A data de entrada do estoque.
+     */
+    public Date getEntry() {
+        return entry;
     }
 
-    public void setEntrada(Date entrada) {
-        this.entrada = entrada;
+    /**
+     * Define a data de entrada do estoque.
+     *
+     * @param entry A data de entrada do estoque.
+     */
+    public void setEntry(Date entry) {
+        this.entry = entry;
     }
 
-    public Date getSaida() {
-        return saida;
+    /**
+     * Obtém a data de saída do estoque.
+     *
+     * @return A data de saída do estoque.
+     */
+    public Date getExit() {
+        return exit;
     }
 
-    public void setSaida(Date saida) {
-        this.saida = saida;
+    /**
+     * Define a data de saída do estoque.
+     *
+     * @param exit A data de saída do estoque.
+     */
+    public void setExit(Date exit) {
+        this.exit = exit;
     }
 
-    public int getEstoque_final() {
-        return estoque_final;
+    /**
+     * Obtém a quantidade final de estoque.
+     *
+     * @return A quantidade final de estoque.
+     */
+    public int getFinalStock() {
+        return finalStock;
     }
 
-    public void setEstoque_final(int estoque_final) {
-        this.estoque_final = estoque_final;
+    /**
+     * Define a quantidade final de estoque.
+     *
+     * @param finalStock A quantidade final de estoque.
+     */
+    public void setFinalStock(int finalStock) {
+        this.finalStock = finalStock;
     }
 }
