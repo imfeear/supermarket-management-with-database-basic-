@@ -1,37 +1,29 @@
 package com.ijala.controller;
 
 import com.ijala.model.product.Product;
+import com.ijala.model.stock.Stock;
 import com.ijala.service.ProductService;
 
-import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ProductController {
-    private ProductService productService;
+    private final ProductService productService;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    public void addStock(Product product, int quantity, Date timestamp) {
-        try {
-            productService.addStock(product, quantity, timestamp);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Aqui você pode tratar o erro ou lançar uma exceção adequada
-        }
-    }
-
-//    public void addProduct(Product product) {
-//        try {
-//            productService.addProduct(product);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public List<Product> listProducts() {
         return productService.listProducts();
+    }
+
+    public void registerProduct(Product product) {
+        try {
+            productService.insertProduct(product);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateProduct(Product product) {
@@ -42,23 +34,28 @@ public class ProductController {
         }
     }
 
-    public void sellStock(int productId, int quantity) throws Exception {
-        productService.sellStock(productId, quantity);
-    }
-
-    public void updateQuantity(Product product) throws Exception {
-        if (product != null) {
-            productService.updateQuantity(product);
-        } else {
-            throw new Exception("Product cannot be null.");
-        }
-    }
-
-    public void deleteProduct(int id) {
+    public void updateQuantity(Product product) {
         try {
-            productService.deleteProduct(id);
+            productService.updateQuantity(product);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public void deleteProduct(int productId) {
+        try {
+            productService.deleteProduct(productId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Product getProductById(int productId) {
+        return productService.searchProductById(productId);
+    }
+
+    public List<Stock> listFormattedStock() {
+        return productService.listFormattedStock();
+    }
+
 }

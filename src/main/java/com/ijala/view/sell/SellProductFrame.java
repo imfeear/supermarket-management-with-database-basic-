@@ -2,7 +2,7 @@ package com.ijala.view.sell;
 
 import com.ijala.controller.MovementController;
 import com.ijala.model.product.Product;
-import com.ijala.service.ProductService;
+import com.ijala.model.sell.SellProduct;
 import com.ijala.util.form.FormContent;
 import com.ijala.util.form.FormSmallContent;
 import com.ijala.util.panel.ButtonPanel;
@@ -16,17 +16,15 @@ public class SellProductFrame extends JFrame {
     private JTextField textFieldPrice;
     private JTextField textFieldQuantity;
     private JTextField productIdField;
-    private MovementController movementController;
-    private Product product; // Atributo para armazenar o produto
+    private final Product product;
 
-    public SellProductFrame(Product product, MovementController movementController) {
+    public SellProductFrame(Product product) {
         this.product = product;
-        this.movementController = movementController;
-        initializeUI();
+        initComponents();
         setProductDetails();
     }
 
-    private void initializeUI() {
+    private void initComponents() {
         setTitle("Vender Produto");
         setSize(650, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -99,21 +97,24 @@ public class SellProductFrame extends JFrame {
                 return;
             }
 
-            movementController.sell(product.getId(), quantity);
+            MovementController movementController = new MovementController();
+            SellProduct sellProduct = new SellProduct(product, quantity);
+            movementController.makeSale(sellProduct);
 
             JOptionPane.showMessageDialog(null, "Venda realizada com sucesso!\nValor Total: R$ " + String.format("%.2f", totalPrice), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-
             this.dispose();
+            StockManageFrame stockManageFrame = new StockManageFrame();
+            stockManageFrame.setVisible(true);
 
-            // Atualiza o StockManageFrame para refletir a nova quantidade no estoque
-            for (Window window : Window.getWindows()) {
-                if (window instanceof StockManageFrame) {
-                    StockManageFrame stockManageFrame = (StockManageFrame) window;
-                    stockManageFrame.loadStock(); // Atualiza os dados do estoque
-                    stockManageFrame.setVisible(true); // Torna o StockManageFrame visível
-                    break;
-                }
-            }
+//            // Atualiza o StockManageFrame para refletir a nova quantidade no estoque
+//            for (Window window : Window.getWindows()) {
+//                if (window instanceof StockManageFrame) {
+//                    StockManageFrame stockManageFrame = (StockManageFrame) window;
+//                    stockManageFrame.loadStock(); // Atualiza os dados do estoque
+//                    stockManageFrame.setVisible(true); // Torna o StockManageFrame visível
+//                    break;
+//                }
+//            }
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Digite números válidos para quantidade e preço.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -123,7 +124,7 @@ public class SellProductFrame extends JFrame {
         }
     }
 
-    private void setProductDetails() {
+    protected void setProductDetails() {
         productIdField.setText(String.valueOf(product.getId()));
         textFieldName.setText(product.getName());
         textFieldPrice.setText(String.valueOf(product.getPrice()));
@@ -131,8 +132,7 @@ public class SellProductFrame extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            MovementController movementController = new MovementController();
-            SellProductFrame sellProductFrame = new SellProductFrame(null, movementController);
+            SellProductFrame sellProductFrame = new SellProductFrame(null);
             sellProductFrame.setVisible(true);
         });
     }

@@ -8,12 +8,11 @@ import com.ijala.util.SearchIdBase;
 import javax.swing.*;
 
 public class DeleteProductFrame extends SearchIdBase {
-    private ProductController productController;
+    private final ProductController productController;
 
-    public DeleteProductFrame() {
-        super("Excluir Produto", new ProductService());
-        ProductService productService = new ProductService(); // Instancia um ProductService
-        productController = new ProductController(productService); // Passa o ProductService para o ProductController
+    public DeleteProductFrame(ProductController productController) {
+        super("Excluir Produto", new ProductController(new ProductService()));
+        this.productController = productController;
         initComponents();
     }
 
@@ -45,7 +44,7 @@ public class DeleteProductFrame extends SearchIdBase {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            DeleteProductFrame deleteProductFrame = new DeleteProductFrame();
+            DeleteProductFrame deleteProductFrame = new DeleteProductFrame(new ProductController(new ProductService()));
             deleteProductFrame.setVisible(true);
         });
     }

@@ -11,11 +11,11 @@ import java.awt.*;
 
 public class UpdateProductFrame extends SearchIdBase {
     private JPanel mainPanel;
-    private ProductController productController;
+    private final ProductController productController;
 
-    public UpdateProductFrame(ProductService productService) {
-        super("Atualizar produto", productService);
-        this.productController = new ProductController(productService);
+    public UpdateProductFrame(ProductController productController) {
+        super("Atualizar produto", productController);
+        this.productController = productController;
         initComponents();
     }
 
@@ -51,9 +51,9 @@ public class UpdateProductFrame extends SearchIdBase {
     }
 
     public static void main(String[] args) {
-        ProductService productService = new ProductService(); // ou qualquer outra forma de obter o ProductService
+        ProductController productController = new ProductController(new ProductService());
         SwingUtilities.invokeLater(() -> {
-            UpdateProductFrame updateProductFrame = new UpdateProductFrame(productService);
+            UpdateProductFrame updateProductFrame = new UpdateProductFrame(productController);
             updateProductFrame.setVisible(true);
         });
     }

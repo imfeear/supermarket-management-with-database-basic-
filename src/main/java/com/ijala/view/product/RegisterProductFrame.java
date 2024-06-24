@@ -1,5 +1,6 @@
 package com.ijala.view.product;
 
+import com.ijala.controller.ProductController;
 import com.ijala.service.ProductService;
 import com.ijala.util.*;
 import com.ijala.util.form.FormRegisterProduct;
@@ -14,9 +15,8 @@ import java.awt.*;
 public class RegisterProductFrame extends JFrame {
 
     private JPanel formContainer;
-    private ProductService productService;
 
-    public RegisterProductFrame() {
+    public RegisterProductFrame(ProductController productController) {
         setTitle("Cadastro de Produto");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -69,7 +69,7 @@ public class RegisterProductFrame extends JFrame {
         formContainerGbc.gridy = 0;
         formContainerGbc.anchor = GridBagConstraints.CENTER;
 
-        FormRegisterProduct formCadastroProduto = new FormRegisterProduct(this, productService);
+        FormRegisterProduct formCadastroProduto = new FormRegisterProduct(this, productController);
         JPanel formPanel = formCadastroProduto.getFormPanel();
         formContainer.add(formPanel, formContainerGbc);
 
@@ -114,7 +114,7 @@ public class RegisterProductFrame extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            RegisterProductFrame frame = new RegisterProductFrame();
+            RegisterProductFrame frame = new RegisterProductFrame(new ProductController(new ProductService()));
             frame.setVisible(true);
         });
     }

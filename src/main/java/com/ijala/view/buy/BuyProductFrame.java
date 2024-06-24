@@ -1,6 +1,8 @@
 package com.ijala.view.buy;
 
 import com.ijala.controller.MovementController;
+import com.ijala.controller.ProductController;
+import com.ijala.model.buy.BuyProduct;
 import com.ijala.model.product.Product;
 import com.ijala.service.ProductService;
 import com.ijala.util.form.FormContent;
@@ -18,17 +20,18 @@ public class BuyProductFrame extends JFrame {
     private JTextField textFieldPrice;
     private JTextField textFieldQuantity;
     private JLabel totalValueLabel;
+
     private int productId;
-    private ProductService productService;
-    private MovementController movementController;
+    private final ProductController productController;
+    private final MovementController movementController;
 
     public BuyProductFrame() {
-        initializeUI();
-        productService = new ProductService();
+        productController = new ProductController(new ProductService());
         movementController = new MovementController();
+        initComponents();
     }
 
-    private void initializeUI() {
+    private void initComponents() {
         setTitle("Comprar Produto");
         setSize(650, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -112,16 +115,18 @@ public class BuyProductFrame extends JFrame {
                 return;
             }
 
-            int quantidade = Integer.parseInt(textFieldQuantity.getText());
-            movementController.buy(productId, quantidade);
+            int quantity = Integer.parseInt(textFieldQuantity.getText());
 
-            Product product = productService.searchProductById(productId);
+            Product product = productController.getProductById(productId);
+            BuyProduct buyProduct = new BuyProduct(product, quantity);
+            movementController.makeBuy(buyProduct);
+
             if (product != null) {
                 JOptionPane.showMessageDialog(null, "Compra realizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                // Troca de Tela
                 this.dispose();
                 StockManageFrame stockManageFrame = new StockManageFrame();
                 stockManageFrame.setVisible(true);
+
             } else {
                 JOptionPane.showMessageDialog(null, "Produto não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -132,7 +137,7 @@ public class BuyProductFrame extends JFrame {
         }
     }
 
-    public void setProductDetails(int productId, String name, String supplier, String price) {
+    protected void setProductDetails(int productId, String name, String supplier, String price) {
         this.productId = productId;
         textFieldName.setText(name);
         textFieldSupplier.setText(supplier);

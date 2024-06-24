@@ -1,9 +1,9 @@
 package com.ijala.view.stock;
 
+import com.ijala.controller.ProductController;
 import com.ijala.model.movement.Movement;
 import com.ijala.model.movement.MovementDAO;
-import com.ijala.model.product.Product;
-import com.ijala.model.product.ProductDAO;
+import com.ijala.service.ProductService;
 import com.ijala.util.ButtonUtil;
 import com.ijala.util.panel.TablePanel;
 
@@ -12,17 +12,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.sql.Date;
 
 public class StockMovementFrame extends JFrame {
     private TablePanel tablePanel;
-    private MovementDAO movementDAO;
+    private final MovementDAO movementDAO;
 
     public StockMovementFrame() {
         super("Histórico de Movimentação");
-
-        ProductDAO productDAO = new ProductDAO(); // Inicialização do ProductDAO
-        this.movementDAO = new MovementDAO(productDAO); // Passagem do ProductDAO para MovementDAO
+        this.movementDAO = new MovementDAO(new ProductController(new ProductService()));
         initComponents();
         loadStock();
     }
@@ -90,7 +87,7 @@ public class StockMovementFrame extends JFrame {
         DefaultTableModel model = tablePanel.getModel();
         model.setRowCount(0); // Limpa os dados da tabela
         List<Movement> movements = movementDAO.getAllMovements();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         for (Movement movement : movements) {
             String dateFormated = dateFormat.format(movement.getDate());
             Object[] row = new Object[4];
@@ -108,17 +105,6 @@ public class StockMovementFrame extends JFrame {
 
     private void customButton(ButtonUtil button) {
         button.setPreferredSize(new Dimension(300, 50));
-    }
-
-    public void addMovement(int productId, int quantity, String type) {
-        Product product = new ProductDAO().searchProductById(productId);
-        if (product != null) {
-            Movement movement = new Movement(0, quantity, new Date(System.currentTimeMillis()), type, product);
-            movementDAO.addMovement(movement);
-            loadStock(); // Atualiza a tabela de movimentações na UI
-        } else {
-            System.out.println("Produto " + productId + " não encontrado.");
-        }
     }
 
     public static void main(String[] args) {

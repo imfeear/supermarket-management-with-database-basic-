@@ -80,7 +80,7 @@ public abstract class FormBase {
         return panel;
     }
 
-    private JPanel createIconPanel(String imagePath) {
+    protected JPanel createIconPanel(String imagePath) {
         JPanel iconPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {

@@ -1,6 +1,7 @@
 package com.ijala.view;
 
 import com.ijala.controller.UserController;
+import com.ijala.service.UserService;
 import com.ijala.model.user.User;
 import com.ijala.util.AddLabelAndField;
 import com.ijala.util.panel.BackgroundPanel;
@@ -105,19 +106,16 @@ public class LoginFrame extends JFrame {
         setVisible(true);
 
         // Inicialização do UserController
-        userController = new UserController();
+        UserService userService = new UserService();
+        userController = new UserController(userService);
     }
 
     private void loginUser() {
         try {
             String email = textFieldEmail.getText().trim();
-            String senha = new String(passwordFieldSenha.getPassword());
+            String password = new String(passwordFieldSenha.getPassword());
 
-            if (email.isEmpty() || senha.isEmpty()) {
-                throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
-            }
-
-            User user = userController.loginUser(email, senha);
+            User user = userController.loginUser(email, password);
 
             if (user != null) {
                 JOptionPane.showMessageDialog(null, "Login bem-sucedido. Bem-vindo(a) " + user.getNome() + "!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);

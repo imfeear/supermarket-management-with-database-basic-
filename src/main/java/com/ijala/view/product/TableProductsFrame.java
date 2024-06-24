@@ -15,20 +15,13 @@ import java.util.List;
 
 public class TableProductsFrame extends JFrame {
     private TablePanel tablePanel;
-    private ProductController productController;
-    private ProductService productService;
+    private final ProductController productController;
 
     public TableProductsFrame() {
         super("Produtos");
-        productService = new ProductService(); // Instancia ProductService
-        productController = new ProductController(productService); // Passa ProductService para ProductController
+        productController = new ProductController(new ProductService());
         initComponents();
         loadProducts();
-    }
-
-    // Método para retornar o ProductService
-    public ProductService getService() {
-        return productService;
     }
 
     private void initComponents() {
@@ -48,19 +41,16 @@ public class TableProductsFrame extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 0));
         buttonPanel.setBackground(new Color(43, 43, 43));
 
-        ButtonUtil buyButton = new ButtonUtil("Comprar", e -> new SearchIdForBuy(new ProductService()).setVisible(true));
-        ButtonUtil sellButton = new ButtonUtil("Vender", e -> new SearchIdForSell(new ProductService()).setVisible(true));
-        ButtonUtil registerButton = new ButtonUtil("Cadastrar", e -> new RegisterProductFrame().setVisible(true));
-        ButtonUtil updateButton = new ButtonUtil("Atualizar", e -> {
-            ProductService productService = getService();
-            new UpdateProductFrame(productService).setVisible(true);
-        });
-        ButtonUtil deleteButton = new ButtonUtil("Excluir", e -> new DeleteProductFrame().setVisible(true));
+        ButtonUtil registerButton = new ButtonUtil("Cadastrar", e -> new RegisterProductFrame(productController).setVisible(true));
+        ButtonUtil buyButton = new ButtonUtil("Comprar", e -> new SearchIdForBuy(productController).setVisible(true));
+        ButtonUtil sellButton = new ButtonUtil("Vender", e -> new SearchIdForSell(productController).setVisible(true));
+        ButtonUtil updateButton = new ButtonUtil("Atualizar", e -> new UpdateProductFrame(productController).setVisible(true));
+        ButtonUtil deleteButton = new ButtonUtil("Excluir", e -> new DeleteProductFrame(productController).setVisible(true));
         deleteButton.setBackground(Color.RED);
 
+        buttonPanel.add(registerButton);
         buttonPanel.add(buyButton);
         buttonPanel.add(sellButton);
-        buttonPanel.add(registerButton);
         buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
 
@@ -92,7 +82,7 @@ public class TableProductsFrame extends JFrame {
         getContentPane().add(mainPanel, BorderLayout.CENTER);
     }
 
-    private void loadProducts() {
+    public void loadProducts() {
         DefaultTableModel model = tablePanel.getModel();
         model.setRowCount(0); // Limpa os dados da tabela
         List<Product> products = productController.listProducts();

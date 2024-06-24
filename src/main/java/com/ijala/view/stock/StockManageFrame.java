@@ -1,11 +1,8 @@
 package com.ijala.view.stock;
 
-import com.ijala.controller.MovementController;
-import com.ijala.model.movement.MovementDAO;
-import com.ijala.model.product.Product;
-import com.ijala.model.product.ProductDAO;
+import com.ijala.controller.ProductController;
 import com.ijala.model.stock.Stock;
-import com.ijala.model.stock.StockDAO;
+import com.ijala.service.ProductService;
 import com.ijala.util.ButtonUtil;
 import com.ijala.util.panel.TablePanel;
 
@@ -16,19 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class StockManageFrame extends JFrame {
-    private MovementController movementController;
     private TablePanel tablePanel;
-    private StockDAO stockDAO;
-    private MovementDAO movementDAO;
-    private JTable table;
-    private DefaultTableModel tableModel;
-    private ProductDAO productDAO;
+    private final ProductController productController;
 
     public StockManageFrame() {
         super("Estoque");
-        this.productDAO = new ProductDAO(); // Pass this instance to ProductDAO
-        this.stockDAO = new StockDAO(productDAO); // Pass productDAO to StockDAO
-        this.movementDAO = new MovementDAO(productDAO);
+        this.productController = new ProductController(new ProductService());
         initComponents();
         loadStock();
     }
@@ -93,35 +83,23 @@ public class StockManageFrame extends JFrame {
         getContentPane().add(mainPanel, BorderLayout.CENTER);
     }
 
-    public void addProductToTable(Product product) {
-        DefaultTableModel model = tablePanel.getModel();
-        model.addRow(new Object[]{
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getQuantity(),
-                product.getPrice(),
-                product.getCategoryId(),
-                product.getSupplierId()
-        });
-    }
-
+//    VERSAO ANTIGA
     public void loadStock() {
         DefaultTableModel model = tablePanel.getModel();
         model.setRowCount(0);
-        List<Stock> stocks = stockDAO.listProductInStock();
+        List<Stock> stocks = productController.listFormattedStock();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         for (Stock stock : stocks) {
             String entryFormated = stock.getEntry() != null ? dateFormat.format(stock.getEntry()) : "Sem entrada";
             String exitFormated = stock.getExit() != null ? dateFormat.format(stock.getExit()) : "Sem saída";
             model.addRow(new Object[]{
-                    stock.getId(), // ID do estoque
-                    stock.getProduct().getId(), // ID do produto
-                    stock.getProduct().getName(), // Nome do produto
-                    stock.getInitialStock(), // Estoque inicial
-                    entryFormated, // Data de entrada formatada
-                    exitFormated, // Data de saída formatada
-                    stock.getFinalStock() // Estoque final
+                    stock.getId(),
+                    stock.getProduct().getId(),
+                    stock.getProduct().getName(),
+                    stock.getInitialStock(),
+                    entryFormated,
+                    exitFormated,
+                    stock.getFinalStock()
             });
         }
     }

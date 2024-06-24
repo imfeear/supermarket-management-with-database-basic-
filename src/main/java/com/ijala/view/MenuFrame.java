@@ -1,14 +1,10 @@
 package com.ijala.view;
 
-import com.ijala.view.stock.StockManageFrame;
-import com.ijala.view.product.TableProductsFrame;
-import com.ijala.view.finance.FinanceManageFrame;
+import com.ijala.controller.MenuController;
 import com.ijala.util.panel.BackgroundPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
 
 /**
@@ -27,6 +23,7 @@ public class MenuFrame extends JFrame {
         setTitle("Menu");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -58,29 +55,12 @@ public class MenuFrame extends JFrame {
         constraints.gridx = 2;
         backgroundPanel.add(financeManageButton, constraints);
 
-        stockManageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StockManageFrame stock = new StockManageFrame();
-                stock.setVisible(true);
-            }
-        });
+        // Inicialização do MenuController
+        MenuController menuController = new MenuController(this);
 
-        tableProductsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TableProductsFrame tabelaProdutos = new TableProductsFrame();
-                tabelaProdutos.setVisible(true);
-            }
-        });
-
-        financeManageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FinanceManageFrame financeManage = new FinanceManageFrame();
-                financeManage.setVisible(true);
-            }
-        });
+        stockManageButton.addActionListener(menuController::showStockManageFrame);
+        tableProductsButton.addActionListener(menuController::showTableProductsFrame);
+        financeManageButton.addActionListener(menuController::showFinanceManageFrame);
 
         add(backgroundPanel, BorderLayout.CENTER);
     }

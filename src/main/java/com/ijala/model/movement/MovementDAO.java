@@ -1,8 +1,8 @@
 package com.ijala.model.movement;
 
+import com.ijala.controller.ProductController;
 import com.ijala.database.DatabaseConnection;
 import com.ijala.model.product.Product;
-import com.ijala.model.product.ProductDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,12 +14,12 @@ import java.util.ArrayList;
 
 public class MovementDAO {
     private Connection connection;
-    private ProductDAO productDAO;
+    private ProductController productController;
 
-    public MovementDAO(ProductDAO productDAO) {
+    public MovementDAO(ProductController productController) {
         try {
             this.connection = DatabaseConnection.getSupermercadoConnection();
-            this.productDAO = productDAO;
+            this.productController = productController;
         } catch (SQLException e) {
             System.err.println("Erro ao conectar ao banco de dados: " + e.getMessage());
             e.printStackTrace();
@@ -37,7 +37,7 @@ public class MovementDAO {
                 Date date = rs.getDate("data");
                 String type = rs.getString("tipo");
 
-                Product product = productDAO.searchProductById(productId);
+                Product product = productController.getProductById(productId);
 
                 Movement movement = new Movement(productId, quantity, date, type, product);
                 movements.add(movement);
@@ -64,7 +64,7 @@ public class MovementDAO {
                 // Atualiza a quantidade do produto
                 Product product = movement.getProduct();
                 product.setQuantity(product.getQuantity() + movement.getQuantity());
-                productDAO.updateQuantity(product);
+                productController.updateQuantity(product);
 
                 connection.commit(); // Confirma a transação
             } catch (SQLException e) {

@@ -3,17 +3,13 @@ package com.ijala.view.finance;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.Objects;
 import java.util.Random;
 
 public class FinanceHeaderPanel extends JPanel {
 
-    private JLabel totalMonthlyIncomeLabel;
-    private JLabel totalExpensesMonthlyLabel;
-    private JLabel balanceTotalCaixaLabel;
-
     public FinanceHeaderPanel() {
         initComponents();
-
         setBackground(Color.decode("#2B2B2B"));
         setBorder(BorderFactory.createEmptyBorder(40, 10, 5, 10));
         setLayout(new GridBagLayout()); // Usando GridBagLayout para centralizar o painel
@@ -26,20 +22,18 @@ public class FinanceHeaderPanel extends JPanel {
         double totalExpensesMonthly = 3000 + (totalMonthlyIncome - 3000) * rand.nextDouble();
         double balanceTotalCaixa = Math.max(totalMonthlyIncome - totalExpensesMonthly, 0); // Garante que balanceTotalCaixa não seja negativo
 
-        ImageIcon incomeIcon = new ImageIcon(FinanceHeaderPanel.class.getResource("/icon/money.png"));
-        ImageIcon expensesIcon = new ImageIcon(FinanceHeaderPanel.class.getResource("/icon/money.png"));
-        ImageIcon balanceIcon = new ImageIcon(FinanceHeaderPanel.class.getResource("/icon/money.png"));
+        ImageIcon moneyIcon = new ImageIcon(Objects.requireNonNull(FinanceHeaderPanel.class.getResource("/icon/money.png")));
 
-        totalMonthlyIncomeLabel = new JLabel(String.format("R$ %.2f", totalMonthlyIncome));
-        totalExpensesMonthlyLabel = new JLabel(String.format("R$ %.2f", totalExpensesMonthly));
-        balanceTotalCaixaLabel = new JLabel(String.format("R$ %.2f", balanceTotalCaixa));
-
+        JLabel totalMonthlyIncomeLabel = new JLabel(String.format("R$ %.2f", totalMonthlyIncome));
         totalMonthlyIncomeLabel.setForeground(Color.decode("#00BA1E"));
-        totalExpensesMonthlyLabel.setForeground(Color.decode("#00BA1E"));
-        balanceTotalCaixaLabel.setForeground(Color.decode("#00BA1E"));
-
         totalMonthlyIncomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+        JLabel totalExpensesMonthlyLabel = new JLabel(String.format("R$ %.2f", totalExpensesMonthly));
+        totalExpensesMonthlyLabel.setForeground(Color.decode("#00BA1E"));
         totalExpensesMonthlyLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+        JLabel balanceTotalCaixaLabel = new JLabel(String.format("R$ %.2f", balanceTotalCaixa));
+        balanceTotalCaixaLabel.setForeground(Color.decode("#00BA1E"));
         balanceTotalCaixaLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -47,13 +41,13 @@ public class FinanceHeaderPanel extends JPanel {
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 10, 0, 10);
 
-        JPanel panel1 = createLabeledPanel("Total Renda Mensal:", totalMonthlyIncomeLabel, incomeIcon);
+        JPanel panel1 = createLabeledPanel("Total Renda Mensal:", totalMonthlyIncomeLabel, moneyIcon);
         add(createMarginPanel(panel1));
 
-        JPanel panel2 = createLabeledPanel("Total Despesas Mensais:", totalExpensesMonthlyLabel, expensesIcon);
+        JPanel panel2 = createLabeledPanel("Total Despesas Mensais:", totalExpensesMonthlyLabel, moneyIcon);
         add(createMarginPanel(panel2));
 
-        JPanel panel3 = createLabeledPanel("Saldo Total do Caixa:", balanceTotalCaixaLabel, balanceIcon);
+        JPanel panel3 = createLabeledPanel("Saldo Total do Caixa:", balanceTotalCaixaLabel, moneyIcon);
         add(createMarginPanel(panel3));
     }
 

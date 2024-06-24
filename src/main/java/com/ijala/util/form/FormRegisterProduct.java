@@ -1,8 +1,7 @@
 package com.ijala.util.form;
 
+import com.ijala.controller.ProductController;
 import com.ijala.model.product.Product;
-import com.ijala.model.product.ProductDAO;
-import com.ijala.service.ProductService;
 import com.ijala.util.ButtonUtil;
 import com.ijala.view.product.TableProductsFrame;
 
@@ -10,12 +9,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FormRegisterProduct extends FormBase {
-    private JFrame mainFrame;
-    private ProductService productService;
+    private final JFrame mainFrame;
+    private final ProductController productController;
 
-    public FormRegisterProduct(JFrame frame, ProductService productService) {
+    public FormRegisterProduct(JFrame frame, ProductController productController) {
         this.mainFrame = frame;
-        this.productService = productService;
+        this.productController = productController;
     }
 
     public JPanel getFormPanel() {
@@ -66,15 +65,16 @@ public class FormRegisterProduct extends FormBase {
             double price = Double.parseDouble(textFieldPrice.getText());
             int quantity = Integer.parseInt(textFieldQuantity.getText());
 
-            if (name.isEmpty() || supplier.isEmpty() || category.isEmpty() || description.isEmpty() || price <= 0 || quantity <= 0) {
-                throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
+            if (name.isEmpty() || supplier.isEmpty() || category.isEmpty() || price <= 0 || quantity <= 0) {
+                throw new IllegalArgumentException("Os campos (Nome, Fornecedor, Categoria, Preço e Quantidade) são obrigatórios e devem conter valores válidos.");
+            }
+
+            if (description.isEmpty()) {
+                description = "-";
             }
 
             Product product = new Product(name, description, quantity, price, Integer.parseInt(category), Integer.parseInt(supplier));
-
-            ProductDAO productDAO = new ProductDAO();
-            productDAO.insertProduct(product);
-//            productService.addStock(product);
+            productController.registerProduct(product);
 
             JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
