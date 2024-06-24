@@ -12,10 +12,11 @@ import java.util.List;
 public class FinanceTablePanel extends JPanel {
 
     private TablePanel tablePanel;
-    private FinanceDAO financeDAO;
+    private final FinanceDAO financeDAO;
 
-    public FinanceTablePanel(FinanceDAO dao) {
-        this.financeDAO = dao;
+    public FinanceTablePanel(FinanceDAO financeDAO) {
+        this.financeDAO = financeDAO;
+
         setBackground(Color.decode("#2B2B2B"));
         setPreferredSize(new Dimension(1000, 350));
         setMinimumSize(new Dimension(1000, 300));

@@ -4,13 +4,12 @@ public class User {
     private int id;
     private String nome;
     private String email;
-    private String senha;
+    private String password;
 
-    public User(int id, String nome, String email, String senha) {
-        this.id = id;
+    public User(String nome, String email, String password) {
         this.nome = nome;
         this.email = email;
-        this.senha = senha;
+        this.password = password;
     }
 
     public int getId() {
@@ -37,11 +36,11 @@ public class User {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

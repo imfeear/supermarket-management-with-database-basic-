@@ -1,6 +1,6 @@
 package com.ijala.util.panel;
 
-import com.ijala.controller.SupplierController;
+import com.ijala.service.SupplierService;
 import com.ijala.model.supplier.Supplier;
 import com.ijala.util.ButtonUtil;
 
@@ -10,8 +10,8 @@ import java.awt.*;
 import java.util.List;
 
 public class SupplierTablePanel extends JPanel {
-    private TablePanel tablePanel;
-    private SupplierController supplierController;
+    private final TablePanel tablePanel;
+    private final SupplierService supplierService;
 
     public SupplierTablePanel() {
         setLayout(new BorderLayout());
@@ -27,7 +27,7 @@ public class SupplierTablePanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 0));
         buttonPanel.setBackground(new Color(43, 43, 43));
 
-        supplierController = new SupplierController();
+        supplierService = new SupplierService();
         String[] columnNames = {"ID", "Nome", "Contato"};
         int[] columnWidths = {25, 200, 200};
         tablePanel = new TablePanel(columnNames, columnWidths);
@@ -56,7 +56,7 @@ public class SupplierTablePanel extends JPanel {
     }
 
     private void loadSuppliers() {
-        List<Supplier> suppliers = supplierController.getAllSuppliers();
+        List<Supplier> suppliers = supplierService.getAllSuppliers();
         if (suppliers != null) {
             DefaultTableModel model = tablePanel.getModel();
             model.setRowCount(0); // Clear existing data
@@ -79,7 +79,7 @@ public class SupplierTablePanel extends JPanel {
             String name = nameField.getText();
             String contact = contactField.getText();
             if (!name.trim().isEmpty() && !contact.trim().isEmpty()) {
-                supplierController.addSupplier(name, contact);
+                supplierService.addSupplier(name, contact);
                 loadSuppliers();
             } else {
                 JOptionPane.showMessageDialog(this, "Nome e contato não podem ser vazios.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -91,14 +91,10 @@ public class SupplierTablePanel extends JPanel {
         int selectedRow = tablePanel.getTable().getSelectedRow();
         if (selectedRow != -1) {
             int id = (int) tablePanel.getModel().getValueAt(selectedRow, 0);
-            supplierController.deleteSupplier(id);
+            supplierService.deleteSupplier(id);
             loadSuppliers();
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um fornecedor para excluir.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    public TablePanel getTablePanel() {
-        return tablePanel;
     }
 }

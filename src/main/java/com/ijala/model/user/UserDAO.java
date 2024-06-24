@@ -72,7 +72,7 @@ public class UserDAO {
 
                 if (BCrypt.checkpw(password, storedHash)) {
                     User user = new User(
-                            rs.getInt("id"),
+//                            rs.getInt("id"),
                             rs.getString("nome"),
                             rs.getString("email"),
                             storedHash

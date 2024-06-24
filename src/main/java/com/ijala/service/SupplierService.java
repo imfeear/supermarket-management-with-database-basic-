@@ -1,4 +1,4 @@
-package com.ijala.controller;
+package com.ijala.service;
 
 import com.ijala.model.supplier.Supplier;
 import com.ijala.model.supplier.SupplierDAO;
@@ -7,11 +7,11 @@ import javax.swing.*;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SupplierController {
-    private SupplierDAO supplierDAO;
+public class SupplierService {
+    private final SupplierDAO supplierDAO;
 
-    public SupplierController() {
-        supplierDAO = new SupplierDAO();
+    public SupplierService() {
+        this.supplierDAO = new SupplierDAO();
     }
 
     public void addSupplier(String name, String contact) {
@@ -49,11 +49,4 @@ public class SupplierController {
         }
     }
 
-    public void updateSupplier(Supplier supplier) {
-        try {
-            supplierDAO.updateSupplier(supplier);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao atualizar fornecedor: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
 }

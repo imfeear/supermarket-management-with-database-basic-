@@ -1,7 +1,7 @@
 package com.ijala.util;
 
+import com.ijala.controller.ProductController;
 import com.ijala.model.product.Product;
-import com.ijala.service.ProductService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,11 +9,11 @@ import java.awt.event.ActionEvent;
 
 public abstract class SearchIdBase extends JFrame {
     protected JTextField idField;
-    protected ProductService productService;
+    protected ProductController productController;
 
-    public SearchIdBase(String title, ProductService productService) {
+    public SearchIdBase(String title, ProductController productController) {
         super(title);
-        this.productService = productService;
+        this.productController = productController;
         initComponents();
     }
 
@@ -61,7 +61,7 @@ public abstract class SearchIdBase extends JFrame {
         String idText = idField.getText();
         try {
             int id = Integer.parseInt(idText);
-            Product product = productService.searchProductById(id);
+            Product product = productController.getProductById(id);
             if (product != null) {
                 handleProductFound(product);
             } else {

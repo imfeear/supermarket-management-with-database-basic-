@@ -1,5 +1,6 @@
 package com.ijala.view.buy;
 
+import com.ijala.controller.ProductController;
 import com.ijala.model.product.Product;
 import com.ijala.service.ProductService;
 import com.ijala.util.SearchIdBase;
@@ -7,8 +8,9 @@ import com.ijala.util.SearchIdBase;
 import javax.swing.*;
 
 public class SearchIdForBuy extends SearchIdBase {
-    public SearchIdForBuy(ProductService productService) {
-        super("Buscar Produto", productService);
+
+    public SearchIdForBuy(ProductController productController) {
+        super("Buscar Produto", productController);
     }
 
     @Override
@@ -28,8 +30,8 @@ public class SearchIdForBuy extends SearchIdBase {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ProductService productService = new ProductService();
-            SearchIdForBuy searchIdForBuy = new SearchIdForBuy(productService);
+            ProductController productController = new ProductController(new ProductService());
+            SearchIdForBuy searchIdForBuy = new SearchIdForBuy(productController);
             searchIdForBuy.setVisible(true);
         });
     }

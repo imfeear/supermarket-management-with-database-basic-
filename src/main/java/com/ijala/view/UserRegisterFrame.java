@@ -1,6 +1,7 @@
 package com.ijala.view;
 
 import com.ijala.controller.UserController;
+import com.ijala.service.UserService;
 import com.ijala.util.AddLabelAndField;
 import com.ijala.util.panel.BackgroundPanel;
 import com.ijala.util.ButtonUtil;
@@ -11,7 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class UserRegisterFrame extends JFrame {
-
     private JPanel formContainer;
     private GridBagConstraints formGbc;
     private JTextField textFieldNome;
@@ -91,7 +91,8 @@ public class UserRegisterFrame extends JFrame {
         setVisible(true);
 
         // Inicialização do UserController
-        userController = new UserController();
+        UserService userService = new UserService();
+        userController = new UserController(userService);
     }
 
     private void register() {
@@ -99,10 +100,6 @@ public class UserRegisterFrame extends JFrame {
             String name = textFieldNome.getText();
             String email = textFieldEmail.getText().trim();
             String password = new String(passwordFieldSenha.getPassword());
-
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                throw new IllegalArgumentException("Todos os campos são obrigatórios e devem conter valores válidos.");
-            }
 
             boolean isRegistered = userController.registerUser(name, email, password);
 

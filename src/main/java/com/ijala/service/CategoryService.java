@@ -1,4 +1,4 @@
-package com.ijala.controller;
+package com.ijala.service;
 
 import com.ijala.model.category.Category;
 import com.ijala.model.category.CategoryDAO;
@@ -7,11 +7,11 @@ import javax.swing.*;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CategoryController {
-    private CategoryDAO categoryDAO;
+public class CategoryService {
+    private final CategoryDAO categoryDAO;
 
-    public CategoryController() {
-        categoryDAO = new CategoryDAO();
+    public CategoryService() {
+        this.categoryDAO = new CategoryDAO();
     }
 
     public void addCategory(String name) {

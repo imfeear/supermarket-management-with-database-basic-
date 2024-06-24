@@ -1,28 +1,26 @@
 package com.ijala.view.finance;
 
+import com.ijala.controller.FinanceController;
 import com.ijala.model.finance.FinanceDAO;
+import com.ijala.service.FinanceService;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class FinanceManageFrame extends JFrame {
 
-    private FinanceHeaderPanel financeHeaderPanel;
-    private FinanceMainPanel financeMainPanel;
-    private FinanceTablePanel financeTablePanel;
-
-    private FinanceDAO financeDAO;
-
     public FinanceManageFrame() {
         setTitle("Gestão Financeira");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        financeDAO = new FinanceDAO();
+        FinanceDAO financeDAO = new FinanceDAO();
+        FinanceService financeService = new FinanceService(financeDAO);
+        FinanceController financeController = new FinanceController(financeService);
 
-        financeHeaderPanel = new FinanceHeaderPanel();
-        financeMainPanel = new FinanceMainPanel(financeDAO);
-        financeTablePanel = new FinanceTablePanel(financeDAO);
+        FinanceHeaderPanel financeHeaderPanel = new FinanceHeaderPanel();
+        FinanceMainPanel financeMainPanel = new FinanceMainPanel(financeController);
+        FinanceTablePanel financeTablePanel = new FinanceTablePanel(financeDAO);
 
         setLayout(new BorderLayout());
         add(financeHeaderPanel, BorderLayout.NORTH);

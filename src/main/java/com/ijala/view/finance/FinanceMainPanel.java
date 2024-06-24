@@ -1,7 +1,6 @@
 package com.ijala.view.finance;
 
-import com.ijala.model.finance.Finance;
-import com.ijala.model.finance.FinanceDAO;
+import com.ijala.controller.FinanceController;
 import com.ijala.util.AddLabelAndField;
 import com.ijala.util.ButtonUtil;
 
@@ -15,20 +14,21 @@ public class FinanceMainPanel extends JPanel {
 
     private JTextField expenseCategoryField;
     private JTextField expenseValueField;
+
     private JTextField recipeDateField;
     private JTextField recipeValueField;
+
     private JTextField deleteCategoryField;
     private JTextField deleteDateField;
     private JTextField deleteValueField;
 
-    private FinanceDAO financeDAO;
-    public FinanceMainPanel(FinanceDAO dao) {
-        this.financeDAO = dao;
+    private final FinanceController financeController;
 
+    public FinanceMainPanel(FinanceController financeController) {
+        this.financeController = financeController;
         setBackground(Color.decode("#2B2B2B"));
         setLayout(new BorderLayout());
 
-        ImageIcon expenseIcon = new ImageIcon(FinanceMainPanel.class.getResource("/icon/receipt.png"));
         ImageIcon recipeIcon = new ImageIcon(FinanceMainPanel.class.getResource("/icon/receipt.png"));
 
         JPanel mainPanel = new JPanel(new GridLayout(1, 3, 125, 0));
@@ -36,18 +36,20 @@ public class FinanceMainPanel extends JPanel {
         mainPanel.setBackground(Color.decode("#2B2B2B"));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(40, 200, 40, 200));
 
-        expenseCategoryField = new JTextField();
-        expenseValueField = new JTextField();
-        recipeDateField = new JTextField();
-        recipeValueField = new JTextField();
-        deleteCategoryField = new JTextField();
-        deleteDateField = new JTextField();
-        deleteValueField = new JTextField();
+        JTextField expenseCategoryField = new JTextField();
+        JTextField expenseValueField = new JTextField();
+
+        JTextField recipeDateField = new JTextField();
+        JTextField recipeValueField = new JTextField();
+
+        JTextField deleteCategoryField = new JTextField();
+        JTextField deleteDateField = new JTextField();
+        JTextField deleteValueField = new JTextField();
 
         mainPanel.add(createInputPanel("Insira Despesas:",
                 new String[]{"Categoria:", "Valor:"},
                 new JTextField[]{expenseCategoryField, expenseValueField},
-                new AddExpenseAction(), null, null, expenseIcon
+                new AddExpenseAction(), null, null, recipeIcon
         ));
         mainPanel.add(createInputPanel("Insira Receita:",
                 new String[]{"Data:", "Valor:"},
@@ -126,72 +128,24 @@ public class FinanceMainPanel extends JPanel {
     private class AddExpenseAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                Finance finance = new Finance();
-                finance.setType("Despesa");
-                finance.setCategory(expenseCategoryField.getText());
-                finance.setDate("");  // Data não necessária para despesas
-                finance.setValue(Double.parseDouble(expenseValueField.getText()));
-
-                financeDAO.addExpense(finance);
-                JOptionPane.showMessageDialog(FinanceMainPanel.this, "Despesa inserida com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                loadData();  // Recarrega os dados após adicionar uma despesa
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(FinanceMainPanel.this, "Erro ao inserir despesa: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            }
+            financeController.addExpense(expenseCategoryField.getText(), expenseValueField.getText());
+            loadData();
         }
     }
 
     private class AddRecipeAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                Finance finance = new Finance();
-                finance.setType("Receita");
-                finance.setCategory("");  // Categoria não necessária para receitas
-                finance.setDate(recipeDateField.getText());
-                finance.setValue(Double.parseDouble(recipeValueField.getText()));
-
-                financeDAO.addRecipe(finance);
-                JOptionPane.showMessageDialog(FinanceMainPanel.this, "Receita inserida com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                loadData();  // Recarrega os dados após adicionar uma receita
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(FinanceMainPanel.this, "Erro ao inserir receita: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            }
+            financeController.addRecipe(recipeDateField.getText(), recipeValueField.getText());
+            loadData();
         }
     }
 
     private class DeleteAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                String category = deleteCategoryField.getText();
-                String date = deleteDateField.getText();
-                Double value = Double.parseDouble(deleteValueField.getText());
-
-                Finance finance = new Finance();
-                finance.setCategory(category);
-                finance.setDate(date);
-                finance.setValue(value);
-
-                if (!category.isEmpty()) {
-                    finance.setType("Despesa");
-                } else if (!date.isEmpty()) {
-                    finance.setType("Receita");
-                }
-
-                int rowsAffected = financeDAO.deleteEntries(finance);
-                if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(FinanceMainPanel.this, finance.getType() + " excluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(FinanceMainPanel.this, "Nenhuma entrada foi encontrada com os dados informados", "Aviso", JOptionPane.WARNING_MESSAGE);
-                }
-                loadData();  // Recarrega os dados após excluir uma entrada
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(FinanceMainPanel.this, "Por favor, insira um número válido para a valor.", "Erro", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(FinanceMainPanel.this, "Erro ao excluir entrada: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            }
+            financeController.deleteEntry(deleteCategoryField.getText(), deleteDateField.getText(), deleteValueField.getText());
+            loadData();
         }
     }
 

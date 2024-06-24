@@ -3,15 +3,16 @@ package com.ijala.util.form;
 import com.ijala.controller.ProductController;
 import com.ijala.model.product.Product;
 import com.ijala.util.panel.ButtonPanel;
+import com.ijala.view.product.TableProductsFrame;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class FormUpdate extends FormBase {
 
-    private Product product;
-    private ProductController productController;
-    private Window parentWindow;
+    private final Product product;
+    private final ProductController productController;
+    private final Window parentWindow;
 
     private JTextField textFieldName;
     private JTextField textFieldSupplier;
@@ -84,13 +85,18 @@ public class FormUpdate extends FormBase {
             product.setPrice(Double.parseDouble(textFieldPrice.getText()));
             product.setQuantity(Integer.parseInt(textFieldQuantity.getText()));
 
-            // Chamar o método de atualização do ProductController
             productController.updateProduct(product);
 
             JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
             // Fechar a janela pai após a atualização
             parentWindow.dispose();
+
+            // Recarregar a tela com as atualizações
+            TableProductsFrame tableProductsFrame = new TableProductsFrame();
+            tableProductsFrame.loadProducts();
+            tableProductsFrame.setVisible(true);
+
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Erro: Preço e Quantidade devem ser números válidos.");
         } catch (Exception ex) {

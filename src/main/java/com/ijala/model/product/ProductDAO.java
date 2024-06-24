@@ -2,6 +2,7 @@ package com.ijala.model.product;
 
 import com.ijala.database.DatabaseConnection;
 import com.ijala.model.stock.StockDAO;
+import com.ijala.service.ProductService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class ProductDAO {
                     product.setId(productId);
 
                     // Inicializa o estoque com a quantidade do produto cadastrada
-                    StockDAO stockDAO = new StockDAO(new ProductDAO());
+                    StockDAO stockDAO = new StockDAO(new ProductService());
                     stockDAO.initializeStock(productId, product.getQuantity());
                 } else {
                     throw new SQLException("Falha ao obter o ID gerado do produto.");
@@ -98,30 +99,30 @@ public class ProductDAO {
         return null;
     }
 
-    public Product searchProductByName(String nome) {
-        String sql = "SELECT * FROM produtos WHERE nome = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, nome);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Product product = new Product(
-                            rs.getString("nome"),
-                            rs.getString("descricao"),
-                            rs.getInt("quantidade"),
-                            rs.getDouble("preco"),
-                            rs.getInt("categoria_id"),
-                            rs.getInt("fornecedor_id")
-                    );
-                    product.setId(rs.getInt("id"));
-                    return product;
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar produto: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public Product searchProductByName(String nome) {
+//        String sql = "SELECT * FROM produtos WHERE nome = ?";
+//        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            stmt.setString(1, nome);
+//            try (ResultSet rs = stmt.executeQuery()) {
+//                if (rs.next()) {
+//                    Product product = new Product(
+//                            rs.getString("nome"),
+//                            rs.getString("descricao"),
+//                            rs.getInt("quantidade"),
+//                            rs.getDouble("preco"),
+//                            rs.getInt("categoria_id"),
+//                            rs.getInt("fornecedor_id")
+//                    );
+//                    product.setId(rs.getInt("id"));
+//                    return product;
+//                }
+//            }
+//        } catch (SQLException e) {
+//            System.err.println("Erro ao buscar produto: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public void updateProduct(Product product) {
         String sql = "UPDATE produtos SET nome = ?, descricao = ?, quantidade = ?, preco = ?, categoria_id = ?, fornecedor_id = ? WHERE id = ?";

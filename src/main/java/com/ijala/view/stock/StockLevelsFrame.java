@@ -12,12 +12,12 @@ import java.awt.*;
 import java.util.List;
 
 public class StockLevelsFrame extends JFrame {
-    private LevelStockDAO levelStockDAO;
     private TablePanel tablePanel;
+    private final LevelStockDAO levelStockDAO;
 
     public StockLevelsFrame() {
         super("Níveis de Estoque");
-        levelStockDAO = new LevelStockDAO();
+        this.levelStockDAO = new LevelStockDAO();
         initComponents();
         loadStock();
     }
