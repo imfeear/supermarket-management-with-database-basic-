@@ -3,7 +3,7 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/vitoriabarbosa/GerenciamentoSupermercado?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/vitoriabarbosa/GerenciamentoSupermercado?style=for-the-badge)
 ![Bitbucket open issues](https://img.shields.io/bitbucket/issues/vitoriabarbosa/GerenciamentoSupermercado?style=for-the-badge)
-![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/vitoriabarbosa/GerenciamentoSupermercado?style=for-the-badge)
+![Bitbucket open pull requests](https://img.shields.io/github/issues-pr-closed/vitoriabarbosa/GerenciamentoSupermercado?style=for-the-badge)
 
 <br>
 
