@@ -135,8 +135,8 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
           </a>
       </td>
       <td align="center">
-          <a href="#" title="LinkedIn de Bruno">
-            <img src="#" width="100px;" alt="foto"/><br>
+          <a href="https://www.linkedin.com/in/bruno-reis-66a17427b/" title="LinkedIn de Bruno">
+            <img src="https://media.licdn.com/dms/image/v2/D4D03AQHB0FPkrckrxQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722562739863?e=1729728000&v=beta&t=0PAyhK0XSAqmrZ0frxnOZK5MoqGD5AlrvGXKQJZbltk" width="100px;" alt="foto"/><br>
             <sub>
               <b>Bruno Reis</b>
             </sub>
